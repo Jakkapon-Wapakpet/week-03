@@ -111,3 +111,7 @@ venv/
 ENV/
 env/
 python-venv/
+
+# Project-specific exclusions
+design-system/
+.agents/
