@@ -17,7 +17,7 @@ git clone <repository-url>
 cd vibe-code-my-ecommerce
 ```
 
-### 2. Setup Backend (API)
+### 2. Setup Backend & Frontend (Single Port)
 
 ```bash
 cd app/api
@@ -38,16 +38,7 @@ MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/gearhub
 JWT_SECRET=your_super_secret_key
 ```
 
-### 3. Setup Frontend (Web)
-
-```bash
-cd app/web
-npm install
-npm run dev
-```
-
-เว็บจะเปิดที่ `http://localhost:5173` (Vite dev server)  
-API server อยู่ที่ `http://localhost:5000`
+เซิร์ฟเวอร์จะรันที่ `http://localhost:5000` โดยจะเสิร์ฟทั้ง Backend API และ Frontend (HTML/CSS/JS) บนพอร์ตเดียวกันทันที ไม่ต้องรันแยกพอร์ตอีกต่อไป
 
 ---
 
@@ -90,29 +81,26 @@ vibe-code-my-ecommerce/
 │   │   │   └── drop-collections.js # Drop utility
 │   │   ├── server.js
 │   │   └── .env
-│   └── web/                        # Frontend (React + Vite)
-│       └── src/
-│           ├── components/
-│           │   ├── Header.jsx
-│           │   └── ProductCard.jsx
-│           ├── context/
-│           │   ├── AuthContext.jsx
-│           │   ├── CartContext.jsx
-│           │   ├── CompareContext.jsx
-│           │   ├── WishlistContext.jsx
-│           │   └── ToastContext.jsx
-│           ├── pages/
-│           │   ├── Home.jsx        # หน้าแรก + Bento Grid + Filter
-│           │   ├── Compare.jsx     # ตารางเปรียบเทียบสเปก
-│           │   ├── Cart.jsx
-│           │   ├── Checkout.jsx    # PromptPay QR + Card payment
-│           │   ├── MyOrders.jsx    # ประวัติคำสั่งซื้อ
-│           │   ├── Wishlist.jsx
-│           │   ├── Login.jsx
-│           │   ├── Register.jsx
-│           │   └── AdminDashboard.jsx
-│           ├── App.jsx
-│           └── index.css
+│   └── web/                        # Frontend (Vanilla JS + HTML)
+        ├── css/
+        │   └── style.css           # Premium Dark Styling
+        ├── js/
+        │   ├── api.js              # Fetch requests to API
+        │   ├── auth.js             # JWT session helper
+        │   ├── cart.js             # Cart state (localStorage)
+        │   ├── compare.js          # Product comparison logic
+        │   ├── wishlist.js         # Wishlist storage logic
+        │   └── main.js             # HomePage product renderer
+        ├── images/                 # Product static images
+        ├── index.html              # HomePage
+        ├── compare.html            # Specifications comparison page
+        ├── cart.html               # Shopping Cart page
+        ├── checkout.html           # Shipping & Payment form
+        ├── my-orders.html          # Order History page
+        ├── wishlist.html           # Favorites/Wishlist page
+        ├── login.html              # User Authentication
+        ├── register.html           # Registration form
+        └── admin.html              # Admin Dashboard
 └── design-system/
 ```
 
@@ -249,9 +237,9 @@ vibe-code-my-ecommerce/
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
-| **Frontend** | React 18 + Vite | UI Framework |
+| **Frontend** | HTML5 + Vanilla JS | Client-side scripting & UI markup |
 | **Styling** | Vanilla CSS | Design System (dark theme, glassmorphism) |
-| **Icons** | Lucide React | UI Icons |
+| **Icons** | Lucide JS (via CDN) | UI Icons |
 | **Backend** | Node.js + Express.js | RESTful API Server |
 | **Database** | MongoDB Atlas | Document Database |
 | **ODM** | Mongoose | MongoDB Schema & Validation |

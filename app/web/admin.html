@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบจัดการร้านค้า | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Admin specific tweaks since design system has styling built in */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .admin-sidebar {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      font-weight: 600;
+      transition: all var(--transition-speed);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sidebar-btn:hover, .sidebar-btn.active {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: var(--glow-shadow);
+    }
+    .admin-panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+    .stat-card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: rgba(10, 14, 23, 0.6);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent-secondary);
+      margin-top: 0.5rem;
+    }
+    /* Modals styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--bg-color);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .admin-table th {
+      color: var(--accent-secondary);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <div id="user-links" style="display: flex; gap: 1rem; align-items: center;">
+          <span style="color: var(--text-muted); font-size: 0.9rem;">
+            ผู้ดูแลระบบ: <span id="user-name-display" style="color: var(--accent-cta); font-weight: bold;">Admin</span>
+          </span>
+          <button onclick="Auth.logout()" class="btn-icon" style="border: none; background: transparent;"><i data-lucide="log-out"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <h2 style="font-size: 2rem;">ระบบจัดการร้านค้า (Admin Dashboard)</h2>
+      <button class="btn-primary" id="btn-add-product" style="width: auto;">
+        <i data-lucide="plus-circle"></i> เพิ่มสินค้าใหม่
+      </button>
+    </div>
+
+    <div class="admin-layout">
+      <!-- Sidebar Navigation -->
+      <div class="admin-sidebar">
+        <button class="sidebar-btn active" onclick="switchTab('dashboard')">
+          <i data-lucide="layout-dashboard"></i> แดชบอร์ด
+        </button>
+        <button class="sidebar-btn" onclick="switchTab('products')">
+          <i data-lucide="package"></i> จัดการสินค้า
+        </button>
+        <button class="sidebar-btn" onclick="switchTab('orders')">
+          <i data-lucide="shopping-bag"></i> จัดการคำสั่งซื้อ
+        </button>
+      </div>
+
+      <!-- Main Panels -->
+      <div class="admin-panel">
+        
+        <!-- Tab: Dashboard -->
+        <div id="panel-dashboard" class="tab-panel">
+          <h3 style="margin-bottom: 1.5rem; color: #fff;">ข้อมูลภาพรวม</h3>
+          <div class="stat-card-row">
+            <div class="stat-card">
+              <h4>ยอดขายทั้งหมด</h4>
+              <div class="stat-val" id="stat-sales">0 ฿</div>
+            </div>
+            <div class="stat-card">
+              <h4>ออเดอร์ทั้งหมด</h4>
+              <div class="stat-val" id="stat-orders">0 ออเดอร์</div>
+            </div>
+            <div class="stat-card">
+              <h4>จำนวนสินค้าทั้งหมด</h4>
+              <div class="stat-val" id="stat-products">0 รายการ</div>
+            </div>
+            <div class="stat-card">
+              <h4>สินค้าใกล้หมด (<= 5)</h4>
+              <div class="stat-val" id="stat-low-stock" style="color: var(--danger);">0 รายการ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Products -->
+        <div id="panel-products" class="tab-panel" style="display: none;">
+          <h3 style="margin-bottom: 1.5rem; color: #fff;">รายการสินค้าทั้งหมด</h3>
+          <div style="overflow-x: auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>รูป</th>
+                  <th>ชื่อสินค้า</th>
+                  <th>หมวดหมู่</th>
+                  <th>ราคา</th>
+                  <th>คงคลัง</th>
+                  <th>การดำเนินการ</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Orders -->
+        <div id="panel-orders" class="tab-panel" style="display: none;">
+          <h3 style="margin-bottom: 1.5rem; color: #fff;">ประวัติคำสั่งซื้อลูกค้า</h3>
+          <div style="overflow-x: auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>รหัสสั่งซื้อ</th>
+                  <th>วันที่สั่ง</th>
+                  <th>ลูกค้า</th>
+                  <th>ยอดรวม</th>
+                  <th>สถานะ</th>
+                  <th>การจัดส่ง</th>
+                  <th>อัปเดต</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Product Modal (Add/Edit) -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeProductModal()">&times;</button>
+      <h3 id="product-modal-title" style="color: #fff; margin-bottom: 1.5rem;">เพิ่มสินค้าใหม่</h3>
+      
+      <form id="product-form">
+        <input type="hidden" id="prodId">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prodName">ชื่อสินค้า</label>
+            <input type="text" id="prodName" required placeholder="เช่น Logitech G Pro X">
+          </div>
+          <div class="form-group">
+            <label for="prodCategory">หมวดหมู่</label>
+            <select id="prodCategory" required>
+              <option value="Mouse">เมาส์ (Mouse)</option>
+              <option value="Keyboard">คีย์บอร์ด (Keyboard)</option>
+              <option value="Headset">หูฟัง (Headset)</option>
+              <option value="Microphone">ไมโครโฟน (Microphone)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prodPrice">ราคาขาย (฿)</label>
+            <input type="number" id="prodPrice" required min="0">
+          </div>
+          <div class="form-group">
+            <label for="prodStock">จำนวนในคลัง</label>
+            <input type="number" id="prodStock" required min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodDesc">คำอธิบาย</label>
+          <input type="text" id="prodDesc" placeholder="คำอธิบายรายละเอียดสั้นๆ">
+        </div>
+
+        <div class="form-group">
+          <label for="prodImage">URL รูปภาพ</label>
+          <input type="text" id="prodImage" placeholder="เช่น /images/products/viper-v3-pro-white.png">
+        </div>
+
+        <h4 style="color: var(--accent-secondary); margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">คุณสมบัติทางเทคนิค</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specColor">สี (Color)</label>
+            <input type="text" id="specColor">
+          </div>
+          <div class="form-group">
+            <label for="specConnection">การเชื่อมต่อ</label>
+            <input type="text" id="specConnection" placeholder="เช่น Wireless 2.4GHz / Type-C">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specWeight">น้ำหนัก</label>
+            <input type="text" id="specWeight" placeholder="เช่น 55g">
+          </div>
+          <div class="form-group">
+            <label for="specSensor">เซนเซอร์ (Mice)</label>
+            <input type="text" id="specSensor">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specPolling">Polling Rate (Mice)</label>
+            <input type="text" id="specPolling" placeholder="เช่น 8000Hz">
+          </div>
+          <div class="form-group">
+            <label for="specSwitch">ชนิดสวิตช์ (Keyboard)</label>
+            <input type="text" id="specSwitch">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specHotswap">Hot-Swappable (Keyboard)</label>
+            <select id="specHotswap">
+              <option value="false">ไม่รองรับ (False)</option>
+              <option value="true">รองรับ (True)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="specBattery">แบตเตอรี่ (Wireless)</label>
+            <input type="text" id="specBattery">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specPolar">รูปแบบรับเสียง (Mic)</label>
+            <input type="text" id="specPolar">
+          </div>
+          <div class="form-group">
+            <label for="specFreq">ความถี่ตอบสนอง (Mic)</label>
+            <input type="text" id="specFreq">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1.5rem; justify-content: center;">บันทึกข้อมูลสินค้า</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Status Modal -->
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal-content" style="max-width: 450px;">
+      <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+      <h3 style="color: #fff; margin-bottom: 1.5rem;">อัปเดตสถานะการสั่งซื้อ</h3>
+      
+      <form id="order-form">
+        <input type="hidden" id="orderId">
+        <div class="form-group">
+          <label for="orderStatus">สถานะออเดอร์</label>
+          <select id="orderStatus">
+            <option value="Pending">Pending (รอชำระเงิน)</option>
+            <option value="Paid">Paid (ชำระเงินแล้ว)</option>
+            <option value="Processing">Processing (กำลังเตรียมจัดส่ง)</option>
+            <option value="Shipped">Shipped (จัดส่งพัสดุแล้ว)</option>
+            <option value="Delivered">Delivered (ได้รับพัสดุแล้ว)</option>
+            <option value="Cancelled">Cancelled (ยกเลิกคำสั่งซื้อ)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="orderTracking">เลขพัสดุจัดส่ง (Tracking Number)</label>
+          <input type="text" id="orderTracking" placeholder="เช่น TH0102030405A">
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1.5rem; justify-content: center;">อัปเดตสถานะ</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Lock page access to admins only
+    const user = Auth.getUser();
+    if (!Auth.isLoggedIn() || !user || user.role !== 'admin') {
+      alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('user-name-display').textContent = user.username;
+    }
+
+    // Global variables for raw data
+    let globalProducts = [];
+    let globalOrders = [];
+
+    // Switch Panel Navigation
+    window.switchTab = (tabName) => {
+      document.querySelectorAll('.tab-panel').forEach(panel => panel.style.display = 'none');
+      document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(`panel-${tabName}`).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    };
+
+    // Load All Data
+    async function loadAdminData() {
+      // 1. Fetch Products
+      const prodRes = await apiCall('/products');
+      if (prodRes.success) {
+        globalProducts = prodRes.products;
+        renderProductsTable(globalProducts);
+      }
+
+      // 2. Fetch Orders (Admin automatically fetches all orders from backend)
+      const orderRes = await apiCall('/orders');
+      if (orderRes.success) {
+        globalOrders = orderRes.orders;
+        renderOrdersTable(globalOrders);
+      }
+
+      // 3. Compute and Render Stats
+      computeStats();
+    }
+
+    // Stats Computation
+    function computeStats() {
+      const sales = globalOrders
+        .filter(o => o.status !== 'Cancelled')
+        .reduce((sum, o) => sum + o.totalAmount, 0);
+      
+      const lowStock = globalProducts.filter(p => p.stock <= 5).length;
+
+      document.getElementById('stat-sales').textContent = `${sales.toLocaleString()} ฿`;
+      document.getElementById('stat-orders').textContent = `${globalOrders.length} ออเดอร์`;
+      document.getElementById('stat-products').textContent = `${globalProducts.length} รายการ`;
+      document.getElementById('stat-low-stock').textContent = `${lowStock} รายการ`;
+    }
+
+    // Render Products Table
+    function renderProductsTable(products) {
+      const tbody = document.getElementById('products-table-body');
+      tbody.innerHTML = '';
+      products.forEach(p => {
+        const tr = document.createElement('tr');
+        const img = p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/40';
+        tr.innerHTML = `
+          <td><img src="${img}" style="width: 40px; height: 40px; object-fit: contain;"></td>
+          <td><strong>${p.name}</strong></td>
+          <td>${p.category}</td>
+          <td>${p.price.toLocaleString()} ฿</td>
+          <td style="${p.stock <= 5 ? 'color: var(--danger); font-weight: bold;' : ''}">${p.stock} ชิ้น</td>
+          <td>
+            <button class="filter-btn active" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: var(--accent-gradient);" onclick="editProduct('${p._id}')">แก้ไข</button>
+            <button class="filter-btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: rgba(239, 68, 68, 0.2); color: var(--danger); border-color: rgba(239, 68, 68, 0.3);" onclick="deleteProduct('${p._id}', '${p.name}')">ลบ</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Render Orders Table
+    function renderOrdersTable(orders) {
+      const tbody = document.getElementById('orders-table-body');
+      tbody.innerHTML = '';
+      orders.forEach(o => {
+        const date = new Date(o.createdAt).toLocaleDateString('th-TH');
+        const username = o.userId ? (o.userId.username || 'N/A') : 'N/A';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code>${o._id.substring(0, 8).toUpperCase()}</code></td>
+          <td>${date}</td>
+          <td>${username}</td>
+          <td><strong>${o.totalAmount.toLocaleString()} ฿</strong></td>
+          <td><span style="font-weight: bold;">${o.status}</span></td>
+          <td><span style="font-size: 0.85rem; color: var(--text-muted);">${o.trackingNumber || '-'}</span></td>
+          <td>
+            <button class="filter-btn active" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: var(--accent-gradient);" onclick="openOrderUpdate('${o._id}', '${o.status}', '${o.trackingNumber || ''}')">อัปเดต</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Product Modal Helpers
+    window.closeProductModal = () => document.getElementById('product-modal').classList.remove('active');
+    document.getElementById('btn-add-product').addEventListener('click', () => {
+      document.getElementById('product-modal-title').textContent = 'เพิ่มสินค้าใหม่';
+      document.getElementById('product-form').reset();
+      document.getElementById('prodId').value = '';
+      document.getElementById('product-modal').classList.add('active');
+    });
+
+    window.editProduct = (id) => {
+      const p = globalProducts.find(item => item._id === id);
+      if (!p) return;
+      
+      document.getElementById('product-modal-title').textContent = 'แก้ไขรายละเอียดสินค้า';
+      document.getElementById('prodId').value = p._id;
+      document.getElementById('prodName').value = p.name;
+      document.getElementById('prodCategory').value = p.category;
+      document.getElementById('prodPrice').value = p.price;
+      document.getElementById('prodStock').value = p.stock;
+      document.getElementById('prodDesc').value = p.description || '';
+      document.getElementById('prodImage').value = p.images && p.images.length > 0 ? p.images[0] : '';
+      
+      document.getElementById('specColor').value = p.specifications?.color || '';
+      document.getElementById('specConnection').value = p.specifications?.connection || '';
+      document.getElementById('specWeight').value = p.specifications?.weight || '';
+      document.getElementById('specSensor').value = p.specifications?.sensor || '';
+      document.getElementById('specPolling').value = p.specifications?.pollingRate || '';
+      document.getElementById('specSwitch').value = p.specifications?.switchType || '';
+      document.getElementById('specHotswap').value = String(p.specifications?.hotSwappable || false);
+      document.getElementById('specBattery').value = p.specifications?.batteryLife || '';
+      document.getElementById('specPolar').value = p.specifications?.polarPattern || '';
+      document.getElementById('specFreq').value = p.specifications?.frequencyResponse || '';
+
+      document.getElementById('product-modal').classList.add('active');
+    };
+
+    // Product Submit Handler
+    document.getElementById('product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('prodId').value;
+      
+      const payload = {
+        name: document.getElementById('prodName').value,
+        category: document.getElementById('prodCategory').value,
+        price: Number(document.getElementById('prodPrice').value),
+        stock: Number(document.getElementById('prodStock').value),
+        description: document.getElementById('prodDesc').value,
+        images: [document.getElementById('prodImage').value || '/images/products/g-pro-superlight-2-black.png'],
+        specifications: {
+          color: document.getElementById('specColor').value,
+          connection: document.getElementById('specConnection').value,
+          weight: document.getElementById('specWeight').value,
+          sensor: document.getElementById('specSensor').value,
+          pollingRate: document.getElementById('specPolling').value,
+          switchType: document.getElementById('specSwitch').value,
+          hotSwappable: document.getElementById('specHotswap').value === 'true',
+          batteryLife: document.getElementById('specBattery').value,
+          polarPattern: document.getElementById('specPolar').value,
+          frequencyResponse: document.getElementById('specFreq').value
+        }
+      };
+
+      let res;
+      if (id) {
+        // Edit Mode
+        res = await apiCall(`/products/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+      } else {
+        // Add Mode
+        res = await apiCall('/products', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (res.success) {
+        alert('บันทึกข้อมูลสินค้าเรียบร้อยแล้ว');
+        closeProductModal();
+        loadAdminData();
+      } else {
+        alert(res.message || 'เกิดข้อผิดพลาดในการบันทึกสินค้า');
+      }
+    });
+
+    // Delete Product
+    window.deleteProduct = async (id, name) => {
+      if (confirm(`คุณแน่ใจว่าต้องการลบสินค้า "${name}" ใช่หรือไม่?`)) {
+        const res = await apiCall(`/products/${id}`, { method: 'DELETE' });
+        if (res.success) {
+          alert('ลบสินค้าสำเร็จ');
+          loadAdminData();
+        } else {
+          alert(res.message || 'ไม่สามารถลบสินค้าได้');
+        }
+      }
+    };
+
+    // Order Modal Helpers
+    window.closeOrderModal = () => document.getElementById('order-modal').classList.remove('active');
+    window.openOrderUpdate = (id, status, tracking) => {
+      document.getElementById('orderId').value = id;
+      document.getElementById('orderStatus').value = status;
+      document.getElementById('orderTracking').value = tracking;
+      document.getElementById('order-modal').classList.add('active');
+    };
+
+    // Order Submit Handler
+    document.getElementById('order-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('orderId').value;
+      const status = document.getElementById('orderStatus').value;
+      const trackingNumber = document.getElementById('orderTracking').value;
+
+      const res = await apiCall(`/orders/${id}/status`, {
+        method: 'PUT',
+        body: JSON.stringify({ status, trackingNumber })
+      });
+
+      if (res.success) {
+        alert('อัปเดตสถานะการจัดส่งสำเร็จ');
+        closeOrderModal();
+        loadAdminData();
+      } else {
+        alert(res.message || 'ไม่สามารถอัปเดตสถานะได้');
+      }
+    });
+
+    // Initial Load
+    document.addEventListener('DOMContentLoaded', loadAdminData);
+  </script>
+</body>
+</html>

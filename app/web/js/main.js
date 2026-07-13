@@ -91,6 +91,13 @@ function renderProducts(products) {
           >
             <i data-lucide="git-compare" style="width: 18px; height: 18px;"></i>
           </button>
+          <button 
+            class="btn-secondary" 
+            onclick="handleToggleWishlist('${productJson}', this)"
+            title="รายการโปรด"
+          >
+            <i data-lucide="heart" style="width: 18px; height: 18px; ${Wishlist.isInWishlist(product._id) ? 'color: var(--accent-cta); fill: var(--accent-cta);' : ''}"></i>
+          </button>
         </div>
       </div>
     `;
@@ -111,6 +118,19 @@ window.handleAddToCart = function(encodedProduct) {
 window.handleAddToCompare = function(encodedProduct) {
   const product = JSON.parse(decodeURIComponent(encodedProduct));
   Compare.addToCompare(product);
+};
+
+window.handleToggleWishlist = function(encodedProduct, buttonEl) {
+  const product = JSON.parse(decodeURIComponent(encodedProduct));
+  const isAdded = Wishlist.toggleWishlist(product);
+  const icon = buttonEl.querySelector('i');
+  if (isAdded) {
+    icon.style.color = 'var(--accent-cta)';
+    icon.style.fill = 'var(--accent-cta)';
+  } else {
+    icon.style.color = '';
+    icon.style.fill = '';
+  }
 };
 
 // Event Listeners for Filters and Search
