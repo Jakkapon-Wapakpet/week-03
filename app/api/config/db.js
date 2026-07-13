@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`เชื่อมต่อ MongoDB สำเร็จ: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Database Connection Error: ${error.message}`);
-    console.log('⚠️ Warning: Server is running without a working database connection. API endpoints will fail, but the static UI is accessible.');
+    console.error(`เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล: ${error.message}`);
+    console.log('⚠️ คำเตือน: Server กำลังรันโดยไม่มีการเชื่อมต่อฐานข้อมูล API จะใช้งานไม่ได้ แต่ยังเข้าถึง UI ได้');
   }
 };
 

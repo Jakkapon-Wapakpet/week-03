@@ -5,7 +5,7 @@ const CompareContext = createContext();
 export const CompareProvider = ({ children }) => {
   const [compareList, setCompareList] = useState([]);
 
-  // Load from localStorage on mount
+  // โหลดรายการเปรียบเทียบจาก localStorage ตอนแอพเปิดครั้งแรก
   useEffect(() => {
     const savedList = localStorage.getItem('compare_list');
     if (savedList) {
@@ -13,18 +13,20 @@ export const CompareProvider = ({ children }) => {
     }
   }, []);
 
+  // บันทึกรายการเปรียบเทียบลง localStorage
   const saveCompareList = (newList) => {
     setCompareList(newList);
     localStorage.setItem('compare_list', JSON.stringify(newList));
   };
 
+  // เพิ่มสินค้าเข้าสู่การเปรียบเทียบ (สูงสุด 3 ชิ้น)
   const addToCompare = (product) => {
-    // Check if already in list
+    // ตรวจว่ามีในรายการแล้วหรือยัง
     if (compareList.some(item => item._id === product._id)) {
       return { success: false, message: 'สินค้านี้อยู่ในรายการเปรียบเทียบแล้ว' };
     }
 
-    // Limit to 3 items
+    // จำกัดไม่เกิน 3 ชิ้น
     if (compareList.length >= 3) {
       return { success: false, message: 'คุณสามารถเปรียบเทียบสินค้าได้สูงสุด 3 ชิ้นเท่านั้น' };
     }
@@ -34,19 +36,23 @@ export const CompareProvider = ({ children }) => {
     return { success: true };
   };
 
+  // ลบสินค้าออกจากการเปรียบเทียบ
   const removeFromCompare = (productId) => {
     const newList = compareList.filter(item => item._id !== productId);
     saveCompareList(newList);
   };
 
+  // ล้างรายการเปรียบเทียบทั้งหมด
   const clearCompare = () => {
     saveCompareList([]);
   };
 
+  // ตรวจว่าสินค้านี้อยู่ในรายการเปรียบเทียบหรือไม่
   const isCompared = (productId) => {
     return compareList.some(item => item._id === productId);
   };
 
+  // นับจำนวนสินค้าที่เลือกเปรียบเทียบ
   const getCompareCount = () => {
     return compareList.length;
   };

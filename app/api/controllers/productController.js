@@ -1,31 +1,32 @@
 const Product = require('../models/Product');
 
-// @desc    Get all products (with optional filtering and search)
-// @route   GET /api/products
-// @access  Public
+// @คำอธิบาย  ดึงสินค้าทั้งหมด (รองรับ filter และ search ผ่าน query string)
+// @route     GET /api/products?category=Mouse&search=razer&color=black
+// @การเข้าถึง สาธารณะ (ไม่ต้องล็อกอิน)
 const getProducts = async (req, res) => {
   try {
     const { category, search, color } = req.query;
-    let query = {};
+    let query = {}; // object ที่จะส่งให้ MongoDB ใช้กรองข้อมูล
 
-    // Filter by category
+    // กรองตาม category (case-insensitive: Mouse = mouse = MOUSE)
     if (category) {
-      query.category = { $regex: new RegExp('^' + category + '$', 'i') }; // Case-insensitive exact match
+      query.category = { $regex: new RegExp('^' + category + '$', 'i') };
     }
 
-    // Filter by color in specifications
+    // กรองตามสีในสเปกสินค้า
     if (color) {
       query['specifications.color'] = { $regex: new RegExp(color, 'i') };
     }
 
-    // Search by name or tags
+    // ค้นหาจากชื่อสินค้า หรือ tags ($or = หรือ)
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search, 'i')] } }
+        { name: { $regex: search, $options: 'i' } },      // ค้นชื่อ
+        { tags: { $in: [new RegExp(search, 'i')] } }       // ค้น tags
       ];
     }
 
+    // เรียงลำดับสินค้าใหม่ก่อน (createdAt: -1 = ล่าสุดก่อน)
     const products = await Product.find(query).sort({ createdAt: -1 });
     return res.json({ success: true, count: products.length, products });
   } catch (error) {
@@ -33,9 +34,9 @@ const getProducts = async (req, res) => {
   }
 };
 
-// @desc    Get single product details
-// @route   GET /api/products/:id
-// @access  Public
+// @คำอธิบาย  ดูรายละเอียดสินค้าชิ้นเดียว
+// @route     GET /api/products/:id
+// @การเข้าถึง สาธารณะ (ไม่ต้องล็อกอิน)
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -43,25 +44,27 @@ const getProductById = async (req, res) => {
     if (product) {
       return res.json({ success: true, product });
     } else {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
   } catch (error) {
     if (error.kind === 'ObjectId') {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      // กรณี id ที่ส่งมาไม่ใช่ ObjectId ที่ถูกต้อง (format ผิด)
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// @desc    Create new product
-// @route   POST /api/products
-// @access  Private/Admin
+// @คำอธิบาย  เพิ่มสินค้าใหม่
+// @route     POST /api/products
+// @การเข้าถึง เฉพาะ Admin
 const createProduct = async (req, res) => {
   try {
     const { name, description, category, price, stock, images, specifications, tags } = req.body;
 
+    // ตรวจสอบฟิลด์บังคับ
     if (!name || !category || !price || stock === undefined || !specifications) {
-      return res.status(400).json({ success: false, message: 'Please add all required fields' });
+      return res.status(400).json({ success: false, message: 'กรุณากรอกข้อมูลสินค้าให้ครบทุกช่องที่บังคับ' });
     }
 
     const product = await Product.create({
@@ -70,9 +73,9 @@ const createProduct = async (req, res) => {
       category,
       price,
       stock,
-      images: images || [],
+      images: images || [],       // ถ้าไม่มีรูป ใช้ array ว่าง
       specifications,
-      tags: tags || []
+      tags: tags || []            // ถ้าไม่มี tags ใช้ array ว่าง
     });
 
     return res.status(201).json({ success: true, product });
@@ -81,9 +84,9 @@ const createProduct = async (req, res) => {
   }
 };
 
-// @desc    Update a product
-// @route   PUT /api/products/:id
-// @access  Private/Admin
+// @คำอธิบาย  แก้ไขข้อมูลสินค้า
+// @route     PUT /api/products/:id
+// @การเข้าถึง เฉพาะ Admin
 const updateProduct = async (req, res) => {
   try {
     const { name, description, category, price, stock, images, specifications, tags } = req.body;
@@ -91,6 +94,7 @@ const updateProduct = async (req, res) => {
     const product = await Product.findById(req.params.id);
 
     if (product) {
+      // อัพเดตเฉพาะฟิลด์ที่ส่งมา (ถ้าไม่ส่งมา ใช้ค่าเดิม)
       product.name = name !== undefined ? name : product.name;
       product.description = description !== undefined ? description : product.description;
       product.category = category !== undefined ? category : product.category;
@@ -103,40 +107,40 @@ const updateProduct = async (req, res) => {
       const updatedProduct = await product.save();
       return res.json({ success: true, product: updatedProduct });
     } else {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
   } catch (error) {
     if (error.kind === 'ObjectId') {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// @desc    Delete a product
-// @route   DELETE /api/products/:id
-// @access  Private/Admin
+// @คำอธิบาย  ลบสินค้า
+// @route     DELETE /api/products/:id
+// @การเข้าถึง เฉพาะ Admin
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
     if (product) {
       await Product.deleteOne({ _id: req.params.id });
-      return res.json({ success: true, message: 'Product removed' });
+      return res.json({ success: true, message: 'ลบสินค้าออกจากระบบเรียบร้อยแล้ว' });
     } else {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
   } catch (error) {
     if (error.kind === 'ObjectId') {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// @desc    Add review to product
-// @route   POST /api/products/:id/reviews
-// @access  Private
+// @คำอธิบาย  เพิ่มรีวิวสินค้า (1 user ต่อ 1 สินค้าเท่านั้น)
+// @route     POST /api/products/:id/reviews
+// @การเข้าถึง ต้องล็อกอิน (Private)
 const addProductReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -148,6 +152,7 @@ const addProductReview = async (req, res) => {
     const product = await Product.findById(req.params.id);
 
     if (product) {
+      // ตรวจว่า user นี้เคยรีวิวสินค้านี้แล้วหรือยัง
       const alreadyReviewed = product.reviews.find(
         (r) => r.username === req.user.username
       );
@@ -156,6 +161,7 @@ const addProductReview = async (req, res) => {
         return res.status(400).json({ success: false, message: 'คุณเคยรีวิวสินค้านี้ไปแล้ว' });
       }
 
+      // สร้าง object รีวิวใหม่แล้ว push เข้า array ของสินค้า
       const review = {
         username: req.user.username,
         rating: Number(rating),
@@ -164,11 +170,11 @@ const addProductReview = async (req, res) => {
       };
 
       product.reviews.push(review);
-      await product.save();
+      await product.save(); // บันทึกทั้ง document
 
       return res.status(201).json({ success: true, message: 'บันทึกรีวิวสำเร็จแล้ว' });
     } else {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

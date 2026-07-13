@@ -18,6 +18,7 @@ const Register = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
+  // ถ้าล็อกอินอยู่แล้ว redirect ไปหน้าแรกทันที
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/');
@@ -26,7 +27,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (submitting) return;
+    if (submitting) return; // ป้องกันการส่งฟอร์มซ้ำ
 
     setSubmitting(true);
     try {
@@ -34,6 +35,7 @@ const Register = () => {
       showToast('สมัครสมาชิกสำเร็จแล้ว และกำลังล็อกอินเข้าสู่ระบบ...', 'success');
       
       setTimeout(() => {
+        // หมายเหตุ: backend บังคับ role เป็น 'customer' เสมอ ดังนั้น /admin จะไม่ถูกเรียกในทางปฏิบัติ
         if (role === 'admin') {
           navigate('/admin');
         } else {
@@ -54,7 +56,7 @@ const Register = () => {
         <p>ร่วมเป็นส่วนหนึ่งของระบบช็อปปิ้งอัจฉริยะกับเรา!</p>
         
         <form onSubmit={handleSubmit}>
-          {/* Username & Email */}
+          {/* ชื่อผู้ใช้ & อีเมล */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="username">ชื่อผู้ใช้งาน</label>
@@ -80,7 +82,7 @@ const Register = () => {
             </div>
           </div>
           
-          {/* Password & Role selection */}
+          {/* รหัสผ่าน & ประเภทผู้ใช้ (role dropdown ไว้ทดสอบ — backend บล็อก admin อยู่แล้ว) */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="password">รหัสผ่าน</label>
@@ -102,7 +104,7 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Personal Info */}
+          {/* ข้อมูลส่วนตัว (ชื่อจริง-นามสกุล) */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="firstName">ชื่อจริง</label>
@@ -128,7 +130,7 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Phone Number */}
+          {/* เบอร์โทรศัพท์ */}
           <div className="form-group">
             <label htmlFor="phoneNumber">เบอร์โทรศัพท์</label>
             <input 

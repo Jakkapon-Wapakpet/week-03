@@ -1,39 +1,39 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Helper to generate JWT Token
+// ฟังก์ชันช่วยสร้าง JWT Token จาก user id
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d'
+    expiresIn: '30d' // Token มีอายุ 30 วัน
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
+// @คำอธิบาย  สมัครสมาชิกผู้ใช้ใหม่
+// @route     POST /api/auth/register
+// @การเข้าถึง สาธารณะ (ไม่ต้องล็อกอิน)
 const registerUser = async (req, res) => {
   try {
     const { username, email, password, firstName, lastName, phoneNumber } = req.body;
 
-    // Validate inputs
+    // ตรวจสอบว่ากรอกข้อมูลครบทุกฟิลด์
     if (!username || !email || !password || !firstName || !lastName || !phoneNumber) {
-      return res.status(400).json({ success: false, message: 'Please add all required fields' });
+      return res.status(400).json({ success: false, message: 'กรุณากรอกข้อมูลให้ครบทุกช่อง' });
     }
 
-    // Check if user exists (by email or username)
+    // ตรวจว่า email หรือ username ซ้ำกับที่มีอยู่แล้วหรือไม่
     const emailExists = await User.findOne({ email });
     const usernameExists = await User.findOne({ username });
 
     if (emailExists || usernameExists) {
-      return res.status(400).json({ success: false, message: 'User already exists with this email or username' });
+      return res.status(400).json({ success: false, message: 'มีผู้ใช้งานที่ใช้อีเมลหรือชื่อผู้ใช้นี้อยู่แล้ว' });
     }
 
-    // Create User
+    // สร้าง user ใหม่ (password จะถูก hash โดย pre-save hook ใน User model)
     const user = await User.create({
       username,
       email,
-      password, // will be hashed by UserSchema pre-save hook
-      role: 'customer', // Always force customer role — admin must be set manually in DB
+      password,
+      role: 'customer', // บังคับเป็น customer เสมอ — admin ต้องตั้งโดยตรงใน DB
       profile: {
         firstName,
         lastName,
@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
     if (user) {
       return res.status(201).json({
         success: true,
-        token: generateToken(user._id),
+        token: generateToken(user._id), // ส่ง token กลับไปทันทีเพื่อล็อกอินอัตโนมัติ
         user: {
           id: user._id,
           username: user.username,
@@ -54,29 +54,29 @@ const registerUser = async (req, res) => {
         }
       });
     } else {
-      return res.status(400).json({ success: false, message: 'Invalid user data' });
+      return res.status(400).json({ success: false, message: 'ข้อมูลผู้ใช้ไม่ถูกต้อง' });
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// @desc    Authenticate user & get token
-// @route   POST /api/auth/login
-// @access  Public
+// @คำอธิบาย  ตรวจสอบตัวตนและรับ JWT Token
+// @route     POST /api/auth/login
+// @การเข้าถึง สาธารณะ (ไม่ต้องล็อกอิน)
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate inputs
+    // ตรวจสอบว่ากรอกข้อมูลครบ
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Please provide email and password' });
+      return res.status(400).json({ success: false, message: 'กรุณาระบุอีเมลและรหัสผ่าน' });
     }
 
-    // Find User by email
+    // ค้นหา user จาก email
     const user = await User.findOne({ email });
 
-    // Verify user and password
+    // ตรวจสอบ user และ password (ใช้ method matchPassword จาก User model)
     if (user && (await user.matchPassword(password))) {
       return res.json({
         success: true,
@@ -90,19 +90,19 @@ const loginUser = async (req, res) => {
         }
       });
     } else {
-      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+      return res.status(401).json({ success: false, message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// @desc    Get current user profile
-// @route   GET /api/auth/me
-// @access  Private
+// @คำอธิบาย  ดูข้อมูลโปรไฟล์ของตัวเอง
+// @route     GET /api/auth/me
+// @การเข้าถึง ต้องล็อกอิน (Private)
 const getMe = async (req, res) => {
   try {
-    // req.user is set in protect middleware
+    // req.user ถูก set โดย protect middleware ก่อนมาถึงตรงนี้แล้ว
     return res.json({
       success: true,
       user: req.user

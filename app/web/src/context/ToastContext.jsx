@@ -6,10 +6,10 @@ export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const showToast = useCallback((message, type = 'success') => {
-    const id = Math.random().toString(36).substring(2, 9);
+    const id = Math.random().toString(36).substring(2, 9); // สร้าง id แบบสุ่มเพื่อใช้ระบุ toast แต่ละอัน
     setToasts((prev) => [...prev, { id, message, type }]);
 
-    // Auto remove after 3s
+    // ลบ toast ออกอัตโนมัติหลัง 3 วินาที
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3000);
@@ -18,7 +18,7 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {/* Toast container layout */}
+      {/* กล่องรวม toast notifications ทั้งหมด */}
       <div className="toast-container">
         {toasts.map((toast) => (
           <div key={toast.id} className={`toast ${toast.type}`}>
