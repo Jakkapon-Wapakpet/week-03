@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เข้าสู่ระบบ | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container auth-wrapper">
+    <div class="auth-card">
+      <h2>เข้าสู่ระบบ</h2>
+      <p>ยินดีต้อนรับกลับมา! กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ</p>
+      
+      <div id="login-error" style="display: none; color: var(--danger); margin-bottom: 1rem; padding: 0.5rem; background: rgba(239,68,68,0.1); border-radius: 8px;"></div>
+      <div id="login-success" style="display: none; color: var(--success); margin-bottom: 1rem; padding: 0.5rem; background: rgba(16,185,129,0.1); border-radius: 8px;">เข้าสู่ระบบสำเร็จ! กำลังพากลับไปหน้าแรก...</div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">อีเมล</label>
+          <input type="email" id="email" required placeholder="example@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">รหัสผ่าน</label>
+          <input type="password" id="password" required placeholder="ป้อนรหัสผ่านของคุณ">
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-primary" style="justify-content: center;">
+          เข้าสู่ระบบ <i data-lucide="log-in" style="width: 18px; height: 18px;"></i>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        ยังไม่มีบัญชีสมาชิก? <a href="register.html">สมัครสมาชิกที่นี่</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Redirect if already logged in
+    if (Auth.isLoggedIn()) {
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('btn-submit');
+      const errEl = document.getElementById('login-error');
+      const succEl = document.getElementById('login-success');
+
+      errEl.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = 'กำลังตรวจสอบ... <i data-lucide="loader-2" class="lucide-spin"></i>';
+      lucide.createIcons();
+
+      try {
+        const res = await Auth.login(email, password);
+        if (res.success) {
+          succEl.style.display = 'block';
+          setTimeout(() => {
+            window.location.href = res.user.role === 'admin' ? 'admin.html' : 'index.html';
+          }, 1000);
+        } else {
+          errEl.textContent = res.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = 'เข้าสู่ระบบ <i data-lucide="log-in" style="width: 18px; height: 18px;"></i>';
+          lucide.createIcons();
+        }
+      } catch (error) {
+        errEl.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = 'เข้าสู่ระบบ <i data-lucide="log-in" style="width: 18px; height: 18px;"></i>';
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

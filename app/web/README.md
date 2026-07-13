@@ -1,16 +1,23 @@
-# React + Vite
+# GearHub - Static Web Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+โปรเจคฝั่ง Frontend นี้ถูกแปลงให้กลายมาเป็น **HTML, CSS และ Vanilla JavaScript** เพียวๆ เพื่อความเรียบง่ายและเรียนรู้ได้ง่ายขึ้น โดยไม่มีการใช้งาน React หรือ Vite อีกต่อไป
 
-Currently, two official plugins are available:
+## 📂 โครงสร้างโฟลเดอร์
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `index.html` - หน้าแรกแสดงรายการสินค้าและการค้นหา/กรองข้อมูล
+- `cart.html` - หน้าตะกร้าสินค้าสำหรับตรวจสอบรายการที่จะซื้อ
+- `checkout.html` - หน้าฟอร์มกรอกที่อยู่จัดส่งและยืนยันการชำระเงิน
+- `my-orders.html` - หน้าประวัติการสั่งซื้อของผู้ใช้
+- `login.html` & `register.html` - หน้าเข้าสู่ระบบและสมัครสมาชิก
+- `css/style.css` - ไฟล์สไตล์หลักของระบบ (Premium Dark Theme)
+- `js/` - ไฟล์จาวาสคริปต์ควบคุมการทำงาน:
+  - `api.js` - ฟังก์ชันช่วยเหลือสำหรับเรียก API ไปที่ Backend (รองรับ JWT Token)
+  - `auth.js` - จัดการ Session ล็อคอินและการแสดงผล Header
+  - `cart.js` - จัดการระบบตะกร้าสินค้า (เพิ่ม/ลด/ล้างตะกร้า ด้วย `localStorage`)
+  - `main.js` - ควบคุมการทำงานของหน้าแรก (ดึงรายการสินค้ามาแสดงผล)
 
-## React Compiler
+## 🚀 วิธีการใช้งาน
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+หน้าเว็บเหล่านี้จะถูกเสิร์ฟ (Serve) โดยตรงจาก Express Backend:
+1. เปิดเซิร์ฟเวอร์ด้วยการรัน `node app/api/server.js` จากโฟลเดอร์หลักของโปรเจค
+2. เข้าใช้งานผ่านเว็บเบราว์เซอร์ที่ `http://localhost:5000`

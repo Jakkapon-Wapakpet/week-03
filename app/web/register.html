@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สมัครสมาชิก | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container auth-wrapper">
+    <div class="auth-card" style="max-width: 500px; margin: 3rem 0;">
+      <h2>สมัครสมาชิก</h2>
+      <p>ร่วมเป็นส่วนหนึ่งของระบบช็อปปิ้งอัจฉริยะกับเรา!</p>
+      
+      <div id="register-error" style="display: none; color: var(--danger); margin-bottom: 1rem; padding: 0.5rem; background: rgba(239,68,68,0.1); border-radius: 8px;"></div>
+      <div id="register-success" style="display: none; color: var(--success); margin-bottom: 1rem; padding: 0.5rem; background: rgba(16,185,129,0.1); border-radius: 8px;">สมัครสมาชิกสำเร็จ! กำลังพากลับไปหน้าแรก...</div>
+
+      <form id="register-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">ชื่อผู้ใช้งาน</label>
+            <input type="text" id="username" required placeholder="เช่น gamer_pro">
+          </div>
+          <div class="form-group">
+            <label for="email">อีเมล</label>
+            <input type="email" id="email" required placeholder="gamer@example.com">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">รหัสผ่าน</label>
+            <input type="password" id="password" required placeholder="อย่างน้อย 6 ตัวอักษร">
+          </div>
+          <div class="form-group">
+            <label for="role">ประเภทผู้ใช้ (จำลอง)</label>
+            <select id="role">
+              <option value="customer">ลูกค้าทั่วไป (Customer)</option>
+              <option value="admin">ผู้ดูแลระบบ (Admin)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">ชื่อจริง</label>
+            <input type="text" id="firstName" required placeholder="เช่น สมเกียรติ">
+          </div>
+          <div class="form-group">
+            <label for="lastName">นามสกุล</label>
+            <input type="text" id="lastName" required placeholder="เช่น รักดี">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber">เบอร์โทรศัพท์</label>
+          <input type="tel" id="phoneNumber" required placeholder="เช่น 0812345678">
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-primary" style="justify-content: center;">
+          ลงทะเบียนสมาชิก <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        มีบัญชีสมาชิกอยู่แล้ว? <a href="login.html">เข้าสู่ระบบที่นี่</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+
+    if (Auth.isLoggedIn()) {
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById('btn-submit');
+      const errEl = document.getElementById('register-error');
+      const succEl = document.getElementById('register-success');
+
+      const userData = {
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        phoneNumber: document.getElementById('phoneNumber').value,
+        role: document.getElementById('role').value
+      };
+
+      errEl.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = 'กำลังประมวลผล... <i data-lucide="loader-2" class="lucide-spin"></i>';
+      lucide.createIcons();
+
+      try {
+        const res = await Auth.register(userData);
+        if (res.success) {
+          succEl.style.display = 'block';
+          setTimeout(() => {
+            // Note: backend forces role to 'customer' always, so it goes to index.html
+            window.location.href = 'index.html';
+          }, 1200);
+        } else {
+          errEl.textContent = res.message || 'เกิดข้อผิดพลาดในการสมัครสมาชิก';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = 'ลงทะเบียนสมาชิก <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>';
+          lucide.createIcons();
+        }
+      } catch (error) {
+        errEl.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = 'ลงทะเบียนสมาชิก <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>';
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

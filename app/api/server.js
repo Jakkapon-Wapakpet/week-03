@@ -24,19 +24,19 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
-// เสิร์ฟไฟล์ Frontend (React build) จากโฟลเดอร์ dist
-// ทำให้ทั้ง Frontend และ Backend รันบน port เดียวกัน (5000) ตอน Production
-app.use(express.static(path.join(__dirname, '../web/dist')));
+// เสิร์ฟไฟล์ Static ของ Frontend แบบใหม่ (Vanilla JS) ที่โฟลเดอร์ app/web
+const frontendPath = path.join(__dirname, '../../web');
+app.use(express.static(frontendPath));
 
 // จัดการกรณีเรียก API endpoint ที่ไม่มีอยู่
 app.use('/api', (req, res) => {
   res.status(404).json({ success: false, message: 'API Endpoint not found' });
 });
 
-// Fallback — คืน index.html สำหรับทุก path ที่ React Router จัดการ
-// ป้องกัน 404 เมื่อ refresh หน้าใน Single Page Application (SPA)
+// Route Fallback สำหรับ SPA (จับทุก route ที่ไม่ใช่ API กลับไปหน้า index.html)
+// แม้ตอนนี้จะเป็น MPA แต่มี fallback ไว้ก็ปลอดภัย
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../web/dist/index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;

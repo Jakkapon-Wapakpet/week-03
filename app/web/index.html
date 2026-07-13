@@ -1,13 +1,93 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GearHub - Smart Gaming Gear Store</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GearHub | Smart Gaming Gear Store</title>
+  <meta name="description" content="แพลตฟอร์มอีคอมเมิร์ซที่เน้นการปฏิวัติประสบการณ์การซื้ออุปกรณ์เกมมิ่งเกียร์">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Lucide icons script -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">หน้าแรก</a></li>
+          <li id="admin-link" style="display: none;"><a href="admin.html">จัดการร้านค้า</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Not logged in -->
+        <div id="guest-links" style="display: flex; gap: 1rem; align-items: center;">
+          <a href="login.html" class="btn-auth">เข้าสู่ระบบ</a>
+        </div>
+        
+        <!-- Logged in -->
+        <div id="user-links" style="display: none; gap: 1rem; align-items: center;">
+          <span style="color: var(--text-muted); font-size: 0.9rem;">
+            สวัสดี, <span id="user-name-display" style="color: var(--accent-secondary); font-weight: bold;">User</span>
+          </span>
+          <a href="my-orders.html" class="btn-icon" title="ประวัติคำสั่งซื้อ">
+            <i data-lucide="package"></i>
+          </a>
+          <a href="cart.html" class="btn-icon" title="ตะกร้าสินค้า">
+            <i data-lucide="shopping-cart"></i>
+            <span class="badge cart-count-badge" style="display: none;">0</span>
+          </a>
+          <button onclick="Auth.logout()" class="btn-icon" title="ออกจากระบบ" style="border: none; background: transparent;">
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>ยกระดับการเล่นเกมของคุณสู่ <span>อีกขั้น</span></h1>
+      <p>ค้นพบอุปกรณ์เกมมิ่งเกียร์ระดับพรีเมียมที่คัดสรรมาเพื่อเกมเมอร์ตัวจริง พร้อมระบบเปรียบเทียบสเปกที่แม่นยำที่สุด</p>
+    </section>
+
+    <section class="controls-panel">
+      <div class="search-bar">
+        <i data-lucide="search"></i>
+        <input type="text" id="searchInput" placeholder="ค้นหาเมาส์, คีย์บอร์ด, หูฟัง...">
+      </div>
+      <div class="filters" id="categoryFilters">
+        <button class="filter-btn active" data-category="">ทั้งหมด</button>
+        <button class="filter-btn" data-category="Mouse">เมาส์</button>
+        <button class="filter-btn" data-category="Keyboard">คีย์บอร์ด</button>
+        <button class="filter-btn" data-category="Headset">หูฟัง</button>
+        <button class="filter-btn" data-category="Microphone">ไมโครโฟน</button>
+      </div>
+    </section>
+
+    <!-- Product Grid -->
+    <div id="products-loading" style="text-align: center; padding: 2rem;">
+      <i data-lucide="loader-2" class="lucide-spin" style="width: 48px; height: 48px; color: var(--accent-primary);"></i>
+      <p style="margin-top: 1rem;">กำลังโหลดสินค้า...</p>
+    </div>
+    <div id="products-error" style="display: none; text-align: center; padding: 2rem; color: var(--danger);"></div>
+    
+    <div class="products-grid" id="products-container" style="display: none;">
+      <!-- Products will be injected here by JS -->
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+  </script>
+</body>
 </html>

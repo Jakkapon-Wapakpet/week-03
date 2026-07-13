@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ตะกร้าสินค้า | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <!-- Auth logic will handle visibility -->
+        <div id="guest-links" style="display: flex; gap: 1rem; align-items: center;">
+          <a href="login.html" class="btn-auth">เข้าสู่ระบบ</a>
+        </div>
+        <div id="user-links" style="display: none; gap: 1rem; align-items: center;">
+          <a href="my-orders.html" class="btn-icon"><i data-lucide="package"></i></a>
+          <a href="cart.html" class="btn-icon" style="border-color: var(--accent-secondary);">
+            <i data-lucide="shopping-cart"></i>
+            <span class="badge cart-count-badge" style="display: none;">0</span>
+          </a>
+          <button onclick="Auth.logout()" class="btn-icon" style="border: none; background: transparent;">
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 style="margin-bottom: 2rem; font-size: 2rem;">ตะกร้าสินค้าของคุณ</h2>
+
+    <div class="cart-layout">
+      <!-- Cart Items List -->
+      <div class="cart-items-wrapper">
+        <div id="cart-items-container">
+          <!-- Rendered by JS -->
+        </div>
+        
+        <div id="empty-cart-message" style="display: none; text-align: center; padding: 3rem 1rem;">
+          <i data-lucide="shopping-bag" style="width: 64px; height: 64px; color: var(--text-muted); margin-bottom: 1rem; opacity: 0.5;"></i>
+          <h3 style="color: var(--text-muted);">ตะกร้าสินค้าว่างเปล่า</h3>
+          <a href="index.html" class="btn-primary" style="display: inline-flex; margin-top: 1rem; width: auto;">ไปช็อปปิ้งกันเลย</a>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="summary-card">
+        <h3>สรุปคำสั่งซื้อ</h3>
+        
+        <div class="summary-row">
+          <span>จำนวนสินค้า:</span>
+          <span id="summary-count">0 ชิ้น</span>
+        </div>
+        
+        <div class="summary-row">
+          <span>ค่าจัดส่ง:</span>
+          <span style="color: var(--success);">ฟรี</span>
+        </div>
+        
+        <div class="summary-row total">
+          <span>ยอดรวมทั้งสิ้น:</span>
+          <span id="summary-total">0 ฿</span>
+        </div>
+        
+        <a href="checkout.html" id="btn-checkout" class="btn-primary btn-checkout">
+          ดำเนินการชำระเงิน <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    function renderCartPage() {
+      const cart = Cart.getCart();
+      const container = document.getElementById('cart-items-container');
+      const emptyMsg = document.getElementById('empty-cart-message');
+      const checkoutBtn = document.getElementById('btn-checkout');
+      
+      const summaryCount = document.getElementById('summary-count');
+      const summaryTotal = document.getElementById('summary-total');
+
+      if (cart.length === 0) {
+        container.innerHTML = '';
+        container.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        checkoutBtn.style.pointerEvents = 'none';
+        checkoutBtn.style.opacity = '0.5';
+        
+        summaryCount.textContent = '0 ชิ้น';
+        summaryTotal.textContent = '0 ฿';
+      } else {
+        container.style.display = 'block';
+        emptyMsg.style.display = 'none';
+        checkoutBtn.style.pointerEvents = 'auto';
+        checkoutBtn.style.opacity = '1';
+        
+        container.innerHTML = '';
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.image || 'https://via.placeholder.com/80?text=No+Img'}" alt="${item.name}">
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price.toLocaleString()} ฿</div>
+            </div>
+            <div class="cart-qty-ctrl">
+              <button class="cart-qty-btn" onclick="updateItem('${item.productId}', ${item.quantity - 1})">-</button>
+              <div class="cart-qty-val">${item.quantity}</div>
+              <button class="cart-qty-btn" onclick="updateItem('${item.productId}', ${item.quantity + 1})">+</button>
+            </div>
+            <button class="cart-item-remove" onclick="removeItem('${item.productId}')" title="ลบสินค้า">
+              <i data-lucide="trash-2"></i>
+            </button>
+          `;
+          container.appendChild(div);
+        });
+
+        summaryCount.textContent = `${Cart.getCartCount()} ชิ้น`;
+        summaryTotal.textContent = `${Cart.getCartTotal().toLocaleString()} ฿`;
+      }
+      
+      lucide.createIcons();
+    }
+
+    window.updateItem = (productId, newQty) => {
+      Cart.updateQuantity(productId, newQty);
+      renderCartPage(); // Re-render
+    };
+
+    window.removeItem = (productId) => {
+      Cart.removeFromCart(productId);
+      renderCartPage(); // Re-render
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartPage();
+    });
+  </script>
+</body>
+</html>

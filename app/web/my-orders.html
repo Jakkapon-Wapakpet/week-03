@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ประวัติคำสั่งซื้อ | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <div id="guest-links" style="display: flex; gap: 1rem; align-items: center;">
+          <a href="login.html" class="btn-auth">เข้าสู่ระบบ</a>
+        </div>
+        <div id="user-links" style="display: none; gap: 1rem; align-items: center;">
+          <a href="my-orders.html" class="btn-icon" style="border-color: var(--accent-secondary);"><i data-lucide="package"></i></a>
+          <a href="cart.html" class="btn-icon"><i data-lucide="shopping-cart"></i><span class="badge cart-count-badge" style="display: none;">0</span></a>
+          <button onclick="Auth.logout()" class="btn-icon" style="border: none; background: transparent;"><i data-lucide="log-out"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 style="margin-bottom: 2rem; font-size: 2rem;">ประวัติคำสั่งซื้อของคุณ</h2>
+    
+    <div id="orders-loading" style="text-align: center; padding: 3rem;">
+      <i data-lucide="loader-2" class="lucide-spin" style="width: 48px; height: 48px; color: var(--accent-primary);"></i>
+      <p style="margin-top: 1rem;">กำลังโหลดข้อมูล...</p>
+    </div>
+    
+    <div id="orders-error" style="display: none; color: var(--danger); text-align: center; padding: 2rem;"></div>
+    
+    <div id="orders-container" style="display: none;"></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    lucide.createIcons();
+
+    if (!Auth.isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+
+    async function loadOrders() {
+      const container = document.getElementById('orders-container');
+      const loading = document.getElementById('orders-loading');
+      const errorEl = document.getElementById('orders-error');
+
+      try {
+        const res = await apiCall('/orders/myorders');
+        loading.style.display = 'none';
+
+        if (res.success) {
+          if (res.orders.length === 0) {
+            container.innerHTML = `
+              <div style="text-align: center; padding: 3rem; background: var(--panel-bg); border-radius: 16px; border: 1px solid var(--panel-border);">
+                <i data-lucide="package" style="width: 64px; height: 64px; color: var(--text-muted); opacity: 0.5;"></i>
+                <h3 style="margin-top: 1rem; color: var(--text-muted);">คุณยังไม่มีประวัติคำสั่งซื้อ</h3>
+                <a href="index.html" class="btn-primary" style="display: inline-flex; margin-top: 1.5rem; width: auto;">กลับไปหน้าแรก</a>
+              </div>
+            `;
+            container.style.display = 'block';
+            lucide.createIcons();
+            return;
+          }
+
+          container.innerHTML = '';
+          res.orders.forEach(order => {
+            const date = new Date(order.createdAt).toLocaleDateString('th-TH', {
+              year: 'numeric', month: 'long', day: 'numeric',
+              hour: '2-digit', minute: '2-digit'
+            });
+
+            let statusColor = 'var(--text-muted)';
+            if (order.status === 'Paid') statusColor = 'var(--success)';
+            if (order.status === 'Shipped') statusColor = 'var(--accent-secondary)';
+            if (order.status === 'Delivered') statusColor = 'var(--accent-primary)';
+            if (order.status === 'Cancelled') statusColor = 'var(--danger)';
+
+            const card = document.createElement('div');
+            card.style.background = 'var(--panel-bg)';
+            card.style.border = '1px solid var(--panel-border)';
+            card.style.borderRadius = '16px';
+            card.style.padding = '2rem';
+            card.style.marginBottom = '2rem';
+            card.style.boxShadow = 'var(--card-shadow)';
+
+            let itemsHtml = order.items.map(item => `
+              <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <span>${item.quantity}x ${item.name}</span>
+                <span style="color: var(--accent-secondary);">${(item.price * item.quantity).toLocaleString()} ฿</span>
+              </div>
+            `).join('');
+
+            card.innerHTML = `
+              <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                <div>
+                  <h3 style="color: #fff; margin-bottom: 0.5rem;">รหัสสั่งซื้อ: ${order._id.substring(0, 8).toUpperCase()}</h3>
+                  <p style="color: var(--text-muted); font-size: 0.9rem;">${date}</p>
+                </div>
+                <div style="text-align: right;">
+                  <span style="display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: bold; background: rgba(255,255,255,0.05); color: ${statusColor};">
+                    ${order.status}
+                  </span>
+                </div>
+              </div>
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="margin-bottom: 0.5rem;">รายการสินค้า</h4>
+                ${itemsHtml}
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2);">
+                <span style="font-weight: 600;">ยอดรวมทั้งหมด:</span>
+                <span style="font-size: 1.5rem; font-weight: bold; color: #fff;">${order.totalAmount.toLocaleString()} ฿</span>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+          container.style.display = 'block';
+
+        } else {
+          errorEl.textContent = res.message || 'ไม่สามารถโหลดข้อมูลคำสั่งซื้อได้';
+          errorEl.style.display = 'block';
+        }
+      } catch (err) {
+        loading.style.display = 'none';
+        errorEl.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+        errorEl.style.display = 'block';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadOrders);
+  </script>
+</body>
+</html>
