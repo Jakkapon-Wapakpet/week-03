@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { Boxes, Receipt, Plus, Edit, Trash2, ShieldAlert, Save, X, Loader2 } from 'lucide-react';
+import { 
+  Boxes, Receipt, Plus, Edit, Trash2, Save, X, Loader2, 
+  DollarSign, ShoppingBag, AlertCircle, PackageCheck, ChevronDown, ChevronUp 
+} from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
@@ -14,6 +17,9 @@ const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Expand Order State
+  const [expandedOrderId, setExpandedOrderId] = useState('');
 
   // Product Modal State
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -35,7 +41,7 @@ const AdminDashboard = () => {
   const [specHotswap, setSpecHotswap] = useState('false');
   const [specBattery, setSpecBattery] = useState('');
 
-  // Order Modal State
+  // Order Status Modal State
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [editOrderId, setEditOrderId] = useState('');
   const [orderStatus, setOrderStatus] = useState('Pending');
@@ -50,44 +56,85 @@ const AdminDashboard = () => {
     }
   }, [user, token, navigate]);
 
-  // Load products or orders depending on active tab
+  // Load BOTH products and orders on mount to compute dashboard stats accurately
   useEffect(() => {
-    if (activeTab === 'products') {
-      fetchProducts();
-    } else {
-      fetchOrders();
-    }
-  }, [activeTab]);
+    loadAllData();
+  }, [token]);
 
-  const fetchProducts = async () => {
+  const loadAllData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      if (data.success) {
-        setProducts(data.products);
-      } else throw new Error(data.message);
+      await Promise.all([fetchProductsList(), fetchOrdersList()]);
     } catch (err) {
-      showToast('ดึงข้อมูลสินค้าล้มเหลว: ' + err.message, 'error');
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchOrders = async () => {
-    setLoading(true);
+  const fetchProductsList = async () => {
+    const res = await fetch('/api/products');
+    const data = await res.json();
+    if (data.success) {
+      setProducts(data.products);
+    } else throw new Error(data.message);
+  };
+
+  const fetchOrdersList = async () => {
+    const res = await fetch('/api/orders', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.success) {
+      setOrders(data.orders);
+    } else throw new Error(data.message);
+  };
+
+  // Re-fetch functions for Tab toggling updates
+  const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/orders', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (data.success) {
-        setOrders(data.orders);
-      } else throw new Error(data.message);
+      await fetchProductsList();
+    } catch (err) {
+      showToast('ดึงข้อมูลสินค้าล้มเหลว: ' + err.message, 'error');
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      await fetchOrdersList();
     } catch (err) {
       showToast('ดึงข้อมูลคำสั่งซื้อล้มเหลว: ' + err.message, 'error');
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  // Quick Stock adjustment handler (+1 / -1)
+  const handleQuickStockAdjust = async (productId, currentStock, change) => {
+    const newStock = currentStock + change;
+    if (newStock < 0) return;
+
+    // Optimistic Update UI
+    setProducts(prevProducts => 
+      prevProducts.map(p => p._id === productId ? { ...p, stock: newStock } : p)
+    );
+
+    try {
+      const res = await fetch(`/api/products/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ stock: newStock })
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      
+      showToast(`ปรับสต็อกสินค้าสำเร็จ (${newStock} ชิ้น)`, 'success');
+    } catch (err) {
+      // Revert on error
+      fetchProducts();
+      showToast('ปรับสต็อกสินค้าล้มเหลว: ' + err.message, 'error');
     }
   };
 
@@ -232,11 +279,73 @@ const AdminDashboard = () => {
     }
   };
 
+  const toggleExpandOrder = (orderId) => {
+    setExpandedOrderId(prev => prev === orderId ? '' : orderId);
+  };
+
+  // --- STATS CALCULATIONS ---
+  const activeOrders = orders.filter(o => o.status !== 'Cancelled');
+  const totalRevenue = activeOrders
+    .filter(o => o.status !== 'Pending') // Paid, Processing, Shipped, Delivered
+    .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+  
+  const lowStockCount = products.filter(p => p.stock <= 5).length;
+  const totalInventoryCount = products.reduce((sum, p) => sum + (p.stock || 0), 0);
+
   return (
     <div>
       <div className="hero" style={{ padding: '2rem 1rem', marginBottom: '2rem' }}>
         <h1>ระบบจัดการ <span>ผู้ดูแลระบบ (Admin)</span></h1>
         <p>ควบคุมจัดการคลังสินค้า เพิ่มรายการสินค้าใหม่ และตรวจสอบสถานะคำสั่งซื้อพัสดุของลูกค้า</p>
+      </div>
+
+      {/* Analytics dashboard Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
+        {/* Card 1: Revenue */}
+        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
+          <div style={{ background: 'rgba(0, 229, 255, 0.1)', color: 'var(--accent-secondary)', padding: '0.8rem', borderRadius: '12px' }}>
+            <DollarSign size={24} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ยอดขายสุทธิ</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalRevenue.toLocaleString()} ฿</div>
+          </div>
+        </div>
+
+        {/* Card 2: Orders */}
+        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
+          <div style={{ background: 'rgba(138, 43, 226, 0.1)', color: 'var(--accent-primary)', padding: '0.8rem', borderRadius: '12px' }}>
+            <ShoppingBag size={24} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ออเดอร์ทั้งหมด</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{orders.length} รายการ</div>
+          </div>
+        </div>
+
+        {/* Card 3: Low Stock Alerts */}
+        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
+          <div style={{ background: lowStockCount > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: lowStockCount > 0 ? 'var(--danger)' : 'var(--success)', padding: '0.8rem', borderRadius: '12px' }}>
+            <AlertCircle size={24} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>สินค้าสต็อกต่ำ (≤5)</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>
+              {lowStockCount} ชิ้น
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: Inventory Items count */}
+        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
+          <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', padding: '0.8rem', borderRadius: '12px' }}>
+            <PackageCheck size={24} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>สินค้าในคลังทั้งหมด</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalInventoryCount} ชิ้น</div>
+          </div>
+        </div>
       </div>
 
       <div className="admin-grid">
@@ -281,7 +390,7 @@ const AdminDashboard = () => {
                       <th>ชื่อสินค้า</th>
                       <th>หมวดหมู่</th>
                       <th>ราคา</th>
-                      <th>ในคลัง</th>
+                      <th style={{ textAlign: 'center' }}>ในคลัง</th>
                       <th>จัดการ</th>
                     </tr>
                   </thead>
@@ -300,7 +409,26 @@ const AdminDashboard = () => {
                         <td>{p.category}</td>
                         <td>{p.price.toLocaleString()} ฿</td>
                         <td>
-                          <span style={{ color: p.stock > 0 ? 'var(--success)' : 'var(--danger)' }}>{p.stock} ชิ้น</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+                            <button 
+                              className="btn-secondary" 
+                              onClick={() => handleQuickStockAdjust(p._id, p.stock, -1)}
+                              disabled={p.stock <= 0}
+                              style={{ width: '24px', height: '24px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}
+                            >
+                              -
+                            </button>
+                            <span style={{ color: p.stock > 5 ? 'var(--success)' : p.stock > 0 ? '#f59e0b' : 'var(--danger)', fontWeight: 600, minWidth: '40px', textAlign: 'center' }}>
+                              {p.stock}
+                            </span>
+                            <button 
+                              className="btn-secondary" 
+                              onClick={() => handleQuickStockAdjust(p._id, p.stock, 1)}
+                              style={{ width: '24px', height: '24px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}
+                            >
+                              +
+                            </button>
+                          </div>
                         </td>
                         <td>
                           <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -328,26 +456,75 @@ const AdminDashboard = () => {
                       <th>วิธีชำระ</th>
                       <th>สถานะออเดอร์</th>
                       <th>เลขพัสดุ</th>
-                      <th>การจัดการ</th>
+                      <th>จัดการ</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orders.map(o => (
-                      <tr key={o._id}>
-                        <td style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{o._id}</td>
-                        <td style={{ color: '#fff' }}>{o.shippingAddress?.receiverName}</td>
-                        <td style={{ fontWeight: 700, color: 'var(--accent-secondary)' }}>{o.totalAmount?.toLocaleString()} ฿</td>
-                        <td>{o.paymentMethod}</td>
-                        <td>
-                          <span className={`status-badge ${o.status?.toLowerCase()}`}>{o.status}</span>
-                        </td>
-                        <td style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{o.trackingNumber || '-'}</td>
-                        <td>
-                          <button className="btn-secondary" onClick={() => openOrderModal(o)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                            อัปเดต
-                          </button>
-                        </td>
-                      </tr>
+                      <React.Fragment key={o._id}>
+                        {/* Main Info Row */}
+                        <tr 
+                          onClick={() => toggleExpandOrder(o._id)}
+                          style={{ cursor: 'pointer', transition: 'background 0.2s' }}
+                          className={expandedOrderId === o._id ? 'active-row' : ''}
+                        >
+                          <td style={{ fontFamily: 'monospace', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            {expandedOrderId === o._id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                            {o._id}
+                          </td>
+                          <td style={{ color: '#fff' }}>{o.shippingAddress?.receiverName}</td>
+                          <td style={{ fontWeight: 700, color: 'var(--accent-secondary)' }}>{o.totalAmount?.toLocaleString()} ฿</td>
+                          <td>{o.paymentMethod}</td>
+                          <td>
+                            <span className={`status-badge ${o.status?.toLowerCase()}`}>{o.status}</span>
+                          </td>
+                          <td style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{o.trackingNumber || '-'}</td>
+                          <td>
+                            <button 
+                              className="btn-secondary" 
+                              onClick={(e) => { e.stopPropagation(); openOrderModal(o); }} 
+                              style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+                            >
+                              อัปเดต
+                            </button>
+                          </td>
+                        </tr>
+
+                        {/* Expandable Order Details Row */}
+                        {expandedOrderId === o._id && (
+                          <tr>
+                            <td colSpan="7" style={{ background: 'rgba(10, 14, 23, 0.4)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--panel-border)' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem' }}>
+                                {/* Left Side: Order Items */}
+                                <div>
+                                  <h4 style={{ color: 'var(--accent-secondary)', marginBottom: '0.8rem', fontSize: '0.95rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.4rem' }}>รายการสินค้าในออเดอร์</h4>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                                    {o.items?.map((item, idx) => (
+                                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem' }}>
+                                        <div>
+                                          <span style={{ color: '#fff', fontWeight: 500 }}>{item.name}</span>
+                                          <span style={{ color: 'var(--text-muted)', marginLeft: '10px' }}>x{item.quantity}</span>
+                                        </div>
+                                        <div style={{ color: '#fff', fontWeight: 600 }}>{(item.price * item.quantity).toLocaleString()} ฿</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Right Side: Shipping address */}
+                                <div style={{ fontSize: '0.9rem' }}>
+                                  <h4 style={{ color: 'var(--accent-secondary)', marginBottom: '0.8rem', fontSize: '0.95rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.4rem' }}>ข้อมูลผู้รับและที่จัดส่ง</h4>
+                                  <p style={{ marginBottom: '0.3rem' }}><strong>ชื่อผู้รับ:</strong> {o.shippingAddress?.receiverName}</p>
+                                  <p style={{ marginBottom: '0.3rem' }}><strong>เบอร์โทรศัพท์:</strong> {o.shippingAddress?.phone}</p>
+                                  <p style={{ lineHeight: '1.4' }}>
+                                    <strong>ที่อยู่จัดส่ง:</strong> {o.shippingAddress?.addressLine} ต.{o.shippingAddress?.subDistrict} อ.{o.shippingAddress?.district} จ.{o.shippingAddress?.province} {o.shippingAddress?.postalCode}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>
