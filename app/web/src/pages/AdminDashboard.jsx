@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { 
   Boxes, Receipt, Plus, Edit, Trash2, Save, X, Loader2, 
-  DollarSign, ShoppingBag, AlertCircle, PackageCheck, ChevronDown, ChevronUp 
+  DollarSign, ShoppingBag, AlertCircle, PackageCheck, ChevronDown, ChevronUp,
+  LayoutDashboard, TrendingUp, BarChart3, Clock
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -13,7 +14,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   // Tab State
-  const [activeTab, setActiveTab] = useState('products');
+  const [activeTab, setActiveTab] = useState('overview');
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -222,7 +223,7 @@ const AdminDashboard = () => {
 
       showToast(isEdit ? 'แก้ไขข้อมูลสินค้าสำเร็จแล้ว!' : 'เพิ่มสินค้าลงคลังสำเร็จแล้ว!', 'success');
       setIsProductModalOpen(false);
-      fetchProducts();
+      loadAllData(); // reload stats and lists
     } catch (err) {
       showToast('บันทึกข้อมูลสินค้าล้มเหลว: ' + err.message, 'error');
     }
@@ -241,7 +242,7 @@ const AdminDashboard = () => {
       if (!data.success) throw new Error(data.message);
 
       showToast('ลบสินค้าออกจากระบบสำเร็จแล้ว');
-      fetchProducts();
+      loadAllData();
     } catch (err) {
       showToast('ลบล้มเหลว: ' + err.message, 'error');
     }
@@ -273,7 +274,7 @@ const AdminDashboard = () => {
 
       showToast('อัปเดตสถานะออเดอร์สำเร็จแล้ว!', 'success');
       setIsOrderModalOpen(false);
-      fetchOrders();
+      loadAllData(); // reload stats and list
     } catch (err) {
       showToast('อัปเดตสถานะออเดอร์ล้มเหลว: ' + err.message, 'error');
     }
@@ -283,74 +284,75 @@ const AdminDashboard = () => {
     setExpandedOrderId(prev => prev === orderId ? '' : orderId);
   };
 
-  // --- STATS CALCULATIONS ---
+  // --- ANALYTICS CALCULATIONS ---
   const activeOrders = orders.filter(o => o.status !== 'Cancelled');
+  
+  // Total Revenue: Sum of non-pending, non-cancelled orders
   const totalRevenue = activeOrders
-    .filter(o => o.status !== 'Pending') // Paid, Processing, Shipped, Delivered
+    .filter(o => o.status !== 'Pending') 
     .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
   
   const lowStockCount = products.filter(p => p.stock <= 5).length;
   const totalInventoryCount = products.reduce((sum, p) => sum + (p.stock || 0), 0);
 
+  // Latest Orders (reversed list)
+  const recentOrders = [...orders].reverse().slice(0, 4);
+
+  // Revenue by Category calculation
+  const categorySales = { Mouse: 0, Keyboard: 0, Headset: 0 };
+  
+  activeOrders.forEach(o => {
+    if (o.status === 'Pending') return;
+    o.items?.forEach(item => {
+      // Find item category in products list or use custom logic
+      const prod = products.find(p => p._id === item.productId);
+      const cat = prod ? prod.category : 'Mouse'; // fallback
+      if (categorySales[cat] !== undefined) {
+        categorySales[cat] += (item.price * item.quantity);
+      }
+    });
+  });
+
+  const maxSales = Math.max(...Object.values(categorySales), 1);
+
+  // Top Selling Products calculation
+  const productSalesMap = {};
+  activeOrders.forEach(o => {
+    if (o.status === 'Pending') return;
+    o.items?.forEach(item => {
+      productSalesMap[item.productId] = (productSalesMap[item.productId] || 0) + item.quantity;
+    });
+  });
+
+  const topProducts = Object.entries(productSalesMap)
+    .map(([id, qty]) => {
+      const p = products.find(prod => prod._id === id);
+      return {
+        name: p ? p.name : 'Unknown Product',
+        category: p ? p.category : 'Gaming Gear',
+        quantity: qty,
+        image: p?.images?.[0] || ''
+      };
+    })
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 3);
+
   return (
     <div>
       <div className="hero" style={{ padding: '2rem 1rem', marginBottom: '2rem' }}>
         <h1>ระบบจัดการ <span>ผู้ดูแลระบบ (Admin)</span></h1>
-        <p>ควบคุมจัดการคลังสินค้า เพิ่มรายการสินค้าใหม่ และตรวจสอบสถานะคำสั่งซื้อพัสดุของลูกค้า</p>
-      </div>
-
-      {/* Analytics dashboard Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-        {/* Card 1: Revenue */}
-        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
-          <div style={{ background: 'rgba(0, 229, 255, 0.1)', color: 'var(--accent-secondary)', padding: '0.8rem', borderRadius: '12px' }}>
-            <DollarSign size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ยอดขายสุทธิ</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalRevenue.toLocaleString()} ฿</div>
-          </div>
-        </div>
-
-        {/* Card 2: Orders */}
-        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
-          <div style={{ background: 'rgba(138, 43, 226, 0.1)', color: 'var(--accent-primary)', padding: '0.8rem', borderRadius: '12px' }}>
-            <ShoppingBag size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>ออเดอร์ทั้งหมด</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{orders.length} รายการ</div>
-          </div>
-        </div>
-
-        {/* Card 3: Low Stock Alerts */}
-        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
-          <div style={{ background: lowStockCount > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: lowStockCount > 0 ? 'var(--danger)' : 'var(--success)', padding: '0.8rem', borderRadius: '12px' }}>
-            <AlertCircle size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>สินค้าสต็อกต่ำ (≤5)</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>
-              {lowStockCount} ชิ้น
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4: Inventory Items count */}
-        <div style={{ background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--card-shadow)' }}>
-          <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', padding: '0.8rem', borderRadius: '12px' }}>
-            <PackageCheck size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>สินค้าในคลังทั้งหมด</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginTop: '0.2rem' }}>{totalInventoryCount} ชิ้น</div>
-          </div>
-        </div>
+        <p>ภาพรวมสรุปผลวิเคราะห์ยอดขาย ตรวจสอบคลังสินค้า และประมวลผลการจัดส่งพัสดุ</p>
       </div>
 
       <div className="admin-grid">
         {/* Sidebar Tabs Toggle */}
         <aside className="admin-sidebar">
+          <button 
+            className={`admin-sidebar-btn ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            <LayoutDashboard size={18} style={{ display: 'inline', marginRight: '5px', verticalAlign: 'middle' }} /> ภาพรวมแดชบอร์ด
+          </button>
           <button 
             className={`admin-sidebar-btn ${activeTab === 'products' ? 'active' : ''}`}
             onClick={() => setActiveTab('products')}
@@ -371,7 +373,156 @@ const AdminDashboard = () => {
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem' }}>
               <Loader2 size={32} className="fa-spin" style={{ color: 'var(--accent-secondary)', margin: '0 auto' }} />
-              <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>กำลังโหลดข้อมูล...</p>
+              <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>กำลังโหลดข้อมูลแดชบอร์ด...</p>
+            </div>
+          ) : activeTab === 'overview' ? (
+            <div>
+              {/* 4 Analytics Metrics Cards */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.2rem', marginBottom: '2rem' }}>
+                <div style={{ background: 'rgba(10, 14, 23, 0.4)', border: '1px solid var(--panel-border)', padding: '1.2rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <div style={{ background: 'rgba(0, 229, 255, 0.1)', color: 'var(--accent-secondary)', padding: '0.6rem', borderRadius: '10px' }}>
+                    <DollarSign size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>ยอดขายสะสม</div>
+                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginTop: '0.1rem' }}>{totalRevenue.toLocaleString()} ฿</div>
+                  </div>
+                </div>
+
+                <div style={{ background: 'rgba(10, 14, 23, 0.4)', border: '1px solid var(--panel-border)', padding: '1.2rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <div style={{ background: 'rgba(138, 43, 226, 0.1)', color: 'var(--accent-primary)', padding: '0.6rem', borderRadius: '10px' }}>
+                    <ShoppingBag size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>ออเดอร์ทั้งหมด</div>
+                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginTop: '0.1rem' }}>{orders.length} รายการ</div>
+                  </div>
+                </div>
+
+                <div style={{ background: 'rgba(10, 14, 23, 0.4)', border: '1px solid var(--panel-border)', padding: '1.2rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <div style={{ background: lowStockCount > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: lowStockCount > 0 ? 'var(--danger)' : 'var(--success)', padding: '0.6rem', borderRadius: '10px' }}>
+                    <AlertCircle size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>คลังสต็อกต่ำ (≤5)</div>
+                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginTop: '0.1rem' }}>{lowStockCount} ชิ้น</div>
+                  </div>
+                </div>
+
+                <div style={{ background: 'rgba(10, 14, 23, 0.4)', border: '1px solid var(--panel-border)', padding: '1.2rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', padding: '0.6rem', borderRadius: '10px' }}>
+                    <PackageCheck size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>จำนวนสินค้าในคลัง</div>
+                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginTop: '0.1rem' }}>{totalInventoryCount} ชิ้น</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Multi-column Analytics Row */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', marginTop: '2rem' }}>
+                
+                {/* Column 1: Sales By Category & Top Products */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                  {/* Section 1: Sales by Category */}
+                  <div style={{ background: 'rgba(10, 14, 23, 0.2)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '12px' }}>
+                    <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <BarChart3 size={18} style={{ color: 'var(--accent-secondary)' }} /> สัดส่วนรายได้แยกตามหมวดหมู่
+                    </h3>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                      {Object.entries(categorySales).map(([cat, val]) => {
+                        const pct = (val / maxSales) * 100;
+                        const glowColor = cat === 'Mouse' ? 'var(--accent-secondary)' : cat === 'Keyboard' ? 'var(--accent-primary)' : 'var(--success)';
+                        return (
+                          <div key={cat}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.3rem' }}>
+                              <span style={{ fontWeight: 600, color: '#fff' }}>{cat === 'Mouse' ? 'เมาส์ (Mouse)' : cat === 'Keyboard' ? 'คีย์บอร์ด (Keyboard)' : 'หูฟัง (Headset)'}</span>
+                              <span style={{ color: 'var(--text-muted)' }}>{val.toLocaleString()} ฿</span>
+                            </div>
+                            <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: `${pct}%`, background: glowColor, borderRadius: '10px', boxShadow: `0 0 8px ${glowColor}` }}></div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Section 2: Top Selling Products */}
+                  <div style={{ background: 'rgba(10, 14, 23, 0.2)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '12px' }}>
+                    <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <TrendingUp size={18} style={{ color: 'var(--success)' }} /> สินค้าขายดี 3 อันดับแรก
+                    </h3>
+                    
+                    {topProducts.length === 0 ? (
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '1rem 0' }}>ยังไม่มียอดขายบันทึกเข้าระบบ</p>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {topProducts.map((p, idx) => (
+                          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', paddingBottom: '0.8rem', borderBottom: idx < topProducts.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>
+                            <div style={{ fontWeight: 800, fontSize: '1.2rem', color: idx === 0 ? '#fbbf24' : idx === 1 ? '#94a3b8' : '#b45309', minWidth: '24px' }}>
+                              #{idx + 1}
+                            </div>
+                            {p.image && (
+                              <img src={p.image} alt={p.name} style={{ height: '40px', width: '40px', objectFit: 'contain', background: 'rgba(255,255,255,0.02)', padding: '2px', borderRadius: '4px' }} />
+                            )}
+                            <div style={{ flex: 1 }}>
+                              <div style={{ color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>{p.name}</div>
+                              <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{p.category}</div>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                              <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent-secondary)' }}>{p.quantity}</div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ชิ้นที่ขายได้</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Column 2: Recent Orders list */}
+                <div style={{ background: 'rgba(10, 14, 23, 0.2)', border: '1px solid var(--panel-border)', padding: '1.5rem', borderRadius: '12px', height: 'fit-content' }}>
+                  <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Clock size={18} style={{ color: 'var(--accent-primary)' }} /> รายการคำสั่งซื้อล่าสุด
+                  </h3>
+                  
+                  {recentOrders.length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>ไม่มีคำสั่งซื้อล่าสุดในระบบ</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                      {recentOrders.map((o, idx) => (
+                        <div key={o._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', paddingBottom: '0.8rem', borderBottom: idx < recentOrders.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#fff', fontSize: '0.9rem' }}>{o.shippingAddress?.receiverName}</div>
+                            <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>ID: {o._id.substring(18)}...</div>
+                          </div>
+                          
+                          <div style={{ textAlign: 'right' }}>
+                            <div style={{ fontWeight: 700, color: '#fff' }}>{o.totalAmount?.toLocaleString()} ฿</div>
+                            <span 
+                              className={`status-badge ${o.status?.toLowerCase()}`} 
+                              style={{ fontSize: '0.7rem', padding: '0.1rem 0.4rem', marginTop: '2px', display: 'inline-block' }}
+                            >
+                              {o.status}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                      <button 
+                        className="btn-primary" 
+                        onClick={() => setActiveTab('orders')}
+                        style={{ width: '100%', marginTop: '0.5rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--panel-border)', fontSize: '0.85rem' }}
+                      >
+                        ดูคำสั่งซื้อทั้งหมด
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+              </div>
             </div>
           ) : activeTab === 'products' ? (
             <div>
