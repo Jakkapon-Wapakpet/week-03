@@ -1,24 +1,26 @@
 /* 
  * GearHub CSS Stylesheet (React + Vite version)
  * Custom Premium Dark Theme with Glassmorphism and Neon Accents 
+ * Re-designed using UI/UX Pro Max Design System Tokens
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg-color: #0f131e;
-  --panel-bg: rgba(23, 29, 46, 0.7);
-  --panel-border: rgba(255, 255, 255, 0.08);
-  --accent-primary: #8a2be2;      /* Neon Purple */
+  --bg-color: #0c0c1d;            /* Cyberpunk deep space background */
+  --panel-bg: rgba(15, 15, 35, 0.8);
+  --panel-border: rgba(124, 58, 237, 0.15); /* Neon purple borders */
+  --accent-primary: #7C3AED;      /* Neon Purple */
   --accent-secondary: #00e5ff;    /* Neon Cyan */
-  --accent-gradient: linear-gradient(135deg, #8a2be2 0%, #00e5ff 100%);
-  --text-main: #f3f4f6;
-  --text-muted: #9ca3af;
-  --text-dark: #1f2937;
+  --accent-cta: #F43F5E;          /* Neon Rose for main action CTAs */
+  --accent-gradient: linear-gradient(135deg, #7C3AED 0%, #00e5ff 100%);
+  --text-main: #E2E8F0;
+  --text-muted: #94a3b8;
+  --text-dark: #0f172a;
   --success: #10b981;
   --danger: #ef4444;
-  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --glow-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+  --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+  --glow-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
   --transition-speed: 0.3s;
 }
 
@@ -28,12 +30,18 @@
   box-sizing: border-box;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--bg-color);
   background-image: 
-    radial-gradient(at 10% 20%, rgba(138, 43, 226, 0.1) 0px, transparent 50%),
-    radial-gradient(at 90% 80%, rgba(0, 229, 255, 0.08) 0px, transparent 50%);
+    radial-gradient(at 10% 20%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(0, 229, 255, 0.06) 0px, transparent 50%);
   color: var(--text-main);
   min-height: 100vh;
   line-height: 1.6;
