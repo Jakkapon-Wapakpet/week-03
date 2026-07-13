@@ -59,6 +59,9 @@
       <h1>ยกระดับการเล่นเกมของคุณสู่ <span>อีกขั้น</span></h1>
       <p>ค้นพบอุปกรณ์เกมมิ่งเกียร์ระดับพรีเมียมที่คัดสรรมาเพื่อเกมเมอร์ตัวจริง พร้อมระบบเปรียบเทียบสเปกที่แม่นยำที่สุด</p>
     </section>
+    
+    <!-- Bento Grid Showcase (Only visible on initial load with no filters) -->
+    <div id="bento-showcase-container"></div>
 
     <section class="controls-panel">
       <div class="search-bar">
@@ -85,6 +88,16 @@
       <!-- Products will be injected here by JS -->
     </div>
   </main>
+
+  <!-- Product Details Modal -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="modal-content" style="max-width: 750px; width: 90%;">
+      <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
+      <div id="details-modal-body" style="margin-top: 1rem;">
+        <!-- Dynamic details content injected by JS -->
+      </div>
+    </div>
+  </div>
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
