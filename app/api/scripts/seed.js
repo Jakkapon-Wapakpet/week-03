@@ -230,6 +230,106 @@ const productsData = [
       "batteryLife": "N/A (Wired)"
     },
     "tags": [ "headset", "wired", "audio" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372848d"),
+    "name": "Pulsar X2V2 Wireless",
+    "description": "High-performance symmetrical gaming mouse with raw optical switch speed.",
+    "category": "Mouse",
+    "price": 3590,
+    "stock": 15,
+    "images": [ "/images/products/pulsar-x2v2.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "Wireless 2.4GHz",
+      "weight": "53g",
+      "sensor": "PixArt PAW3395",
+      "pollingRate": "4000Hz"
+    },
+    "tags": [ "mouse", "black", "wireless" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372848e"),
+    "name": "G-Wolves HTS Plus 4K",
+    "description": "Ultra-lightweight fingertip gaming mouse with true 4000Hz polling rate.",
+    "category": "Mouse",
+    "price": 5990,
+    "stock": 6,
+    "images": [ "/images/products/g-wolves-hts.png" ],
+    "specifications": {
+      "color": "Grey",
+      "connection": "Wireless 2.4GHz",
+      "weight": "49g",
+      "sensor": "PixArt PAW3395",
+      "pollingRate": "4000Hz"
+    },
+    "tags": [ "mouse", "grey", "wireless" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de193728497"),
+    "name": "SteelSeries Apex Pro TKL",
+    "description": "World's fastest mechanical gaming keyboard with OmniPoint adjustable switches.",
+    "category": "Keyboard",
+    "price": 8990,
+    "stock": 10,
+    "images": [ "/images/products/apex-pro-tkl.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "Wired USB-C",
+      "weight": "960g",
+      "switchType": "OmniPoint Adjustable Magnetic",
+      "hotSwappable": false
+    },
+    "tags": [ "keyboard", "mechanical", "wired" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372849a"),
+    "name": "ASUS ROG Azoth",
+    "description": "75% custom wireless gaming keyboard with OLED display and triple-layer dampening.",
+    "category": "Keyboard",
+    "price": 9990,
+    "stock": 5,
+    "images": [ "/images/products/rog-azoth.png" ],
+    "specifications": {
+      "color": "Gunmetal",
+      "connection": "Wireless 2.4GHz / Bluetooth / Wired",
+      "weight": "1180g",
+      "switchType": "ROG NX Red Linear",
+      "hotSwappable": true
+    },
+    "tags": [ "keyboard", "mechanical", "wireless" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372849b"),
+    "name": "SteelSeries Arctis Nova Pro Wireless",
+    "description": "Premium wireless multi-system gaming headset with active noise cancellation.",
+    "category": "Headset",
+    "price": 16500,
+    "stock": 8,
+    "images": [ "/images/products/arctis-nova-pro.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "Wireless 2.4GHz / Bluetooth",
+      "weight": "340g",
+      "batteryLife": "Up to 44 hours"
+    },
+    "tags": [ "headset", "wireless", "audio" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372849c"),
+    "name": "Astro A50 X",
+    "description": "Lightspeed wireless gaming headset with base station, Dolby Atmos, and multi-system switching.",
+    "category": "Headset",
+    "price": 14990,
+    "stock": 12,
+    "images": [ "/images/products/astro-a50-x.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "Lightspeed Wireless 2.4GHz",
+      "weight": "363g",
+      "batteryLife": "Up to 24 hours"
+    },
+    "tags": [ "headset", "wireless", "audio" ]
   }
 ];
 
