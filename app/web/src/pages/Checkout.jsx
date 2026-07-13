@@ -258,7 +258,7 @@ const Checkout = () => {
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>กรุณาสแกนรหัสคิวอาร์ด้านล่างเพื่อทำการจ่ายเงินด่วน</p>
           
           <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', width: '220px', height: '220px', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: '0 0 20px rgba(0,229,255,0.2)' }}>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ" alt="PromptPay QR Code" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <img src={`https://promptpay.io/0801853892/${total}.png`} alt="PromptPay QR Code" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
           
           <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
