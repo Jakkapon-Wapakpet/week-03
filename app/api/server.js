@@ -24,9 +24,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
-// Serves the static Frontend (Vanilla HTML/CSS/JS) directly from the server
-// This allows the entire project to run on a single port (5000) out of the box
-app.use(express.static(path.join(__dirname, '../web')));
+// Serves the static Frontend (React production build) from the dist folder
+// This allows the compiled production project to run on a single port (5000)
+app.use(express.static(path.join(__dirname, '../web/dist')));
 
 // Handle API 404
 app.use('/api', (req, res) => {
@@ -35,7 +35,7 @@ app.use('/api', (req, res) => {
 
 // Fallback for HTML routing (returns index.html for other undefined static paths)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../web/index.html'));
+  res.sendFile(path.join(__dirname, '../web/dist/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
