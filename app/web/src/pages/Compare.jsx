@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCompare } from '../context/CompareContext';
 import { useCart } from '../context/CartContext';
@@ -9,6 +9,8 @@ const Compare = () => {
   const { compareList, removeFromCompare } = useCompare();
   const { addToCart } = useCart();
   const { showToast } = useToast();
+
+  const [showDiffs, setShowDiffs] = useState(false);
 
   const handleRemove = (productId, productName) => {
     removeFromCompare(productId);
@@ -44,12 +46,45 @@ const Compare = () => {
   const weights = compareList.map(p => getWeightNumber(p.specifications?.weight));
   const minWeight = Math.min(...weights);
 
+  // Helper to check if values are identical across all products in compare
+  const isRowIdentical = (list) => {
+    if (list.length <= 1) return true;
+    return list.every(val => val === list[0]);
+  };
+
+  // Build rows check
+  const showCategory = !(showDiffs && isRowIdentical(compareList.map(p => p.category)));
+  const showPrice = !(showDiffs && isRowIdentical(compareList.map(p => p.price)));
+  const showWeight = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.weight || 'N/A')));
+  const showColor = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.color || 'N/A')));
+  const showConnection = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.connection || 'N/A')));
+  const showSensor = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.sensor || '-')));
+  const showPolling = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.pollingRate || '-')));
+  const showSwitch = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.switchType || '-')));
+  const showHotswap = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.hotSwappable || false)));
+  const showBattery = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.batteryLife || 'N/A')));
+
   return (
     <div>
       <div className="hero" style={{ padding: '2rem 1rem', marginBottom: '2rem' }}>
         <h1>ตาราง <span>เปรียบเทียบคุณสมบัติ</span></h1>
         <p>วิเคราะห์เปรียบเทียบข้อมูลจำเพาะเชิงเทคนิค ขนาด น้ำหนัก และความคุ้มค่าแบบเคียงข้างกัน</p>
       </div>
+
+      {/* Show Differences Toggle Switch */}
+      {compareList.length > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.2rem' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.95rem', background: 'rgba(255,255,255,0.03)', padding: '0.5rem 1rem', borderRadius: '30px', border: '1px solid var(--panel-border)' }}>
+            <input 
+              type="checkbox" 
+              checked={showDiffs} 
+              onChange={(e) => setShowDiffs(e.target.checked)} 
+              style={{ width: 'auto', cursor: 'pointer' }}
+            />
+            แสดงเฉพาะคุณสมบัติที่แตกต่าง (Show differences only)
+          </label>
+        </div>
+      )}
 
       <div className="comparison-container">
         <table className="comparison-table">
@@ -78,99 +113,119 @@ const Compare = () => {
           </thead>
           <tbody>
             {/* Category */}
-            <tr>
-              <th>หมวดหมู่</th>
-              {compareList.map(p => <td key={p._id}>{p.category}</td>)}
-            </tr>
+            {showCategory && (
+              <tr>
+                <th>หมวดหมู่</th>
+                {compareList.map(p => <td key={p._id}>{p.category}</td>)}
+              </tr>
+            )}
 
             {/* Price */}
-            <tr>
-              <th>ราคา</th>
-              {compareList.map(p => {
-                const isCheapest = p.price === minPrice && compareList.length > 1;
-                return (
-                  <td 
-                    key={p._id} 
-                    className={isCheapest ? 'spec-highlight' : ''}
-                    style={isCheapest ? { color: 'var(--accent-secondary)', fontWeight: 'bold' } : {}}
-                  >
-                    {p.price.toLocaleString()} ฿ 
-                    {isCheapest && <Tag size={14} style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }} title="คุ้มสุด!" />}
-                  </td>
-                );
-              })}
-            </tr>
+            {showPrice && (
+              <tr>
+                <th>ราคา</th>
+                {compareList.map(p => {
+                  const isCheapest = p.price === minPrice && compareList.length > 1;
+                  return (
+                    <td 
+                      key={p._id} 
+                      className={isCheapest ? 'spec-highlight' : ''}
+                      style={isCheapest ? { color: 'var(--accent-secondary)', fontWeight: 'bold' } : {}}
+                    >
+                      {p.price.toLocaleString()} ฿ 
+                      {isCheapest && <Tag size={14} style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }} title="คุ้มสุด!" />}
+                    </td>
+                  );
+                })}
+              </tr>
+            )}
 
             {/* Weight */}
-            <tr>
-              <th>น้ำหนัก (Weight)</th>
-              {compareList.map((p, idx) => {
-                const isLightest = weights[idx] === minWeight && weights[idx] !== Infinity && compareList.length > 1;
-                return (
-                  <td 
-                    key={p._id} 
-                    className={isLightest ? 'spec-highlight' : ''}
-                    style={isLightest ? { color: 'var(--success)', fontWeight: 'bold' } : {}}
-                  >
-                    {p.specifications?.weight || 'N/A'}
-                    {isLightest && <Feather size={14} style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }} title="เบาสุด!" />}
-                  </td>
-                );
-              })}
-            </tr>
+            {showWeight && (
+              <tr>
+                <th>น้ำหนัก (Weight)</th>
+                {compareList.map((p, idx) => {
+                  const isLightest = weights[idx] === minWeight && weights[idx] !== Infinity && compareList.length > 1;
+                  return (
+                    <td 
+                      key={p._id} 
+                      className={isLightest ? 'spec-highlight' : ''}
+                      style={isLightest ? { color: 'var(--success)', fontWeight: 'bold' } : {}}
+                    >
+                      {p.specifications?.weight || 'N/A'}
+                      {isLightest && <Feather size={14} style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }} title="เบาสุด!" />}
+                    </td>
+                  );
+                })}
+              </tr>
+            )}
 
             {/* Color */}
-            <tr>
-              <th>สี (Color)</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.color || 'N/A'}</td>)}
-            </tr>
+            {showColor && (
+              <tr>
+                <th>สี (Color)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.color || 'N/A'}</td>)}
+              </tr>
+            )}
 
             {/* Connection */}
-            <tr>
-              <th>การเชื่อมต่อ (Connection)</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.connection || 'N/A'}</td>)}
-            </tr>
+            {showConnection && (
+              <tr>
+                <th>การเชื่อมต่อ (Connection)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.connection || 'N/A'}</td>)}
+              </tr>
+            )}
 
             {/* Sensor */}
-            <tr>
-              <th>เซนเซอร์ (Mice Sensor)</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.sensor || '-'}</td>)}
-            </tr>
+            {showSensor && (
+              <tr>
+                <th>เซนเซอร์ (Mice Sensor)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.sensor || '-'}</td>)}
+              </tr>
+            )}
 
             {/* Polling Rate */}
-            <tr>
-              <th>Polling Rate</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.pollingRate || '-'}</td>)}
-            </tr>
+            {showPolling && (
+              <tr>
+                <th>Polling Rate</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.pollingRate || '-'}</td>)}
+              </tr>
+            )}
 
             {/* Switch Type */}
-            <tr>
-              <th>สวิตช์ (Switch Type)</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.switchType || '-'}</td>)}
-            </tr>
+            {showSwitch && (
+              <tr>
+                <th>สวิตช์ (Switch Type)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.switchType || '-'}</td>)}
+              </tr>
+            )}
 
             {/* Hot Swappable */}
-            <tr>
-              <th>Hot-Swappable</th>
-              {compareList.map(p => {
-                const val = p.specifications?.hotSwappable;
-                return (
-                  <td key={p._id}>
-                    {val === true ? (
-                      <span style={{ color: 'var(--success)' }}><CheckIcon /> รองรับ</span>
-                    ) : val === false ? (
-                      <span style={{ color: 'var(--danger)' }}><CrossIcon /> ไม่รองรับ</span>
-                    ) : '-'}
-                  </td>
-                );
-              })}
-            </tr>
+            {showHotswap && (
+              <tr>
+                <th>Hot-Swappable</th>
+                {compareList.map(p => {
+                  const val = p.specifications?.hotSwappable;
+                  return (
+                    <td key={p._id}>
+                      {val === true ? (
+                        <span style={{ color: 'var(--success)' }}><CheckIcon /> รองรับ</span>
+                      ) : val === false ? (
+                        <span style={{ color: 'var(--danger)' }}><CrossIcon /> ไม่รองรับ</span>
+                      ) : '-'}
+                    </td>
+                  );
+                })}
+              </tr>
+            )}
 
             {/* Battery */}
-            <tr>
-              <th>ชั่วโมงแบตเตอรี่ (Battery)</th>
-              {compareList.map(p => <td key={p._id}>{p.specifications?.batteryLife || 'N/A'}</td>)}
-            </tr>
+            {showBattery && (
+              <tr>
+                <th>ชั่วโมงแบตเตอรี่ (Battery)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.batteryLife || 'N/A'}</td>)}
+              </tr>
+            )}
 
             {/* Action */}
             <tr>

@@ -134,10 +134,52 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// @desc    Add review to product
+// @route   POST /api/products/:id/reviews
+// @access  Private
+const addProductReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    
+    if (!rating || !comment) {
+      return res.status(400).json({ success: false, message: 'กรุณากรอกคะแนนและข้อความรีวิว' });
+    }
+
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.username === req.user.username
+      );
+
+      if (alreadyReviewed) {
+        return res.status(400).json({ success: false, message: 'คุณเคยรีวิวสินค้านี้ไปแล้ว' });
+      }
+
+      const review = {
+        username: req.user.username,
+        rating: Number(rating),
+        comment,
+        createdAt: new Date()
+      };
+
+      product.reviews.push(review);
+      await product.save();
+
+      return res.status(201).json({ success: true, message: 'บันทึกรีวิวสำเร็จแล้ว' });
+    } else {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  addProductReview
 };
