@@ -1244,12 +1244,16 @@ header {
   gap: 1.5rem;
 }
 
+.bento-card.span-2 .bento-card-info {
+  height: 100%;
+}
+
 .bento-card-info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   flex: 1.2;
+  position: relative;
   z-index: 2;
 }
 
@@ -1296,6 +1300,7 @@ header {
 }
 
 .bento-card-image img {
+  max-width: 100%;
   max-height: 160px;
   object-fit: contain;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
