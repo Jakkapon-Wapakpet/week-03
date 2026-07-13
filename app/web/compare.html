@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เปรียบเทียบสินค้า | GearHub</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i data-lucide="gamepad-2"></i> GearHub
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">หน้าแรก</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <div id="guest-links" style="display: flex; gap: 1rem; align-items: center;">
+          <a href="login.html" class="btn-auth">เข้าสู่ระบบ</a>
+        </div>
+        <div id="user-links" style="display: none; gap: 1rem; align-items: center;">
+          <a href="my-orders.html" class="btn-icon"><i data-lucide="package"></i></a>
+          <a href="cart.html" class="btn-icon">
+            <i data-lucide="shopping-cart"></i>
+            <span class="badge cart-count-badge" style="display: none;">0</span>
+          </a>
+          <button onclick="Auth.logout()" class="btn-icon" style="border: none; background: transparent;">
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 style="margin-bottom: 2rem; font-size: 2rem;">เปรียบเทียบสเปกสินค้า</h2>
+
+    <!-- Toggle options -->
+    <div style="margin-bottom: 1.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap;" id="compare-options">
+      <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;">
+        <input type="checkbox" id="showDiffsOnly" style="width: auto; cursor: pointer;">
+        แสดงเฉพาะคุณสมบัติที่แตกต่าง
+      </label>
+    </div>
+
+    <!-- Empty compare message -->
+    <div id="empty-compare" style="display: none; text-align: center; padding: 4rem 1rem; background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px;">
+      <i data-lucide="git-compare" style="width: 64px; height: 64px; color: var(--text-muted); margin-bottom: 1rem; opacity: 0.5;"></i>
+      <h3 style="color: var(--text-muted);">ไม่มีสินค้าในรายการเปรียบเทียบ</h3>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">กรุณาเลือกปุ่มเปรียบเทียบสินค้าจากหน้าแรกเพื่อเปรียบเทียบสเปกได้สูงสุด 3 ชิ้น</p>
+      <a href="index.html" class="btn-primary" style="display: inline-flex; margin-top: 1.5rem; width: auto;">กลับไปหน้าร้านค้า</a>
+    </div>
+
+    <!-- Comparison Table container -->
+    <div class="comparison-container" id="compare-table-wrapper" style="display: none;">
+      <table class="comparison-table">
+        <thead>
+          <tr id="table-header-row">
+            <th>คุณสมบัติ</th>
+            <!-- Dynamic products columns injected here -->
+          </tr>
+        </thead>
+        <tbody id="compare-table-body">
+          <!-- Specs rows injected here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/compare.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Helper to parse weights safely
+    function parseWeight(weightStr) {
+      if (!weightStr) return Infinity;
+      const match = weightStr.match(/(\d+(?:\.\d+)?)/);
+      return match ? parseFloat(match[1]) : Infinity;
+    }
+
+    function renderComparePage() {
+      const list = Compare.getCompareList();
+      const tableWrapper = document.getElementById('compare-table-wrapper');
+      const emptyCompare = document.getElementById('empty-compare');
+      const headerRow = document.getElementById('table-header-row');
+      const tableBody = document.getElementById('compare-table-body');
+      const optionsDiv = document.getElementById('compare-options');
+      const showDiffsOnly = document.getElementById('showDiffsOnly').checked;
+
+      if (list.length === 0) {
+        tableWrapper.style.display = 'none';
+        optionsDiv.style.display = 'none';
+        emptyCompare.style.display = 'block';
+        return;
+      }
+
+      tableWrapper.style.display = 'block';
+      optionsDiv.style.display = 'block';
+      emptyCompare.style.display = 'none';
+
+      // 1. Render Headers
+      headerRow.innerHTML = '<th>คุณสมบัติ</th>';
+      list.forEach(p => {
+        const th = document.createElement('td');
+        th.className = 'compare-header-cell';
+        th.innerHTML = `
+          <img src="${p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/120?text=No+Img'}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <button class="compare-remove-btn" onclick="removeItem('${p._id}')">
+            <i data-lucide="trash-2" style="width: 12px; height: 12px; vertical-align: middle;"></i> เอาออก
+          </button>
+        `;
+        headerRow.appendChild(th);
+      });
+
+      // 2. Compute min price & weight highlights if multiple products
+      const prices = list.map(p => p.price);
+      const minPrice = list.length > 1 ? Math.min(...prices) : Infinity;
+
+      const parsedWeights = list.map(p => parseWeight(p.specifications?.weight));
+      const minWeight = list.length > 1 ? Math.min(...parsedWeights) : Infinity;
+
+      // Define specs list
+      const specsDef = [
+        { key: 'category', label: 'หมวดหมู่', getVal: p => p.category },
+        { 
+          key: 'price', 
+          label: 'ราคา', 
+          getVal: p => `${p.price.toLocaleString()} ฿`,
+          isHighlight: (p, val) => p.price === minPrice
+        },
+        { 
+          key: 'weight', 
+          label: 'น้ำหนัก (Weight)', 
+          getVal: p => p.specifications?.weight || 'N/A',
+          isHighlight: (p, val) => parseWeight(p.specifications?.weight) === minWeight && minWeight !== Infinity
+        },
+        { key: 'color', label: 'สี (Color)', getVal: p => p.specifications?.color || 'N/A' },
+        { key: 'connection', label: 'การเชื่อมต่อ', getVal: p => p.specifications?.connection || 'N/A' },
+        { key: 'sensor', label: 'เซนเซอร์ (Mice Sensor)', getVal: p => p.specifications?.sensor || '-' },
+        { key: 'pollingRate', label: 'Polling Rate', getVal: p => p.specifications?.pollingRate || '-' },
+        { key: 'switchType', label: 'สวิตช์ (Switch Type)', getVal: p => p.specifications?.switchType || '-' },
+        { 
+          key: 'hotSwappable', 
+          label: 'Hot-Swappable', 
+          getVal: p => {
+            const h = p.specifications?.hotSwappable;
+            if (h === true) return '<span style="color: var(--success)">รองรับ</span>';
+            if (h === false) return '<span style="color: var(--danger)">ไม่รองรับ</span>';
+            return '-';
+          }
+        },
+        { key: 'batteryLife', label: 'ชั่วโมงแบตเตอรี่', getVal: p => p.specifications?.batteryLife || 'N/A' },
+        { key: 'polarPattern', label: 'รูปแบบรับเสียง', getVal: p => p.specifications?.polarPattern || '-' },
+        { key: 'frequencyResponse', label: 'ความถี่ตอบสนอง', getVal: p => p.specifications?.frequencyResponse || '-' },
+        { key: 'formFactor', label: 'รูปทรง (Form Factor)', getVal: p => p.specifications?.formFactor || '-' }
+      ];
+
+      tableBody.innerHTML = '';
+
+      specsDef.forEach(spec => {
+        const values = list.map(p => spec.getVal(p));
+        
+        // If show differences only, check if values are not all identical
+        if (showDiffsOnly && list.length > 1) {
+          const uniqueValues = new Set(values);
+          if (uniqueValues.size <= 1) {
+            return; // Skip row because all values are same
+          }
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<th>${spec.label}</th>`;
+        
+        list.forEach((p, idx) => {
+          const isHigh = spec.isHighlight && spec.isHighlight(p, values[idx]);
+          const cellClass = isHigh ? 'spec-highlight' : '';
+          const cellStyle = isHigh ? 'font-weight: bold; color: var(--accent-secondary);' : '';
+          tr.innerHTML += `<td class="${cellClass}" style="${cellStyle}">${values[idx]}</td>`;
+        });
+
+        tableBody.appendChild(tr);
+      });
+
+      // Add final Action Row
+      const actionTr = document.createElement('tr');
+      actionTr.innerHTML = '<th>ซื้อสินค้า</th>';
+      list.forEach(p => {
+        const isOutOfStock = p.stock <= 0;
+        const encoded = encodeURIComponent(JSON.stringify(p));
+        actionTr.innerHTML += `
+          <td>
+            <button class="btn-primary" onclick="buyItem('${encoded}')" ${isOutOfStock ? 'disabled' : ''} style="width: 100%;">
+              <i data-lucide="shopping-cart" style="width: 14px; height: 14px; vertical-align: middle;"></i> ซื้อเลย
+            </button>
+          </td>
+        `;
+      });
+      tableBody.appendChild(actionTr);
+
+      lucide.createIcons();
+    }
+
+    window.removeItem = (productId) => {
+      Compare.removeFromCompare(productId);
+      renderComparePage();
+    };
+
+    window.buyItem = (encodedProduct) => {
+      const p = JSON.parse(decodeURIComponent(encodedProduct));
+      Cart.addToCart(p, 1);
+      alert(`เพิ่ม ${p.name} ลงตะกร้าสินค้าแล้ว`);
+    };
+
+    document.getElementById('showDiffsOnly').addEventListener('change', renderComparePage);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      renderComparePage();
+    });
+  </script>
+</body>
+</html>

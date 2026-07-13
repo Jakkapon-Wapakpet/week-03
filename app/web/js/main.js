@@ -84,6 +84,13 @@ function renderProducts(products) {
             <i data-lucide="shopping-cart" style="width: 18px; height: 18px;"></i>
             ${isOutOfStock ? 'สินค้าหมด' : 'ใส่ตะกร้า'}
           </button>
+          <button 
+            class="btn-secondary" 
+            onclick="handleAddToCompare('${productJson}')"
+            title="เปรียบเทียบสเปก"
+          >
+            <i data-lucide="git-compare" style="width: 18px; height: 18px;"></i>
+          </button>
         </div>
       </div>
     `;
@@ -99,6 +106,11 @@ window.handleAddToCart = function(encodedProduct) {
     // Show a simple alert or toast
     alert(`เพิ่ม ${product.name} ลงตะกร้าแล้ว!`);
   }
+};
+
+window.handleAddToCompare = function(encodedProduct) {
+  const product = JSON.parse(decodeURIComponent(encodedProduct));
+  Compare.addToCompare(product);
 };
 
 // Event Listeners for Filters and Search
