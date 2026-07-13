@@ -189,11 +189,12 @@ const Home = () => {
         </div>
       ) : (
         <section className="products-grid">
-          {products.map(product => (
+          {products.map((product, index) => (
             <ProductCard 
               key={product._id} 
               product={product} 
               onOpenDetails={handleOpenDetails} 
+              style={{ animationDelay: `${index * 0.05}s` }}
             />
           ))}
         </section>

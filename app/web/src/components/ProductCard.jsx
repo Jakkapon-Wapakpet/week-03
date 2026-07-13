@@ -5,7 +5,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
 import { ShoppingCart, Sliders, Check, AlertCircle, Heart, Star } from 'lucide-react';
 
-const ProductCard = ({ product, onOpenDetails }) => {
+const ProductCard = ({ product, onOpenDetails, style }) => {
   const { addToCart } = useCart();
   const { addToCompare, removeFromCompare, isCompared } = useCompare();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -56,7 +56,7 @@ const ProductCard = ({ product, onOpenDetails }) => {
     <article 
       className="product-card" 
       onClick={() => onOpenDetails && onOpenDetails(product)}
-      style={{ cursor: onOpenDetails ? 'pointer' : 'default' }}
+      style={{ ...style, cursor: onOpenDetails ? 'pointer' : 'default' }}
     >
       <div className="product-image">
         <span className="product-tag">{product.specifications?.color || 'Premium'}</span>
