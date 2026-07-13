@@ -421,7 +421,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Multi-column Analytics Row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', marginTop: '2rem' }}>
+              <div className="responsive-two-col-grid" style={{ marginTop: '2rem' }}>
                 
                 {/* Column 1: Sales By Category & Top Products */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -645,7 +645,7 @@ const AdminDashboard = () => {
                         {expandedOrderId === o._id && (
                           <tr>
                             <td colSpan="7" style={{ background: 'rgba(10, 14, 23, 0.4)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--panel-border)' }}>
-                              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem' }}>
+                              <div className="responsive-two-col-grid">
                                 {/* Left Side: Order Items */}
                                 <div>
                                   <h4 style={{ color: 'var(--accent-secondary)', marginBottom: '0.8rem', fontSize: '0.95rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.4rem' }}>รายการสินค้าในออเดอร์</h4>

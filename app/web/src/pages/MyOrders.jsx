@@ -153,7 +153,7 @@ const MyOrders = () => {
               {/* Card Body (Detailed view) */}
               {isExpanded && (
                 <div style={{ padding: '1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.05)', background: 'rgba(10, 14, 23, 0.3)' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', flexWrap: 'wrap' }}>
+                  <div className="responsive-two-col-grid">
                     
                     {/* Items List */}
                     <div>

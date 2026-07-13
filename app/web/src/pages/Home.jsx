@@ -205,7 +205,7 @@ const Home = () => {
           <div className="modal-content" style={{ maxWidth: '750px', width: '90%' }}>
             <button className="modal-close" onClick={() => setSelectedProduct(null)}><X size={20} /></button>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '2rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+            <div className="responsive-two-col-grid" style={{ marginTop: '1rem' }}>
               {/* Left Column: Image and Specs */}
               <div>
                 <div style={{ background: 'rgba(10, 14, 23, 0.4)', borderRadius: '12px', padding: '1.5rem', display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
