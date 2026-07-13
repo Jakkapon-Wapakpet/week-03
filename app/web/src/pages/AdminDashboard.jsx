@@ -41,6 +41,9 @@ const AdminDashboard = () => {
   const [specSwitch, setSpecSwitch] = useState('');
   const [specHotswap, setSpecHotswap] = useState('false');
   const [specBattery, setSpecBattery] = useState('');
+  const [specPolar, setSpecPolar] = useState('');
+  const [specFreq, setSpecFreq] = useState('');
+  const [specForm, setSpecForm] = useState('');
 
   // Order Status Modal State
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -156,6 +159,9 @@ const AdminDashboard = () => {
     setSpecSwitch('');
     setSpecHotswap('false');
     setSpecBattery('');
+    setSpecPolar('');
+    setSpecFreq('');
+    setSpecForm('');
     setIsProductModalOpen(true);
   };
 
@@ -167,7 +173,7 @@ const AdminDashboard = () => {
     setProdStock(p.stock);
     setProdDesc(p.description || '');
     setProdImage(p.images?.[0] || '');
-    
+
     const spec = p.specifications || {};
     setSpecColor(spec.color || '');
     setSpecConnection(spec.connection || '');
@@ -177,6 +183,9 @@ const AdminDashboard = () => {
     setSpecSwitch(spec.switchType || '');
     setSpecHotswap(String(spec.hotSwappable || false));
     setSpecBattery(spec.batteryLife || '');
+    setSpecPolar(spec.polarPattern || '');
+    setSpecFreq(spec.frequencyResponse || '');
+    setSpecForm(spec.formFactor || '');
 
     setIsProductModalOpen(true);
   };
@@ -200,7 +209,10 @@ const AdminDashboard = () => {
         pollingRate: specPolling,
         switchType: specSwitch,
         hotSwappable: specHotswap === 'true',
-        batteryLife: specBattery
+        batteryLife: specBattery,
+        polarPattern: specPolar,
+        frequencyResponse: specFreq,
+        formFactor: specForm
       },
       tags: [prodCategory.toLowerCase(), specColor.toLowerCase()].filter(Boolean)
     };
@@ -299,7 +311,7 @@ const AdminDashboard = () => {
   const recentOrders = [...orders].reverse().slice(0, 4);
 
   // Revenue by Category calculation
-  const categorySales = { Mouse: 0, Keyboard: 0, Headset: 0 };
+  const categorySales = { Mouse: 0, Keyboard: 0, Headset: 0, Microphone: 0 };
   
   activeOrders.forEach(o => {
     if (o.status === 'Pending') return;
@@ -434,11 +446,11 @@ const AdminDashboard = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                       {Object.entries(categorySales).map(([cat, val]) => {
                         const pct = (val / maxSales) * 100;
-                        const glowColor = cat === 'Mouse' ? 'var(--accent-secondary)' : cat === 'Keyboard' ? 'var(--accent-primary)' : 'var(--success)';
+                        const glowColor = cat === 'Mouse' ? 'var(--accent-secondary)' : cat === 'Keyboard' ? 'var(--accent-primary)' : cat === 'Headset' ? 'var(--success)' : '#fbbf24';
                         return (
                           <div key={cat}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.3rem' }}>
-                              <span style={{ fontWeight: 600, color: '#fff' }}>{cat === 'Mouse' ? 'เมาส์ (Mouse)' : cat === 'Keyboard' ? 'คีย์บอร์ด (Keyboard)' : 'หูฟัง (Headset)'}</span>
+                              <span style={{ fontWeight: 600, color: '#fff' }}>{cat === 'Mouse' ? 'เมาส์ (Mouse)' : cat === 'Keyboard' ? 'คีย์บอร์ด (Keyboard)' : cat === 'Headset' ? 'หูฟัง (Headset)' : 'ไมโครโฟน (Microphone)'}</span>
                               <span style={{ color: 'var(--text-muted)' }}>{val.toLocaleString()} ฿</span>
                             </div>
                             <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
@@ -704,6 +716,7 @@ const AdminDashboard = () => {
                   <option value="Mouse">เมาส์ (Mouse)</option>
                   <option value="Keyboard">คีย์บอร์ด (Keyboard)</option>
                   <option value="Headset">หูฟัง (Headset)</option>
+                  <option value="Microphone">ไมโครโฟน (Microphone)</option>
                 </select>
               </div>
             </div>
@@ -775,6 +788,24 @@ const AdminDashboard = () => {
               <div className="form-group">
                 <label>แบตเตอรี่ (ไร้สาย)</label>
                 <input type="text" value={specBattery} onChange={e => setSpecBattery(e.target.value)} placeholder="เช่น สูงสุด 70 ชั่วโมง" />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>รูปแบบรับเสียง (ไมโครโฟน)</label>
+                <input type="text" value={specPolar} onChange={e => setSpecPolar(e.target.value)} placeholder="เช่น Cardioid" />
+              </div>
+              <div className="form-group">
+                <label>ความถี่ตอบสนอง (ไมโครโฟน)</label>
+                <input type="text" value={specFreq} onChange={e => setSpecFreq(e.target.value)} placeholder="เช่น 20Hz - 20kHz" />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>รูปทรง (ไมโครโฟน)</label>
+                <input type="text" value={specForm} onChange={e => setSpecForm(e.target.value)} placeholder="เช่น Dynamic Podcast Mic" />
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import ProductCard from '../components/ProductCard';
@@ -229,11 +230,17 @@ const Home = () => {
           >
             คีย์บอร์ด (Keyboards)
           </button>
-          <button 
+          <button
             className={`filter-btn ${category === 'Headset' ? 'active' : ''}`}
             onClick={() => setCategory('Headset')}
           >
             หูฟัง (Headsets)
+          </button>
+          <button
+            className={`filter-btn ${category === 'Microphone' ? 'active' : ''}`}
+            onClick={() => setCategory('Microphone')}
+          >
+            ไมโครโฟน (Mics)
           </button>
         </div>
       </div>
@@ -329,6 +336,19 @@ const Home = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span>ชั่วโมงแบตเตอรี่</span><span style={{ color: '#fff' }}>{selectedProduct.specifications?.batteryLife || 'N/A'}</span>
                     </div>
+                  )}
+                  {selectedProduct.category === 'Microphone' && (
+                    <>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>รูปแบบรับเสียง (Polar Pattern)</span><span style={{ color: '#fff' }}>{selectedProduct.specifications?.polarPattern || '-'}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>ความถี่ตอบสนอง (Frequency Response)</span><span style={{ color: '#fff' }}>{selectedProduct.specifications?.frequencyResponse || '-'}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>รูปทรง (Form Factor)</span><span style={{ color: '#fff' }}>{selectedProduct.specifications?.formFactor || '-'}</span>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

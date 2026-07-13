@@ -330,6 +330,78 @@ const productsData = [
       "batteryLife": "Up to 24 hours"
     },
     "tags": [ "headset", "wireless", "audio" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de1937284a0"),
+    "name": "Audio-Technica AT2020",
+    "description": "Studio-grade cardioid condenser microphone delivering pristine vocal clarity for streaming and recording.",
+    "category": "Microphone",
+    "price": 3590,
+    "stock": 20,
+    "images": [ "/images/products/audio-technica-at2020.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "XLR (Requires Audio Interface)",
+      "weight": "345g",
+      "polarPattern": "Cardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "formFactor": "Side-Address Condenser"
+    },
+    "tags": [ "microphone", "studio", "xlr" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de1937284a1"),
+    "name": "HyperX QuadCast S",
+    "description": "Plug-and-play RGB USB condenser microphone with built-in shock mount and gain control for streamers.",
+    "category": "Microphone",
+    "price": 3490,
+    "stock": 15,
+    "images": [ "/images/products/hyperx-quadcast-s.png" ],
+    "specifications": {
+      "color": "Black/Red",
+      "connection": "USB-C",
+      "weight": "710g",
+      "polarPattern": "Cardioid / Stereo / Omni / Bidirectional",
+      "frequencyResponse": "20Hz - 20kHz",
+      "formFactor": "Desktop Condenser with Shock Mount"
+    },
+    "tags": [ "microphone", "usb", "streaming" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de1937284a2"),
+    "name": "Rode NT-USB",
+    "description": "Premium USB condenser microphone with zero-latency monitoring, ideal for vocals and podcasts.",
+    "category": "Microphone",
+    "price": 4990,
+    "stock": 10,
+    "images": [ "/images/products/rode-nt-usb.png" ],
+    "specifications": {
+      "color": "Silver",
+      "connection": "USB (Class Compliant)",
+      "weight": "520g",
+      "polarPattern": "Cardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "formFactor": "Desktop Condenser with Pop Filter"
+    },
+    "tags": [ "microphone", "usb", "podcast" ]
+  },
+  {
+    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de1937284a3"),
+    "name": "Shure MV7",
+    "description": "Dynamic microphone with USB/XLR dual output and Voice Isolation technology for broadcast-quality sound.",
+    "category": "Microphone",
+    "price": 9990,
+    "stock": 8,
+    "images": [ "/images/products/shure-mv7.png" ],
+    "specifications": {
+      "color": "Black",
+      "connection": "USB-C / XLR",
+      "weight": "550g",
+      "polarPattern": "Cardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "formFactor": "Dynamic Podcast Microphone"
+    },
+    "tags": [ "microphone", "usb", "xlr", "podcast" ]
   }
 ];
 

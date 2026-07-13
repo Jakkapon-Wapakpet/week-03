@@ -33,7 +33,10 @@ const ProductSchema = new mongoose.Schema({
     pollingRate: { type: String },
     switchType: { type: String },
     hotSwappable: { type: Boolean },
-    batteryLife: { type: String }
+    batteryLife: { type: String },
+    polarPattern: { type: String },
+    frequencyResponse: { type: String },
+    formFactor: { type: String }
   },
   tags: [{
     type: String

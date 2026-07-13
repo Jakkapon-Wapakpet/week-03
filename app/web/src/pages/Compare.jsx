@@ -63,6 +63,9 @@ const Compare = () => {
   const showSwitch = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.switchType || '-')));
   const showHotswap = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.hotSwappable || false)));
   const showBattery = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.batteryLife || 'N/A')));
+  const showPolar = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.polarPattern || '-')));
+  const showFreq = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.frequencyResponse || '-')));
+  const showForm = !(showDiffs && isRowIdentical(compareList.map(p => p.specifications?.formFactor || '-')));
 
   return (
     <div>
@@ -224,6 +227,30 @@ const Compare = () => {
               <tr>
                 <th>ชั่วโมงแบตเตอรี่ (Battery)</th>
                 {compareList.map(p => <td key={p._id}>{p.specifications?.batteryLife || 'N/A'}</td>)}
+              </tr>
+            )}
+
+            {/* Polar Pattern */}
+            {showPolar && (
+              <tr>
+                <th>รูปแบบรับเสียง (Polar Pattern)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.polarPattern || '-'}</td>)}
+              </tr>
+            )}
+
+            {/* Frequency Response */}
+            {showFreq && (
+              <tr>
+                <th>ความถี่ตอบสนอง (Frequency Response)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.frequencyResponse || '-'}</td>)}
+              </tr>
+            )}
+
+            {/* Form Factor */}
+            {showForm && (
+              <tr>
+                <th>รูปทรง (Form Factor)</th>
+                {compareList.map(p => <td key={p._id}>{p.specifications?.formFactor || '-'}</td>)}
               </tr>
             )}
 
