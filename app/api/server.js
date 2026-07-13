@@ -25,7 +25,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
 // เสิร์ฟไฟล์ Static ของ Frontend แบบใหม่ (Vanilla JS) ที่โฟลเดอร์ app/web
-const frontendPath = path.join(__dirname, '../../web');
+const frontendPath = path.join(__dirname, '../web');
 app.use(express.static(frontendPath));
 
 // จัดการกรณีเรียก API endpoint ที่ไม่มีอยู่
