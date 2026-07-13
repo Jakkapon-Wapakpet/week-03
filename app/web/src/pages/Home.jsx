@@ -120,6 +120,82 @@ const Home = () => {
         <p>เปรียบเทียบสเปก เช็คน้ำหนัก ขนาด และเลือกอุปกรณ์ที่ดีที่สุดสำหรับชัยชนะของคุณในคลิกเดียว</p>
       </section>
 
+      {/* Bento Grid Highlight Showcase */}
+      {products.length > 0 && !search && !category && (
+        <section className="bento-section">
+          <h2 className="bento-title">🔥 อุปกรณ์ยอดนิยมระดับโปร (Pro Gear Spotlight)</h2>
+          <div className="bento-grid">
+            {/* Bento Card 1: Pulsar Mouse (Span 2) */}
+            {products.find(p => p.name.includes('Pulsar')) && (() => {
+              const p = products.find(p => p.name.includes('Pulsar'));
+              return (
+                <div className="bento-card span-2" onClick={() => handleOpenDetails(p)}>
+                  <div className="bento-card-info">
+                    <div>
+                      <span className="bento-card-badge">เมาส์น้ำหนักเบาพิเศษ</span>
+                      <h3>{p.name}</h3>
+                      <p className="bento-card-desc">{p.description}</p>
+                    </div>
+                    <div className="bento-card-specs">
+                      <span>⚡ PAW3395 Sensor</span>
+                      <span>⚖️ {p.specifications?.weight || '54g'}</span>
+                      <span>🎯 4000Hz Polling</span>
+                    </div>
+                  </div>
+                  <div className="bento-card-image">
+                    <img src={p.images?.[0]} alt={p.name} />
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Bento Card 2: Wooting Keyboard (Span 1) */}
+            {products.find(p => p.name.includes('Wooting')) && (() => {
+              const p = products.find(p => p.name.includes('Wooting'));
+              return (
+                <div className="bento-card" onClick={() => handleOpenDetails(p)}>
+                  <div className="bento-card-info">
+                    <div>
+                      <span className="bento-card-badge">คีย์บอร์ดความเร็วสูง</span>
+                      <h3>Wooting 60HE</h3>
+                    </div>
+                    <div className="bento-card-specs">
+                      <span>⌨️ Hall Effect</span>
+                      <span>⚡ Rapid Trigger</span>
+                    </div>
+                  </div>
+                  <div className="bento-card-image" style={{ marginTop: '1rem' }}>
+                    <img src={p.images?.[0]} alt={p.name} style={{ maxHeight: '110px' }} />
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Bento Card 3: SteelSeries Headset (Span 1) */}
+            {products.find(p => p.name.includes('Arctis')) && (() => {
+              const p = products.find(p => p.name.includes('Arctis'));
+              return (
+                <div className="bento-card" onClick={() => handleOpenDetails(p)}>
+                  <div className="bento-card-info">
+                    <div>
+                      <span className="bento-card-badge">หูฟังมิติเสียงรอบทิศ</span>
+                      <h3>Arctis Nova</h3>
+                    </div>
+                    <div className="bento-card-specs">
+                      <span>🎧 Hi-Fi Audio</span>
+                      <span>🔋 ANC Wireless</span>
+                    </div>
+                  </div>
+                  <div className="bento-card-image" style={{ marginTop: '1rem' }}>
+                    <img src={p.images?.[0]} alt={p.name} style={{ maxHeight: '110px' }} />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </section>
+      )}
+
       {/* Main Content */}
       <div className="controls-panel">
         {/* Search Input */}
