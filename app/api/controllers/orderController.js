@@ -41,11 +41,15 @@ const createOrder = async (req, res) => {
       calculatedTotal += product.price * item.quantity;
     }
 
-    // Deduct stock from products
+    // Deduct stock from products atomically (prevent race conditions)
     for (const item of orderItems) {
-      await Product.findByIdAndUpdate(item.productId, {
-        $inc: { stock: -item.quantity }
-      });
+      const updated = await Product.findOneAndUpdate(
+        { _id: item.productId, stock: { $gte: item.quantity } },
+        { $inc: { stock: -item.quantity } }
+      );
+      if (!updated) {
+        return res.status(400).json({ success: false, message: `สินค้าหมดสต็อกระหว่างดำเนินการ: ${item.name}` });
+      }
     }
 
     // Create Order
@@ -140,9 +144,41 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+// @desc    Customer confirms payment for their own order (PromptPay simulation)
+// @route   PUT /api/orders/:id/pay
+// @access  Private (customer only — no admin required)
+const payForOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    // Ensure the requester owns this order
+    if (order.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Not authorized to pay for this order' });
+    }
+
+    if (order.status !== 'Pending') {
+      return res.status(400).json({ success: false, message: 'Order is not in Pending status' });
+    }
+
+    order.status = 'Paid';
+    const updatedOrder = await order.save();
+    return res.json({ success: true, order: updatedOrder });
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getOrders,
   getOrderById,
-  updateOrderStatus
+  updateOrderStatus,
+  payForOrder
 };

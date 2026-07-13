@@ -26,7 +26,7 @@ const getProducts = async (req, res) => {
       ];
     }
 
-    const products = await Product.find(query);
+    const products = await Product.find(query).sort({ createdAt: -1 });
     return res.json({ success: true, count: products.length, products });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

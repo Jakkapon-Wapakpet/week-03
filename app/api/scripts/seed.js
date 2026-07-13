@@ -7,12 +7,12 @@ const Product = require('../models/Product');
 const Order = require('../models/Order');
 
 // Embed mock data directly to ensure the script is self-contained after data-project deletion
+// NOTE: Passwords below are plain text — pre-save bcrypt hook in User model will hash them automatically
 const usersData = [
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de193728459"),
     "username": "admin_gearhub_1",
     "email": "admin.1@gearhub.com",
-    "password": "$2b$10$hashedpasswordforuser_1_1234567890abcdefg",
+    "password": "Admin@1234",
     "role": "admin",
     "profile": {
       "firstName": "สมศักดิ์",
@@ -21,10 +21,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845a"),
     "username": "admin_gearhub_2",
     "email": "admin.2@gearhub.com",
-    "password": "$2b$10$hashedpasswordforuser_2_1234567890abcdefg",
+    "password": "Admin@1234",
     "role": "admin",
     "profile": {
       "firstName": "สมหมาย",
@@ -33,10 +32,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845b"),
     "username": "admin_gearhub_3",
     "email": "admin.3@gearhub.com",
-    "password": "$2b$10$hashedpasswordforuser_3_1234567890abcdefg",
+    "password": "Admin@1234",
     "role": "admin",
     "profile": {
       "firstName": "สมจิต",
@@ -45,10 +43,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845c"),
     "username": "admin_gearhub_4",
     "email": "admin.4@gearhub.com",
-    "password": "$2b$10$hashedpasswordforuser_4_1234567890abcdefg",
+    "password": "Admin@1234",
     "role": "admin",
     "profile": {
       "firstName": "สมศรี",
@@ -57,10 +54,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845d"),
     "username": "admin_gearhub_5",
     "email": "admin.5@gearhub.com",
-    "password": "$2b$10$hashedpasswordforuser_5_1234567890abcdefg",
+    "password": "Admin@1234",
     "role": "admin",
     "profile": {
       "firstName": "สมชาย",
@@ -69,10 +65,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845e"),
     "username": "gamer_pro_1",
     "email": "gamer.1@example.com",
-    "password": "$2b$10$hashedpasswordforuser_6_1234567890abcdefg",
+    "password": "User@1234",
     "role": "customer",
     "profile": {
       "firstName": "กิตติ",
@@ -81,10 +76,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de19372845f"),
     "username": "gamer_pro_2",
     "email": "gamer.2@example.com",
-    "password": "$2b$10$hashedpasswordforuser_7_1234567890abcdefg",
+    "password": "User@1234",
     "role": "customer",
     "profile": {
       "firstName": "ธีระ",
@@ -93,10 +87,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de193728460"),
     "username": "gamer_pro_3",
     "email": "gamer.3@example.com",
-    "password": "$2b$10$hashedpasswordforuser_8_1234567890abcdefg",
+    "password": "User@1234",
     "role": "customer",
     "profile": {
       "firstName": "อนันต์",
@@ -105,10 +98,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de193728461"),
     "username": "gamer_pro_4",
     "email": "gamer.4@example.com",
-    "password": "$2b$10$hashedpasswordforuser_9_1234567890abcdefg",
+    "password": "User@1234",
     "role": "customer",
     "profile": {
       "firstName": "วีระ",
@@ -117,10 +109,9 @@ const usersData = [
     }
   },
   {
-    "_id": new mongoose.Types.ObjectId("6a4f1433acf18de193728462"),
     "username": "gamer_pro_5",
     "email": "gamer.5@example.com",
-    "password": "$2b$10$hashedpasswordforuser_10_1234567890abcdefg",
+    "password": "User@1234",
     "role": "customer",
     "profile": {
       "firstName": "อภิชาติ",
@@ -136,7 +127,7 @@ const productsData = [
     "name": "Razer Viper V3 Pro",
     "description": "Premium gaming mouse designed for maximum competitive performance and esports players.",
     "category": "Mouse",
-    "price": 500,
+    "price": 6990,
     "stock": 5,
     "images": [ "/images/products/viper-v3-pro-white.png" ],
     "specifications": {
@@ -153,7 +144,7 @@ const productsData = [
     "name": "Logitech G Pro X Superlight 2",
     "description": "Premium gaming mouse designed for maximum competitive performance and esports players.",
     "category": "Mouse",
-    "price": 780,
+    "price": 4590,
     "stock": 8,
     "images": [ "/images/products/g-pro-superlight-2-black.png" ],
     "specifications": {
@@ -325,9 +316,11 @@ const productsData = [
     "images": [ "/images/products/astro-a50-x.png" ],
     "specifications": {
       "color": "Black",
-      "connection": "Lightspeed Wireless 2.4GHz",
-      "weight": "363g",
-      "batteryLife": "Up to 24 hours"
+      "connection": "USB-C / XLR",
+      "weight": "550g",
+      "polarPattern": "Cardioid",
+      "frequencyResponse": "20Hz - 20kHz",
+      "formFactor": "Dynamic Podcast Microphone"
     },
     "tags": [ "headset", "wireless", "audio" ]
   },
@@ -566,17 +559,27 @@ const seedDB = async () => {
     await Order.deleteMany({});
     console.log('Cleared existing database collections.');
 
-    // 3. Insert documents
+    // 3. Insert Users (passwords will be hashed by pre-save hook)
     await User.insertMany(usersData);
     console.log(`Seeded ${usersData.length} users successfully.`);
 
+    // 4. Insert ALL products (Mouse, Keyboard, Headset, Microphone)
     await Product.insertMany(productsData);
     console.log(`Seeded ${productsData.length} products successfully.`);
+    const categoryCounts = productsData.reduce((acc, p) => {
+      acc[p.category] = (acc[p.category] || 0) + 1;
+      return acc;
+    }, {});
+    console.log('  Category breakdown:', JSON.stringify(categoryCounts));
 
-    await Order.insertMany(ordersData);
-    console.log(`Seeded ${ordersData.length} orders successfully.`);
+    // 5. Insert Orders (Note: uses hardcoded ObjectIds from original users data)
+    // Skip orders since user _ids are no longer pre-set
+    // await Order.insertMany(ordersData);
+    console.log('Skipping orders seed (user _ids are auto-generated now).');
 
-    console.log('Database Seeding Completed Successfully!');
+    console.log('\n✅ Database Seeding Completed Successfully!');
+    console.log('📧 Admin login: admin.1@gearhub.com / Admin@1234');
+    console.log('📧 User login:  gamer.1@example.com  / User@1234');
     process.exit(0);
   } catch (error) {
     console.error(`Seeding error: ${error.message}`);

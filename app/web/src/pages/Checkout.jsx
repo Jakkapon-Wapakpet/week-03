@@ -103,13 +103,13 @@ const Checkout = () => {
     if (!createdOrder) return;
 
     try {
-      const response = await fetch(`/api/orders/${createdOrder._id}/status`, {
+      // Use /pay endpoint (no admin required — customer can confirm their own payment)
+      const response = await fetch(`/api/orders/${createdOrder._id}/pay`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: 'Paid' })
+        }
       });
 
       const data = await response.json();
@@ -131,7 +131,7 @@ const Checkout = () => {
     clearCart();
     showToast(msg || 'สั่งซื้อสินค้าสำเร็จ! ทางเราจะรีบดำเนินการจัดส่งสินค้า', 'success');
     setTimeout(() => {
-      navigate('/');
+      navigate('/my-orders'); // Redirect to order history page after successful checkout
     }, 2000);
   };
 

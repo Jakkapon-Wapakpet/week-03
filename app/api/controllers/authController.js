@@ -13,7 +13,7 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { username, email, password, firstName, lastName, phoneNumber, role } = req.body;
+    const { username, email, password, firstName, lastName, phoneNumber } = req.body;
 
     // Validate inputs
     if (!username || !email || !password || !firstName || !lastName || !phoneNumber) {
@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
       username,
       email,
       password, // will be hashed by UserSchema pre-save hook
-      role: role || 'customer',
+      role: 'customer', // Always force customer role — admin must be set manually in DB
       profile: {
         firstName,
         lastName,

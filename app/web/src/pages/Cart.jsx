@@ -74,7 +74,7 @@ const Cart = () => {
                   <Minus size={14} />
                 </button>
                 <span className="cart-qty-val">{item.quantity}</span>
-                <button class="cart-qty-btn" onClick={() => updateQuantity(item.productId, item.quantity + 1)}>
+                <button className="cart-qty-btn" onClick={() => updateQuantity(item.productId, item.quantity + 1)}>
                   <Plus size={14} />
                 </button>
               </div>

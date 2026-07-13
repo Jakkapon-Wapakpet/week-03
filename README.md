@@ -1,152 +1,308 @@
 # 🎮 GearHub - Smart Gaming Gear Store
 
-ยินดีต้อนรับสู่ **GearHub** แพลตฟอร์มอีคอมเมิร์ซแบบผู้ขายรายเดียว (Single-vendor E-commerce) ที่มุ่งเน้นการปฏิวัติประสบการณ์การซื้ออุปกรณ์เกมมิ่งเกียร์ (Gaming Peripherals) เช่น เมาส์ คีย์บอร์ด และหูฟัง ให้ง่าย สะดวก และคุ้มค่าที่สุดผ่านนวัตกรรมระบบเปรียบเทียบสเปกในตัว (Smart Product Comparison)
+ยินดีต้อนรับสู่ **GearHub** แพลตฟอร์มอีคอมเมิร์ซแบบผู้ขายรายเดียว (Single-vendor E-commerce) ที่มุ่งเน้นการปฏิวัติประสบการณ์การซื้ออุปกรณ์เกมมิ่งเกียร์ (Gaming Peripherals) เช่น เมาส์ คีย์บอร์ด หูฟัง และไมโครโฟน ให้ง่าย สะดวก และคุ้มค่าที่สุดผ่านนวัตกรรมระบบเปรียบเทียบสเปกในตัว (Smart Product Comparison)
 
 ---
 
-## 📌 1. ที่มาและความสำคัญของโครงการ (Background & Problem Statement)
+## 🚀 Quick Start
 
-ในปัจจุบัน อุปกรณ์เกมมิ่งเกียร์มีการพัฒนาอย่างรวดเร็วและมีหลากหลายรุ่นในตลาด ส่งผลให้ผู้ซื้อต้องเผชิญปัญหาดังนี้:
-* **ความสับสนในสเปกเชิงเทคนิค:** Switch คีย์บอร์ดต่างสีต่างแบรนด์, เซนเซอร์เมาส์, หรือ Polling Rate ของอุปกรณ์ไร้สาย
-* **ความยุ่งยากในการเปรียบเทียบ:** ร้านค้าส่วนใหญ่เสนอข้อมูลแบบแยกชิ้น ทำให้ผู้ซื้อต้องเปิดหน้าต่างเปรียบเทียบหลายแท็บด้วยตนเอง (Choice Overload)
-* **การขาดข้อมูลสำหรับกลุ่มทั่วไป:** กลุ่มผู้ซื้อที่เป็นคนทั่วไป (เช่น ผู้ปกครองซื้อของขวัญให้ลูกหลาน) ไม่เข้าใจคำศัพท์เทคนิคและไม่แน่ใจเรื่องความเข้ากันได้ของระบบ
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account (หรือ MongoDB local)
 
-**GearHub** จึงสร้างระบบ **Product Comparison** เพื่อช่วยให้ผู้ใช้เปรียบเทียบคุณสมบัติสินค้าแบบเคียงข้างกัน (Side-by-Side) ได้ในคลิกเดียว ช่วยให้การตัดสินใจซื้อง่ายและตอบโจทย์งบประมาณที่สุด
+### 1. Clone & Setup
+
+```bash
+git clone <repository-url>
+cd vibe-code-my-ecommerce
+```
+
+### 2. Setup Backend (API)
+
+```bash
+cd app/api
+npm install
+
+# สร้างไฟล์ .env ตาม template ด้านล่าง
+# แล้วรัน seed เพื่อเติมข้อมูลตัวอย่าง
+node scripts/seed.js
+
+# Start server
+npm run dev
+```
+
+**ตัวอย่าง `.env`:**
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/gearhub
+JWT_SECRET=your_super_secret_key
+```
+
+### 3. Setup Frontend (Web)
+
+```bash
+cd app/web
+npm install
+npm run dev
+```
+
+เว็บจะเปิดที่ `http://localhost:5173` (Vite dev server)  
+API server อยู่ที่ `http://localhost:5000`
 
 ---
 
-## 💎 2. คุณค่าหลักของระบบ (Unique Value Proposition - UVP)
+## 🔑 Test Accounts (หลังรัน Seed)
 
-1. **Built-in Smart Comparison:** เปรียบเทียบสเปก วัสดุ น้ำหนัก และราคาสินค้าได้สูงสุด 3 รุ่นพร้อมกันในคลิกเดียว พร้อมระบบไฮไลท์จุดเด่น (เช่น เบาที่สุด หรือ คุ้มที่สุด)
-2. **Simplified Technical Specs:** แปลข้อมูลจำเพาะเชิงลึกให้เป็นไอคอนและการแสดงผลที่เข้าใจง่าย เหมาะสำหรับทุกกลุ่มผู้ใช้งาน
-3. **Seamless Social Connection & Tracking:** เชื่อมต่อการชำระเงินด่วน (Instant Scan QR Payment) และแจ้งอัปเดตสถานะขนส่งพร้อมใบรับประกันสินค้าผ่าน LINE Official Account (LINE OA)
+| Role | Email | Password |
+|------|-------|----------|
+| **Admin** | `admin.1@gearhub.com` | `Admin@1234` |
+| **Customer** | `gamer.1@example.com` | `User@1234` |
 
----
-
-## 📋 3. รายการฟีเจอร์ที่ต้องพัฒนา (Product Backlog)
-
-| ID | Feature | Priority | Status | Description |
-|---|---|---|---|---|
-| 1 | ระบบลงทะเบียนและเข้าสู่ระบบ (Auth) | High | To Do | การสมัครสมาชิกและยืนยันตัวตนสำหรับลูกค้าและผู้ดูแลระบบ |
-| 2 | ระบบแสดงรายการสินค้า (Browse Products) | High | To Do | การเรียกดูสินค้า คัดกรองสินค้าตามหมวดหมู่และคุณลักษณะทางเทคนิค |
-| 3 | ระบบตะกร้าสินค้า (Shopping Cart) | High | To Do | การจัดการรายการสินค้า การคำนวณราคาสุทธิและค่าจัดส่งแบบเรียลไทม์ |
-| 4 | ระบบชำระเงินและสั่งซื้อ (Checkout/Pay) | High | To Do | หน้าสั่งซื้อ รองรับการแสกนจ่ายเงินด่วน และการสมัครสมาชิกแบบวันคลิก |
-| 5 | แผงควบคุมผู้ดูแลระบบ (Admin Dashboard) | Medium | To Do | การจัดการสินค้าในคลัง และติดตามสถิติการสั่งซื้อในร้าน |
-| 6 | ฟีเจอร์เปรียบเทียบสินค้า (Comparison) | Medium | To Do | ตารางเปรียบเทียบรายละเอียดทางเทคนิคของสินค้าสูงสุด 3 รายการ |
-| 7 | ระบบกรองและค้นหาสินค้า (Filter/Search) | Low | To Do | การค้นหาอัจฉริยะ (Smart Autocomplete) และฟิลเตอร์สีพาสเทล/ราคา |
+> ⚠️ รัน `node scripts/seed.js` ทุกครั้งที่ต้องการ reset ข้อมูล
 
 ---
 
-## 👥 4. กลุ่มเป้าหมายผู้ใช้งาน (Target User Personas)
+## 📦 Project Structure
 
-รายละเอียดกลุ่มผู้ใช้ตัวแทน 4 รูปแบบหลักที่มีอิทธิพลต่อฟังก์ชันและดีไซน์ของ GearHub:
+```
+vibe-code-my-ecommerce/
+├── app/
+│   ├── api/                        # Backend (Node.js + Express)
+│   │   ├── config/
+│   │   │   └── db.js               # MongoDB connection
+│   │   ├── controllers/
+│   │   │   ├── authController.js   # Register / Login / Me
+│   │   │   ├── productController.js# CRUD products + Reviews
+│   │   │   └── orderController.js  # Orders + Pay + Status
+│   │   ├── middlewares/
+│   │   │   ├── authMiddleware.js   # JWT protect + admin guard
+│   │   │   └── dbCheckMiddleware.js
+│   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   ├── Product.js
+│   │   │   └── Order.js
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js
+│   │   │   ├── productRoutes.js
+│   │   │   └── orderRoutes.js
+│   │   ├── scripts/
+│   │   │   ├── seed.js             # Database seeder
+│   │   │   └── drop-collections.js # Drop utility
+│   │   ├── server.js
+│   │   └── .env
+│   └── web/                        # Frontend (React + Vite)
+│       └── src/
+│           ├── components/
+│           │   ├── Header.jsx
+│           │   └── ProductCard.jsx
+│           ├── context/
+│           │   ├── AuthContext.jsx
+│           │   ├── CartContext.jsx
+│           │   ├── CompareContext.jsx
+│           │   ├── WishlistContext.jsx
+│           │   └── ToastContext.jsx
+│           ├── pages/
+│           │   ├── Home.jsx        # หน้าแรก + Bento Grid + Filter
+│           │   ├── Compare.jsx     # ตารางเปรียบเทียบสเปก
+│           │   ├── Cart.jsx
+│           │   ├── Checkout.jsx    # PromptPay QR + Card payment
+│           │   ├── MyOrders.jsx    # ประวัติคำสั่งซื้อ
+│           │   ├── Wishlist.jsx
+│           │   ├── Login.jsx
+│           │   ├── Register.jsx
+│           │   └── AdminDashboard.jsx
+│           ├── App.jsx
+│           └── index.css
+└── design-system/
+```
+
+---
+
+## 🌐 API Endpoints
+
+### Auth
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/auth/register` | Public | สมัครสมาชิก (role บังคับเป็น `customer`) |
+| POST | `/api/auth/login` | Public | เข้าสู่ระบบ รับ JWT Token |
+| GET | `/api/auth/me` | Private | ดูข้อมูลตัวเอง |
+
+### Products
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| GET | `/api/products` | Public | ดึงสินค้าทั้งหมด (รองรับ `?category=`, `?search=`, `?color=`) |
+| GET | `/api/products/:id` | Public | ดูรายละเอียดสินค้า |
+| POST | `/api/products` | Admin | เพิ่มสินค้า |
+| PUT | `/api/products/:id` | Admin | แก้ไขสินค้า |
+| DELETE | `/api/products/:id` | Admin | ลบสินค้า |
+| POST | `/api/products/:id/reviews` | Private | เขียนรีวิวสินค้า |
+
+### Orders
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/orders` | Private | สร้างคำสั่งซื้อ (ตรวจสอบ stock อัตโนมัติ) |
+| GET | `/api/orders` | Private | ดูออเดอร์ตัวเอง (Admin เห็นทุกออเดอร์) |
+| GET | `/api/orders/:id` | Private | ดูรายละเอียดออเดอร์ |
+| PUT | `/api/orders/:id/pay` | Private | ยืนยันการชำระเงิน (PromptPay) |
+| PUT | `/api/orders/:id/status` | Admin | อัพเดตสถานะออเดอร์ + เลข Tracking |
+
+---
+
+## ✅ Features
+
+### Customer Features
+- [x] **สมัครสมาชิก / เข้าสู่ระบบ** ด้วย JWT Authentication
+- [x] **ค้นหาและกรองสินค้า** ตามหมวดหมู่ (Mouse, Keyboard, Headset, Microphone) และค้นหาจากชื่อ/tags
+- [x] **Bento Grid Showcase** แสดงสินค้า featured แบบ dynamic บนหน้าแรก
+- [x] **ตะกร้าสินค้า** พร้อม persistent ผ่าน localStorage
+- [x] **เปรียบเทียบสินค้า** สูงสุด 3 ชิ้นพร้อม highlight สเปกที่ดีที่สุด (เบาสุด/ถูกสุด)
+- [x] **Wishlist / รายการโปรด** บันทึกสินค้าสนใจ persistent ผ่าน localStorage
+- [x] **Checkout** พร้อมระบบ PromptPay QR Code และบัตรเครดิต/เดบิต
+- [x] **ประวัติคำสั่งซื้อ** (My Orders) พร้อม expand รายละเอียดและเลข Tracking
+- [x] **เขียนรีวิวสินค้า** พร้อมคะแนนดาวสำหรับสมาชิก
+
+### Admin Features
+- [x] **Dashboard** สรุปยอดขาย, ออเดอร์, และสินค้าคงคลัง
+- [x] **จัดการสินค้า** เพิ่ม/แก้ไข/ลบสินค้าพร้อมสเปกทุก category
+- [x] **จัดการออเดอร์** อัพเดตสถานะ และบันทึกเลขพัสดุจัดส่ง
+
+---
+
+## 🗄️ Database Schemas
+
+### Users Collection (`users`)
+```json
+{
+  "username": "String (required)",
+  "email": "String (required)",
+  "password": "String (bcrypt hashed)",
+  "role": "String: customer | admin",
+  "profile": {
+    "firstName": "String",
+    "lastName": "String",
+    "phoneNumber": "String"
+  }
+}
+```
+
+### Products Collection (`products`)
+```json
+{
+  "name": "String (required)",
+  "description": "String",
+  "category": "String: Mouse | Keyboard | Headset | Microphone",
+  "price": "Number (required)",
+  "stock": "Number (required)",
+  "images": ["String (image path)"],
+  "specifications": {
+    "color": "String",
+    "connection": "String",
+    "weight": "String",
+    "sensor": "String (Mouse)",
+    "pollingRate": "String (Mouse)",
+    "switchType": "String (Keyboard)",
+    "hotSwappable": "Boolean (Keyboard)",
+    "batteryLife": "String (Headset)",
+    "polarPattern": "String (Microphone)",
+    "frequencyResponse": "String (Microphone)",
+    "formFactor": "String (Microphone)"
+  },
+  "tags": ["String"],
+  "reviews": [{
+    "username": "String",
+    "rating": "Number (1-5)",
+    "comment": "String",
+    "createdAt": "Date"
+  }]
+}
+```
+
+### Orders Collection (`orders`)
+```json
+{
+  "userId": "ObjectId (ref: User)",
+  "items": [{
+    "productId": "ObjectId (ref: Product)",
+    "name": "String (snapshot)",
+    "price": "Number (snapshot)",
+    "quantity": "Number"
+  }],
+  "shippingAddress": {
+    "receiverName": "String",
+    "phone": "String",
+    "addressLine": "String",
+    "subDistrict": "String",
+    "district": "String",
+    "province": "String",
+    "postalCode": "String"
+  },
+  "paymentMethod": "String: CreditCard | DebitCard | PromptPay",
+  "totalAmount": "Number",
+  "status": "String: Pending | Paid | Processing | Shipped | Delivered | Cancelled",
+  "trackingNumber": "String (optional)"
+}
+```
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Frontend** | React 18 + Vite | UI Framework |
+| **Styling** | Vanilla CSS | Design System (dark theme, glassmorphism) |
+| **Icons** | Lucide React | UI Icons |
+| **Backend** | Node.js + Express.js | RESTful API Server |
+| **Database** | MongoDB Atlas | Document Database |
+| **ODM** | Mongoose | MongoDB Schema & Validation |
+| **Auth** | JSON Web Token (JWT) | Stateless Authentication |
+| **Password** | bcrypt | Password Hashing |
+| **Env** | dotenv | Environment Variables |
+
+---
+
+## 📌 Product Backlog
+
+| ID | Feature | Priority | Status |
+|----|---------|----------|--------|
+| 1 | ระบบ Authentication (Register/Login) | High | ✅ Done |
+| 2 | แสดงรายการสินค้า + Filter/Search | High | ✅ Done |
+| 3 | ตะกร้าสินค้า (Shopping Cart) | High | ✅ Done |
+| 4 | Checkout + Payment (PromptPay/Card) | High | ✅ Done |
+| 5 | Admin Dashboard | Medium | ✅ Done |
+| 6 | ระบบเปรียบเทียบสินค้า (Compare) | Medium | ✅ Done |
+| 7 | Wishlist (รายการโปรด) | Medium | ✅ Done |
+| 8 | ประวัติคำสั่งซื้อ (My Orders) | Medium | ✅ Done |
+| 9 | ระบบรีวิวสินค้า | Low | ✅ Done |
+| 10 | Guest Checkout (ไม่ต้องสมัครสมาชิก) | Low | 🔲 Backlog |
+| 11 | LINE OA Integration | Low | 🔲 Backlog |
+
+---
+
+## 👥 Target User Personas
 
 ### 4.1 พีท (Pete) - Esports Gamer
 > *"อุปกรณ์ทุกชิ้นต้องมี Latency ต่ำที่สุด เมาส์ต้องเบา สวิตช์คีย์บอร์ดต้องตอบสนองทันที!"*
-* **ความต้องการหลัก:** ตารางเปรียบเทียบขนาด น้ำหนัก สเปกเซนเซอร์ และ Polling Rate ไร้สายที่ลึกและละเอียด ของแท้จัดส่งด่วนมีประกันไทย
-* **ปัญหาที่เจอ:** ร้านค้าส่วนใหญ่ไม่แจ้งน้ำหนักเมาส์หรือชิปเซนเซอร์ข้ามแบรนด์ ทำให้เทียบสินค้าข้ามแบรนด์ได้ยาก
-* **การสั่งซื้อ (Journey):** เข้าเว็บเปรียบเทียบสเปกเมาส์ยอดนิยม $\rightarrow$ เลือกเมาส์ที่น้ำหนักเบาและตอบสนองเร็วที่สุด $\rightarrow$ ชำระเงินผ่านระบบพร้อมเพย์เพื่อความรวดเร็ว
+* **ความต้องการหลัก:** ตารางเปรียบเทียบขนาด น้ำหนัก สเปกเซนเซอร์ และ Polling Rate ไร้สายที่ลึกและละเอียด
 
 ### 4.2 ฟ้า (Fah) - Aesthetic & Casual Gamer
 > *"อยากจัดโต๊ะคอมโทนสีพาสเทล คีย์บอร์ดต้องสวยงามและเสียงกดต้องนุ่มหู (Thocky)"*
-* **ความต้องการหลัก:** ค้นหาคีย์บอร์ด เมาส์ โทนสีพาสเทล (ชมพู/ขาว) ราคาเหมาะสม ทนทาน และใช้คำอธิบายศัพท์ไอทีภาษาไทยง่ายๆ
-* **ปัญหาที่เจอ:** อุปกรณ์เกมมิ่งเกียร์สไตล์ทั่วไปดุดันและมีแต่สีดำ ศัพท์เทคนิคเยอะเข้าใจยาก
-* **การสั่งซื้อ (Journey):** ค้นหาสินค้าโดยใช้ตัวกรองสีพาสเทล $\rightarrow$ อ่านคู่มือแนะนำสวิตช์เงียบ/เสียงนุ่ม $\rightarrow$ สั่งซื้อพร้อมชำระด้วยบัตรเดบิต
+* **ความต้องการหลัก:** ค้นหาสินค้าโทนสีพาสเทล ราคาเหมาะสม คำอธิบายภาษาไทยง่ายๆ
 
 ### 4.3 ก้อง (Kong) - PC & Tech Enthusiast
 > *"ผมยินดีจ่ายแพงกว่าเพื่อวัสดุระดับพรีเมียม และระบบเชื่อมต่อที่เสถียรไร้ที่ติ"*
-* **ความต้องการหลัก:** คีย์บอร์ดบอดี้ CNC อะลูมิเนียม เชื่อมต่อ 3 โหมด ข้อมูลวัสดุภายในที่ละเอียด และบริการดูแลหลังการขายแบบ VIP
-* **ปัญหาที่เจอ:** สินค้าพรีเมียมของหมดไวในไทย หรือต้องหารายละเอียดโครงสร้างบอดี้/สาร Lube สวิตช์ยาก
-* **การสั่งซื้อ (Journey):** ค้นหาคีย์บอร์ดระดับ High-End $\rightarrow$ ตรวจสอบสเปกโครงสร้าง Gasket Mount และชนิดแผ่น Plate $\rightarrow$ เลือกชำระแบบผ่อน 0% และรับบริการจัดส่งด่วนพิเศษ
+* **ความต้องการหลัก:** คีย์บอร์ดบอดี้ CNC อะลูมิเนียม เชื่อมต่อ 3 โหมด ข้อมูลวัสดุภายในที่ละเอียด
 
 ### 4.4 แม่วรรณ (Mae Wan) - Gift Buyer (Non-Gamer)
-> *"แม่ไม่รู้เรื่องไอทีหรอก รู้แค่ลูกอยากได้หูฟังใส่สบาย ใช้เรียน เล่นเกม ทนทาน ไม่แพงเกินไป"*
-* **ความต้องการหลัก:** หน้าเว็บสั่งซื้อที่สะดวกรวดเร็ว ไม่ซับซ้อน มีป้ายสินค้าแนะนำหรือขายดี และระบุความเข้ากันได้กับเครื่องเล่นเกมอย่างชัดเจน
-* **ปัญหาที่เจอ:** ไม่เข้าใจศัพท์เทคนิค (7.1 Virtual, Drivers, Latency) และกลัวซื้อของไปแล้วเชื่อมต่อใช้งานไม่ได้
-* **การสั่งซื้อ (Journey):** ค้นหาหูฟังจากหมวดของขวัญ/สินค้าขายดี $\rightarrow$ สังเกตป้ายกำกับ "รองรับ PC/PS5" $\rightarrow$ ทำการซื้อผ่าน Guest Checkout โดยไม่ต้องสมัครสมาชิก
+> *"แม่ไม่รู้เรื่องไอทีหรอก รู้แค่ลูกอยากได้หูฟังใส่สบาย ทนทาน ไม่แพงเกินไป"*
+* **ความต้องการหลัก:** หน้าเว็บสั่งซื้อที่สะดวกรวดเร็ว ไม่ซับซ้อน มีป้ายสินค้าแนะนำ
 
 ---
 
-## 🧭 5. แผนผังการเดินทางของลูกค้า (Customer Journey Maps)
+## 🔒 Security Notes
 
-### 5.1 ประสบการณ์การสั่งซื้อผ่านหน้าเว็บไซต์ (Shopping Experience)
-
-| ขั้นตอน | 1. ค้นหาและสำรวจสินค้า | 2. เปรียบเทียบสินค้า | 3. หยิบใส่ตะกร้า | 4. ขั้นตอนชำระเงิน | 5. ติดตามสถานะและรับของ |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Actions** | • ค้นหา 'เมาส์ไร้สาย'<br>• ใช้ตัวกรองราคา/ยี่ห้อ | • เลือกสินค้า 2-3 ตัวเข้าตารางเทียบ<br>• อ่านข้อมูลขนาดและน้ำหนัก | • กดใส่ตะกร้าสินค้า<br>• ตรวจยอดรวมราคาสุทธิ | • กรอกที่อยู่จัดส่งสินค้า<br>• สแกนจ่ายด้วยพร้อมเพย์ | • เช็คเลขจัดส่งพัสดุ<br>• รับกล่องและแกะทดลอง |
-| **Touchpoints** | • หน้าหลัก / ช่องค้นหา / ตัวกรอง | • ตารางเปรียบเทียบสเปก | • หน้าตะกร้าสินค้า (Cart) | • หน้าชำระเงินและสแกน QR | • SMS / หน้าประวัติสั่งซื้อ |
-| **Pain Points** | • ค้นหาผิดเล็กน้อยไม่มีผลลัพธ์ | • แสดงตารางเทียบสเปกบนมือถือยาก | • ค่าจัดส่งคำนวณแพงเกินจริง | • ขั้นตอนสมัครสมาชิกยุ่งยาก | • สถานะขนส่งไม่อัปเดตจริง |
-| **Opportunities**| • ใช้ระบบช่วยสะกดคำค้นหาอัตโนมัติ | • ดีไซน์ Responsive ปรับตารางตามจอ | • จัดแคมเปญส่งฟรีเมื่อถึงยอดขั้นต่ำ | • รองรับ Guest Checkout & QR Pay | • ส่งข้อความเรียลไทม์ผ่าน LINE OA |
-
-### 5.2 ประสบการณ์ผ่านทางโซเชียลมีเดีย (Product X Social Acquisitions)
-
-| ขั้นตอน | 1. รับรู้บนโซเชียลมีเดีย | 2. เข้าสู่แพลตฟอร์ม | 3. เปรียบเทียบเพื่อตัดสินใจ | 4. ชำระเงิน & แอดไลน์ร้าน | 5. แชร์บอกต่อในโซเชียล |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Actions** | ดูคลิปสั้นรีวิว (Sound Test) บน TikTok หรือรีวิวจัดโต๊ะคอม | คลิกจากหน้าโปรไฟล์ผู้รีวิวเข้ามาสู่หน้า Landing ของร้าน | กดเปรียบเทียบคุณสมบัติในตารางเปรียบเทียบสเปกสินค้า | กดโอนชำระเงินด่วน และแอด LINE เพื่อยืนยันการรับประกัน | ถ่ายรูปอัปเดตรีวิวความถูกใจ ติดแท็ก GearHub แลกแต้มสะสม |
-| **Touchpoints** | TikTok, Reels, กลุ่ม Facebook IT | หน้าสินค้าบนเบราว์เซอร์โซเชียล | หน้า Compare และรีวิวผู้ซื้อจริง | หน้าชำระเงิน และ LINE OA ของร้าน | การ์ดขอบคุณในกล่อง, IG/TikTok |
-| **Pain Points** | • ลิงก์เสียหรือหาปุ่มซื้อยาก | • หน้าเว็บโหลดช้าเมื่อเข้าผ่านแอป | • รีวิวมีสแปมหรือข้อมูลไม่น่าเชื่อถือ | • ระบบล็อกอินไลน์ซับซ้อนสับสน | • รางวัลในการร่วมสนุกน้อย |
-| **Opportunities**| • แจกโค้ดส่วนลดพิเศษเฉพาะ KOLs | • ปรับหน้า Landing Page ให้เบาเป็นพิเศษ | • แสดงระบบดาว Verified Reviews | • รองรับ LINE One-Click Login | • กิจกรรมประกวดแต่งโต๊ะคอมประจำเดือน |
-
----
-
-## 🗄️ 6. โครงสร้างฐานข้อมูล (Database Schemas Design)
-
-ฐานข้อมูลของ GearHub เลือกใช้งาน **MongoDB** โดยออกแบบให้เก็บข้อมูลในรูปแบบฝังตัว (Embedding) เพื่อความเร็วในการดึงข้อมูลแสดงผล
-
-### 6.1 Users Collection (`users`)
-เก็บข้อมูลผู้ใช้และสิทธิ์การใช้งาน (ลูกค้า/แอดมิน) พร้อมฝังข้อมูลส่วนตัว (Profile)
-* **โครงสร้างคีย์หลัก:**
-  - `username` (String, required)
-  - `email` (String, required)
-  - `password` (String, required) - รหัสผ่านที่เข้ารหัสแล้ว
-  - `role` (String, required) - บทบาทผู้ใช้ (`customer` / `admin`)
-  - `profile` (Object, required) - ข้อมูลโปรไฟล์ฝังตัว
-    - `firstName` (String)
-    - `lastName` (String)
-    - `phoneNumber` (String)
-
-
-### 6.2 Products Collection (`products`)
-เก็บข้อมูลสินค้าเกมมิ่งเกียร์ โดยฝังชุดสเปกด้านเทคนิคเฉพาะตามประเภทของสินค้าลงในฟิลด์ `specifications`
-* **โครงสร้างคีย์หลัก:**
-  - `name` (String, required)
-  - `description` (String)
-  - `category` (String, required) - ประเภทสินค้า (`Mouse`, `Keyboard`, `Headset`)
-  - `price` (Number, required)
-  - `stock` (Number, required)
-  - `images` (Array of Strings) - พาธรูปภาพสินค้า
-  - `specifications` (Object, required) - ข้อมูลสเปกสินค้า
-    - `color` (String)
-    - `connection` (String)
-    - `weight` (String)
-    - `sensor` (String)
-    - `pollingRate` (String)
-    - `switchType` (String)
-    - `hotSwappable` (Boolean)
-    - `batteryLife` (String)
-  - `tags` (Array of Strings) - แท็กคัดกรองสินค้า
-
-
-### 6.3 Orders Collection (`orders`)
-เก็บประวัติคำสั่งซื้อและการจัดส่ง โดยทำ Snapshot ข้อมูลสินค้าที่ซื้อ ณ เวลานั้นเพื่อป้องกันผลกระทบเมื่อราคาสินค้าเปลี่ยนแปลง
-* **โครงสร้างคีย์หลัก:**
-  - `userId` (ObjectId, required) - อ้างอิงผู้ซื้อ
-  - `items` (Array of Objects, required) - รายการสินค้าที่สั่งซื้อ
-    - `productId` (ObjectId)
-    - `name` (String)
-    - `price` (Number)
-    - `quantity` (Number)
-  - `shippingAddress` (Object, required) - ที่อยู่จัดส่งพัสดุ
-    - `receiverName`, `phone`, `addressLine`, `subDistrict`, `district`, `province`, `postalCode`
-  - `paymentMethod` (String, required) - วิธีชำระเงิน (`CreditCard`, `DebitCard`, `PromptPay`)
-  - `totalAmount` (Number, required) - ยอดชำระเงินรวมสุทธิ
-  - `status` (String, required) - สถานะคำสั่งซื้อ (`Pending`, `Paid`, `Processing`, `Shipped`, `Delivered`, `Cancelled`)
-  - `trackingNumber` (String) - เลขพัสดุสำหรับติดตามการจัดส่ง
----
-
-## 🛠️ 7. เทคโนโลยีที่ใช้ในการพัฒนา (Technology Stack)
-
-* **Frontend:** React, Vite, CSS (สำหรับการพัฒนา UI ที่มีความยืดหยุ่น โหลดเร็ว เป็นมิตรต่อ SEO และแสดงผลแบบ Responsive ในมือถือและเดสก์ท็อป)
-* **Backend:** Node.js, Express.js (สร้าง RESTful API ที่มีความรวดเร็วและเป็นสัดส่วนชัดเจนในการจัดการคำขอ)
-* **Database:** MongoDB (จัดเก็บข้อมูลเชิงเอกสารในรูปแบบ JSON document ที่รองรับการทำ Embedded document ได้อย่างคล่องตัว)
-* **Authentication:** JSON Web Token (JWT) สำหรับรักษาความปลอดภัยในการล็อกอินและควบคุมการเข้าถึง API ของฝั่งลูกค้าและผู้ดูแลระบบ
+- **Password**: bcrypt hash ด้วย saltRounds=10 (จัดการโดย Mongoose pre-save hook)
+- **Role Protection**: การ register จะถูก force เป็น `customer` เสมอ — admin ต้องตั้งโดยตรงใน DB หรือผ่าน seed
+- **JWT**: Token มีอายุ 30 วัน เก็บใน `localStorage`
+- **Stock Guard**: Stock deduction ใช้ atomic operation (`findOneAndUpdate + $gte`) ป้องกัน race condition
+- **Order Ownership**: ลูกค้าดูได้แค่ order ของตัวเอง admin ดูได้ทุก order

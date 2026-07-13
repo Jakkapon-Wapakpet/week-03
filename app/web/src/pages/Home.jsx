@@ -126,9 +126,10 @@ const Home = () => {
         <section className="bento-section">
           <h2 className="bento-title">🔥 อุปกรณ์ยอดนิยมระดับโปร (Pro Gear Spotlight)</h2>
           <div className="bento-grid">
-            {/* Bento Card 1: Pulsar Mouse (Span 2) */}
-            {products.find(p => p.name.includes('Pulsar')) && (() => {
-              const p = products.find(p => p.name.includes('Pulsar'));
+            {/* Bento Card 1: Featured Mouse (span-2) */}
+            {(() => {
+              const p = products.find(p => p.name.includes('Pulsar')) || products.find(p => p.category === 'Mouse');
+              if (!p) return null;
               return (
                 <div className="bento-card span-2" onClick={() => handleOpenDetails(p)}>
                   <div className="bento-card-info">
@@ -138,9 +139,9 @@ const Home = () => {
                       <p className="bento-card-desc">{p.description}</p>
                     </div>
                     <div className="bento-card-specs">
-                      <span>⚡ PAW3395 Sensor</span>
-                      <span>⚖️ {p.specifications?.weight || '54g'}</span>
-                      <span>🎯 4000Hz Polling</span>
+                      <span>⚡ {p.specifications?.sensor || 'PAW3395 Sensor'}</span>
+                      <span>⚖️ {p.specifications?.weight || 'Ultralight'}</span>
+                      <span>🎯 {p.specifications?.pollingRate || 'High Polling'}</span>
                     </div>
                   </div>
                   <div className="bento-card-image">
@@ -150,18 +151,19 @@ const Home = () => {
               );
             })()}
 
-            {/* Bento Card 2: Wooting Keyboard (Span 1) */}
-            {products.find(p => p.name.includes('Wooting')) && (() => {
-              const p = products.find(p => p.name.includes('Wooting'));
+            {/* Bento Card 2: Featured Keyboard */}
+            {(() => {
+              const p = products.find(p => p.name.includes('Wooting')) || products.find(p => p.category === 'Keyboard');
+              if (!p) return null;
               return (
                 <div className="bento-card" onClick={() => handleOpenDetails(p)}>
                   <div className="bento-card-info">
                     <div>
                       <span className="bento-card-badge">คีย์บอร์ดความเร็วสูง</span>
-                      <h3>Wooting 60HE</h3>
+                      <h3>{p.name}</h3>
                     </div>
                     <div className="bento-card-specs">
-                      <span>⌨️ Hall Effect</span>
+                      <span>⌨️ {p.specifications?.switchType || 'Mechanical'}</span>
                       <span>⚡ Rapid Trigger</span>
                     </div>
                   </div>
@@ -172,19 +174,20 @@ const Home = () => {
               );
             })()}
 
-            {/* Bento Card 3: SteelSeries Headset (Span 1) */}
-            {products.find(p => p.name.includes('Arctis')) && (() => {
-              const p = products.find(p => p.name.includes('Arctis'));
+            {/* Bento Card 3: Featured Headset */}
+            {(() => {
+              const p = products.find(p => p.name.includes('Arctis')) || products.find(p => p.category === 'Headset');
+              if (!p) return null;
               return (
                 <div className="bento-card" onClick={() => handleOpenDetails(p)}>
                   <div className="bento-card-info">
                     <div>
                       <span className="bento-card-badge">หูฟังมิติเสียงรอบทิศ</span>
-                      <h3>Arctis Nova</h3>
+                      <h3>{p.name}</h3>
                     </div>
                     <div className="bento-card-specs">
-                      <span>🎧 Hi-Fi Audio</span>
-                      <span>🔋 ANC Wireless</span>
+                      <span>🎧 {p.specifications?.connection?.includes('Wireless') ? 'Wireless Audio' : 'Hi-Fi Audio'}</span>
+                      <span>🔋 {p.specifications?.batteryLife || 'ANC Wireless'}</span>
                     </div>
                   </div>
                   <div className="bento-card-image" style={{ marginTop: '1rem' }}>
