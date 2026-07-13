@@ -1,0 +1,23 @@
+{
+  "collectionName": "users",
+  "schema": {
+    "bsonType": "object",
+    "required": ["username", "email", "password", "role"],
+    "properties": {
+      "username": { "bsonType": "string" },
+      "email": { "bsonType": "string" },
+      "password": { "bsonType": "string" },
+      "role": { "bsonType": "string" },
+      
+      "profile": {
+        "bsonType": "object",
+        "required": ["firstName", "lastName", "phoneNumber"],
+        "properties": {
+          "firstName": { "bsonType": "string" },
+          "lastName": { "bsonType": "string" },
+          "phoneNumber": { "bsonType": "string" }
+        }
+      }
+    }
+  }
+}
