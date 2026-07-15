@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Resume/CV ของ Jakkapon Wapakpet - Full-stack Web Developer และ Photographer">
     <title>Jakkapon Wapakpet - CV (Harvard Style)</title>
-    <!-- Google Fonts: Prompt สำหรับภาษาไทย และ Outfit สำหรับภาษาอังกฤษ/ตัวเลข -->
+    <!-- Google Fonts: Outfit & Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -282,6 +282,23 @@
                 display: none;
             }
         }
+
+        /* Language Switcher Styling */
+        .lang-th {
+            display: none !important;
+        }
+        body.th-mode .lang-th {
+            display: block !important;
+        }
+        body.th-mode span.lang-th, body.th-mode strong.lang-th, body.th-mode a.lang-th {
+            display: inline !important;
+        }
+        body.th-mode li.lang-th {
+            display: list-item !important;
+        }
+        body.th-mode .lang-en {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -291,9 +308,14 @@
         <a href="index.html" class="btn-back">
             ← Back to Portfolio
         </a>
-        <button onclick="window.print()" class="btn-print">
-            ⎙ Print CV (PDF)
-        </button>
+        <div style="display: flex; gap: 0.75rem;">
+            <button id="lang-toggle" class="btn-print" style="background-color: var(--secondary-color);">
+                🌐 Switch to TH
+            </button>
+            <button onclick="window.print()" class="btn-print">
+                ⎙ Print CV (PDF)
+            </button>
+        </div>
     </div>
 
     <!-- CV Paper Container -->
@@ -311,40 +333,58 @@
                 <a href="https://github.com/Jakkapon-Wapakpet" target="_blank" rel="noopener noreferrer">github.com/Jakkapon-Wapakpet</a>
             </div>
             <p class="status-badge">
-                Status: Learner in the Junior Software Developer Student (JSD13) Program at Generation Thailand
+                <span class="lang-en">Status: Learner in the Junior Software Developer Student (JSD13) Program at Generation Thailand</span>
+                <span class="lang-th">สถานะ: learner ในโครงการ Junior Software Developer Student (JSD13) ของ Generation Thailand</span>
             </p>
         </header>
 
         <!-- About Me Section -->
         <section class="cv-section">
-            <h2 class="section-title">About Me</h2>
-            <p class="bio-text">
+            <h2 class="section-title">
+                <span class="lang-en">About Me</span>
+                <span class="lang-th">เกี่ยวกับฉัน</span>
+            </h2>
+            <p class="bio-text lang-en">
                 A web developer who seamlessly combines expertise in technology and the art of photography <br><strong>with a strong focus on creating high-quality web applications.</strong>
+            </p>
+            <p class="bio-text lang-th">
+                ผู้พัฒนาเว็บที่ผสมผสานความเชี่ยวชาญด้านเทคโนโลยีและศิลปะการถ่ายภาพเข้าด้วยกันอย่างลงตัว <br><strong>เพื่อมุ่งเน้นการสร้างสรรค์เว็บแอปพลิเคชันที่มีคุณภาพ</strong>
             </p>
         </section>
 
         <!-- Education Section -->
         <section class="cv-section">
-            <h2 class="section-title">Education</h2>
+            <h2 class="section-title">
+                <span class="lang-en">Education</span>
+                <span class="lang-th">การศึกษา</span>
+            </h2>
             
             <div class="timeline-item">
                 <div class="item-header">
-                    <span class="item-title">Bachelor of Business Administration (B.B.A.) in Information Technology</span>
+                    <span class="item-title lang-en">Bachelor of Business Administration (B.B.A.) in Information Technology</span>
+                    <span class="item-title lang-th">ปริญญาตรี บริหารธุรกิจบัณฑิต (สาขาเทคโนโลยีสารสนเทศ)</span>
                     <span class="item-date">Graduated</span>
                 </div>
                 <div class="item-subheader">
-                    <span class="item-org">Krirk University</span>
-                    <span class="item-location">Bangkok, Thailand</span>
+                    <span class="item-org lang-en">Krirk University</span>
+                    <span class="item-org lang-th">มหาวิทยาลัยเกริก (Krirk University)</span>
+                    
+                    <span class="item-location lang-en">Bangkok, Thailand</span>
+                    <span class="item-location lang-th">กรุงเทพฯ, ประเทศไทย</span>
                 </div>
                 <div class="timeline-desc">
-                    <p class="bio-text" style="font-size: 0.9rem;">Studied information technology management, database systems, business software development, and the application of IT in corporate administration.</p>
+                    <p class="bio-text lang-en" style="font-size: 0.9rem;">Studied information technology management, database systems, business software development, and the application of IT in corporate administration.</p>
+                    <p class="bio-text lang-th" style="font-size: 0.9rem;">ศึกษาเกี่ยวกับการจัดการเทคโนโลยีสารสนเทศ ระบบฐานข้อมูล การพัฒนาซอฟต์แวร์ธุรกิจ และการประยุกต์ใช้ไอทีในการบริหารองค์กร</p>
                 </div>
             </div>
         </section>
 
         <!-- Experience Section -->
         <section class="cv-section">
-            <h2 class="section-title">Work Experience</h2>
+            <h2 class="section-title">
+                <span class="lang-en">Work Experience</span>
+                <span class="lang-th">ประสบการณ์การทำงาน</span>
+            </h2>
             
             <!-- Experience Item 1 -->
             <div class="timeline-item">
@@ -354,35 +394,53 @@
                 </div>
                 <div class="item-subheader">
                     <span class="item-org">Generation Thailand (Cohort 13)</span>
-                    <span class="item-location">Bangkok, Thailand (Remote)</span>
+                    <span class="item-location lang-en">Bangkok, Thailand (Remote)</span>
+                    <span class="item-location lang-th">กรุงเทพฯ, ประเทศไทย (Remote)</span>
                 </div>
-                <ul class="bullet-list">
+                <ul class="bullet-list lang-en">
                     <li>Study and develop full-stack web development skills (HTML, CSS, JavaScript, React, Node.js, SQL).</li>
                     <li>Learn collaborative teamwork processes (Agile/Scrum) and practice programming to build real-world applied projects.</li>
+                </ul>
+                <ul class="bullet-list lang-th">
+                    <li>ศึกษาและพัฒนาทักษะด้าน Full-stack Web Development (HTML, CSS, JavaScript, React, Node.js, SQL)</li>
+                    <li>เรียนรู้กระบวนการทำงานร่วมกันแบบทีม (Agile/Scrum) และฝึกฝนการเขียนโปรแกรมเพื่อสร้างโครงงานประยุกต์จริง</li>
                 </ul>
             </div>
 
             <!-- Experience Item 2 -->
             <div class="timeline-item">
                 <div class="item-header">
-                    <span class="item-title">Freelance Photographer</span>
-                    <span class="item-date">4 Years</span>
+                    <span class="item-title lang-en">Freelance Photographer</span>
+                    <span class="item-title lang-th">ช่างภาพอิสระ (Photographer)</span>
+                    <span class="item-date lang-en">4 Years</span>
+                    <span class="item-date lang-th">4 ปี</span>
                 </div>
                 <div class="item-subheader">
-                    <span class="item-org">Self-Employed / Freelance</span>
-                    <span class="item-location">Thailand</span>
+                    <span class="item-org lang-en">Self-Employed / Freelance</span>
+                    <span class="item-org lang-th">ช่างภาพอิสระ / ฟรีแลนซ์</span>
+                    
+                    <span class="item-location lang-en">Thailand</span>
+                    <span class="item-location lang-th">ประเทศไทย</span>
                 </div>
-                <ul class="bullet-list">
+                <ul class="bullet-list lang-en">
                     <li>Provided portrait, landscape, and event photography services, emphasizing creative lighting and narrative compositions.</li>
                     <li>Specialized in post-production work, including color grading and photo retouching/editing using Adobe Lightroom and Adobe Photoshop.</li>
                     <li>Managed client requirements and delivered high-quality work on time in a professional manner.</li>
+                </ul>
+                <ul class="bullet-list lang-th">
+                    <li>ให้บริการถ่ายภาพบุคคล ทิวทัศน์ และงานกิจกรรมต่าง ๆ โดยเน้นการจัดแสงและองค์ประกอบภาพที่สร้างสรรค์และมีเรื่องราว</li>
+                    <li>มีความเชี่ยวชาญด้านงาน Post-production ทั้งการแต่งโทนสี (Color Grading) และปรับแต่งรูปภาพด้วย Adobe Lightroom และ Adobe Photoshop</li>
+                    <li>บริหารจัดการความต้องการของลูกค้าและการส่งมอบงานที่ตรงเวลาอย่างมืออาชีพ</li>
                 </ul>
             </div>
         </section>
 
         <!-- Technical & Professional Skills -->
         <section class="cv-section">
-            <h2 class="section-title">Skills & Interests</h2>
+            <h2 class="section-title">
+                <span class="lang-en">Skills & Interests</span>
+                <span class="lang-th">ทักษะและความสนใจ</span>
+            </h2>
             
             <div class="skills-table">
                 <div class="skills-row">
@@ -401,6 +459,19 @@
         </section>
 
     </div>
+
+    <!-- JavaScript to toggle language -->
+    <script>
+        const langToggle = document.getElementById('lang-toggle');
+        langToggle.addEventListener('click', () => {
+            document.body.classList.toggle('th-mode');
+            if (document.body.classList.contains('th-mode')) {
+                langToggle.innerHTML = '🌐 Switch to EN';
+            } else {
+                langToggle.innerHTML = '🌐 Switch to TH';
+            }
+        });
+    </script>
 
 </body>
 </html>
