@@ -390,10 +390,19 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(0, 245, 212, 0.05) 100%);
-            border: 1px solid rgba(0, 245, 212, 0.15);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.12) 0%, rgba(0, 245, 212, 0.06) 100%);
+            border: 1px solid rgba(0, 245, 212, 0.25);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(0, 245, 212, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            align-self: start;
+        }
+
+        .affiliate-card:hover {
+            border-color: var(--accent-teal);
+            box-shadow: 0 15px 40px rgba(0, 245, 212, 0.25), inset 0 0 25px rgba(0, 245, 212, 0.1);
+            transform: translateY(-4px);
         }
 
         .affiliate-badge {
@@ -420,6 +429,35 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 195px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .affiliate-card:hover .product-image-container {
+            border-color: rgba(0, 245, 212, 0.5);
+            box-shadow: 0 4px 25px rgba(0, 245, 212, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .affiliate-card:hover .product-image {
+            transform: scale(1.08);
         }
 
         .product-name {
@@ -927,6 +965,152 @@
                 flex-direction: column;
             }
         }
+
+        /* My Dream Business Section */
+        .business-section {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(0, 245, 212, 0.04) 100%);
+            border: 1px solid rgba(0, 245, 212, 0.15);
+            margin-top: 2rem;
+        }
+
+        .business-main-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 0.5rem;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .business-intro {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .business-image-wrapper {
+            width: 100%;
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .business-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .business-section:hover .business-img {
+            transform: scale(1.03);
+        }
+
+        .business-tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            font-style: italic;
+            border-left: 3px solid var(--accent-teal);
+            padding-left: 1.25rem;
+        }
+
+        .business-services {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .business-services h2 {
+            font-size: 1.4rem;
+            color: var(--accent-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .business-services h3 {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+        }
+
+        .business-services p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .business-info-lists {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @media (max-width: 900px) {
+            .business-info-lists {
+                grid-column: span 1;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-block h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .business-ul, .business-ol {
+            padding-left: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .business-ul li, .business-ol li {
+            line-height: 1.5;
+        }
+
+        .business-cta-wrapper {
+            grid-column: span 2;
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .business-cta-wrapper {
+                grid-column: span 1;
+            }
+        }
+
+        .business-btn-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-th);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -939,6 +1123,7 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
+                    <li><a href="#dream-business">Dream Business</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#education">Education</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -1007,6 +1192,15 @@
                     </div>
                 </div>
 
+                <div class="skills-hobbies-list" style="margin: 1.5rem 0;">
+                    <h4 style="color: var(--accent-teal); margin-bottom: 0.75rem;">Skills & Hobbies (งานอดิเรกและความสามารถพิเศษ):</h4>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                        <li>💻 พัฒนาโปรแกรมและศึกษาเกี่ยวกับ Full-Stack Development</li>
+                        <li>📸 ถ่ายภาพแนวสร้างสรรค์ แต่งสีและโทนสีภาพในโปรแกรม Lightroom</li>
+                        <li>⚖️ ร่างสัญญาและติดต่อประสานงานเอกสารกฎหมาย</li>
+                    </ul>
+                </div>
+
                 <p class="about-text-footer">
                     การรวมตัวกันของ 3 ศาสตร์ที่แตกต่างนี้ (เทคโนโลยี, ศิลปะภาพถ่าย, และกฎหมาย) ช่วยเสริมสร้างทักษะความรอบคอบ ความคิดนอกกรอบ และการแก้ปัญหาอย่างมีระบบในการพัฒนาซอฟต์แวร์
                 </p>
@@ -1016,7 +1210,9 @@
             <section class="glass-card affiliate-card">
                 <span class="affiliate-badge">Hot Deal</span>
                 <div>
-                    <div class="product-icon">🖱️</div>
+                    <div class="product-image-container">
+                        <img src="developer_mouse.png" alt="Developer Mouse" class="product-image">
+                    </div>
                     <h3 class="product-name">Developer mouse</h3>
                 </div>
                 <div>
@@ -1041,7 +1237,7 @@
                 <!-- Video Player Card -->
                 <div class="video-container glass-card">
                     <video autoplay loop muted playsinline class="showreel-video">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+                        <source src="mov_bbb.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-overlay">
@@ -1131,6 +1327,65 @@
                     </p>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- My Dream Business Section -->
+        <section class="glass-card business-section" id="dream-business">
+            <div class="section-header">
+                <p class="section-subtitle-small">My Dream Business</p>
+                <h1 class="business-main-title">Jakka DevGear</h1>
+            </div>
+            
+            <div class="business-grid">
+                <!-- Business Intro & Image -->
+                <div class="business-intro">
+                    <div class="business-image-wrapper">
+                        <img src="devgear_keyboard.png" alt="Jakka DevGear Custom Mechanical Keyboard" class="business-img">
+                    </div>
+                    <p class="business-tagline">
+                        "สะท้อนตัวตนผ่านคีย์บอร์ดที่คุณออกแบบเอง" - ยินดีต้อนรับสู่ Jakka DevGear ร้านอุปกรณ์คอมพิวเตอร์และคีย์บอร์ดกลไก (Mechanical Keyboard) สำหรับนักพัฒนาซอฟต์แวร์และผู้รักการพิมพ์ทุกคน เราคัดสรรเฉพาะของเกรดพรีเมียมเพื่อความฟินในทุกสัมผัส!
+                    </p>
+                </div>
+
+                <!-- Products & Services -->
+                <div class="business-services">
+                    <h2>Our Premium Services & Products</h2>
+                    
+                    <h3>1. Custom Tuning & Modding</h3>
+                    <p>บริการประกอบ ปรับแต่งเสียง (Modding) และหยอดสารหล่อลื่น (Lube Switch) เพื่อให้คีย์บอร์ดของคุณมีเสียงและสัมผัสที่เพอร์เฟกต์ที่สุด</p>
+                    
+                    <h3>2. Free Custom Consulting</h3>
+                    <p>ให้คำปรึกษาการเลือกสวิตช์ คีย์แคป และเลย์เอาต์ที่เหมาะกับสรีรศาสตร์และการพิมพ์งานตลอดทั้งวัน</p>
+                </div>
+
+                <!-- Details & Lists (ul, ol, a) -->
+                <div class="business-info-lists">
+                    <div class="info-block">
+                        <h3>✨ สิ่งอำนวยความสะดวกในร้าน (Our Facilities)</h3>
+                        <ul class="business-ul">
+                            <li>🚗 ที่จอดรถหน้าร้านกว้างขวาง ปลอดภัย</li>
+                            <li>📶 High-Speed Wi-Fi ความเร็ว 1Gbps สำหรับนั่งทำงาน</li>
+                            <li>☕ กาแฟดริฟต์สเปเชียลตี้ฟรีสำหรับผู้เข้ามาลองคีย์บอร์ด</li>
+                            <li>🛠️ โซน DIY พร้อมเครื่องมือ Mod คีย์บอร์ดครบครัน</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>🛒 3 ขั้นตอนการสั่งซื้อแสนง่าย (How to Order)</h3>
+                        <ol class="business-ol">
+                            <li>เลือกและทดลองพิมพ์สวิตช์คีย์บอร์ดที่ต้องการหน้าร้าน</li>
+                            <li>สแกนจ่ายเงิน QR Code / โอนชำระเงินผ่านโมบายแบงก์กิ้ง</li>
+                            <li>รับคีย์บอร์ดตัวโปรดของคุณกลับบ้านพร้อมรับประกัน 2 ปีเต็ม (โอน-จ่าย-จบ!)</li>
+                        </ol>
+                    </div>
+
+                    <div class="business-cta-wrapper">
+                        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-primary business-btn-map">
+                            📍 ค้นหาตำแหน่งร้านบน Google Maps
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
