@@ -4,25 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Resume/CV ของ Jakkapon Wapakpet - Full-stack Web Developer และ Photographer">
-    <title>Jakkapon Wapakpet - Premium CV</title>
+    <title>Jakkapon Wapakpet - CV (Harvard Style)</title>
     <!-- Google Fonts: Prompt สำหรับภาษาไทย และ Outfit สำหรับภาษาอังกฤษ/ตัวเลข -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Prompt:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Reset & Variables */
+        /* Harvard Resume Style Guidelines */
         :root {
-            --bg-color: #0d0e12;
-            --card-bg: rgba(20, 21, 28, 0.6);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --primary-glow: #a855f7; /* Neon Purple */
-            --secondary-glow: #06b6d4; /* Neon Cyan */
-            --gradient-accent: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
-            --font-en: 'Outfit', sans-serif;
-            --font-th: 'Prompt', sans-serif;
+            --primary-color: #000000;
+            --secondary-color: #374151; /* Dark Gray */
+            --bg-page: #f3f4f6; /* Off-white background for screen view */
+            --bg-cv: #ffffff;
+            --border-color: #000000;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Outfit', 'Prompt', sans-serif;
         }
 
         * {
@@ -32,612 +29,376 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-th);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-            padding: 2rem 1rem;
+            background-color: var(--bg-page);
+            color: var(--primary-color);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            padding: 3rem 1rem;
         }
 
-        /* Background Glowing Orbs (CSS Only Decor) */
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            z-index: -1;
-            filter: blur(120px);
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        body::before {
-            top: 10%;
-            left: 10%;
-            background: var(--primary-glow);
-        }
-
-        body::after {
-            bottom: 20%;
-            right: 10%;
-            background: var(--secondary-glow);
-        }
-
-        /* Container & Layout */
-        .cv-container {
-            max-width: 1050px;
+        /* CV Paper Container */
+        .cv-paper {
+            max-width: 800px;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        /* Keyframes */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Glassmorphic Card Styling */
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass-card:hover {
-            border-color: rgba(168, 85, 247, 0.4);
-            box-shadow: 0 10px 40px 0 rgba(168, 85, 247, 0.15);
-            transform: translateY(-2px);
-        }
-
-        /* Header Section */
-        .header-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2rem;
+            background: var(--bg-cv);
+            padding: 3.5rem 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
             position: relative;
-            overflow: hidden;
         }
 
-        .header-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--gradient-accent);
+        /* Printable optimization */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .cv-paper {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
         }
 
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        /* Header Style */
+        .cv-header {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .profile-avatar-container {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            padding: 3px;
-            background: var(--gradient-accent);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .name {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
         }
 
-        .profile-avatar {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #14151c;
-        }
-
-        .profile-name {
-            font-family: var(--font-en);
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-        }
-
-        .profile-title {
-            font-family: var(--font-en);
-            font-size: 1.25rem;
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
             font-weight: 500;
-            color: var(--text-primary);
+            margin-bottom: 0.75rem;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        .profile-status {
-            font-size: 0.95rem;
-            color: var(--secondary-glow);
-            font-weight: 400;
+        .contact-info {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .profile-status span {
-            background: rgba(6, 182, 212, 0.1);
-            padding: 2px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(6, 182, 212, 0.2);
-        }
-
-        /* Main Grid */
-        .cv-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.8fr;
-            gap: 2rem;
-        }
-
-        /* Columns Styling */
-        .sidebar, .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
             gap: 0.75rem;
-            color: var(--text-primary);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
         }
 
-        .section-title svg {
-            width: 22px;
-            height: 22px;
-            stroke: var(--primary-glow);
-            fill: none;
-        }
-
-        /* Contact Details */
-        .contact-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-item a, .contact-item span {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--text-secondary);
+        .contact-info a {
+            color: var(--secondary-color);
             text-decoration: none;
-            font-family: var(--font-en);
             transition: color 0.2s ease;
-            font-size: 0.95rem;
         }
 
-        .contact-item a:hover {
-            color: var(--primary-glow);
+        .contact-info a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
 
-        .contact-item svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
+        .contact-info span.separator {
+            color: #d1d5db;
+        }
+
+        .status-badge {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--secondary-color);
+        }
+
+        /* Section Layout */
+        .cv-section {
+            margin-bottom: 1.75rem;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
         }
 
         /* Biography styling */
         .bio-text {
-            color: var(--text-secondary);
             font-size: 0.95rem;
+            color: var(--secondary-color);
             text-align: justify;
+            line-height: 1.6;
         }
 
-        .bio-pillars {
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-            margin-top: 1.25rem;
-        }
-
-        .bio-pillar-item {
-            display: flex;
-            gap: 0.8rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            align-items: center;
-            transition: all 0.2s ease;
-        }
-
-        .bio-pillar-item:hover {
-            background: rgba(168, 85, 247, 0.08);
-            border-color: rgba(168, 85, 247, 0.2);
-            transform: translateX(3px);
-        }
-
-        .bio-pillar-emoji {
-            font-size: 1.3rem;
-            background: rgba(168, 85, 247, 0.12);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            border: 1px solid rgba(168, 85, 247, 0.15);
-        }
-
-        .bio-pillar-item h5 {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.1rem;
-        }
-
-        .bio-pillar-item p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            line-height: 1.3;
-        }
-
-        /* Skills section */
-        .skills-group {
+        /* Timeline Items (Experience & Education) */
+        .timeline-item {
             margin-bottom: 1.25rem;
         }
 
-        .skills-group:last-child {
+        .timeline-item:last-child {
             margin-bottom: 0;
         }
 
-        .skills-group-title {
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .item-date {
+            font-family: var(--font-sans);
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-primary);
-            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .item-subheader {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        .item-org {
             font-weight: 500;
         }
 
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-badge {
-            font-family: var(--font-en);
-            font-size: 0.85rem;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 6px 12px;
-            border-radius: 30px;
-            color: var(--text-secondary);
-            transition: all 0.2s ease;
-        }
-
-        .skill-badge:hover {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: var(--primary-glow);
-            color: var(--text-primary);
-            transform: scale(1.05);
-        }
-
-        /* Timeline (Education & Experience) */
-        .timeline {
-            position: relative;
-            padding-left: 1.5rem;
-            border-left: 2px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .timeline-item {
-            position: relative;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            left: -1.95rem;
-            top: 6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--bg-color);
-            border: 2px solid var(--secondary-glow);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover .timeline-marker {
-            background: var(--secondary-glow);
-            box-shadow: 0 0 10px var(--secondary-glow);
-        }
-
-        .timeline-time {
-            font-family: var(--font-en);
-            font-size: 0.85rem;
-            color: var(--secondary-glow);
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-
-        .timeline-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            font-weight: 400;
-        }
-
-        .timeline-desc {
+        .item-location {
             font-size: 0.9rem;
-            color: var(--text-secondary);
         }
 
-        .timeline-desc ul {
-            list-style: none;
-            padding-left: 0;
+        /* Bullet points */
+        .bullet-list {
+            list-style-type: disc;
+            padding-left: 1.25rem;
+            font-size: 0.92rem;
+            color: var(--secondary-color);
+            line-height: 1.5;
         }
 
-        .timeline-desc li {
-            margin-bottom: 0.4rem;
-            position: relative;
-            padding-left: 1rem;
+        .bullet-list li {
+            margin-bottom: 0.35rem;
         }
 
-        .timeline-desc li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--primary-glow);
-            font-weight: bold;
+        .bullet-list li:last-child {
+            margin-bottom: 0;
         }
 
-        /* Responsive Design */
-        @media (max-width: 820px) {
-            .cv-grid {
-                grid-template-columns: 1fr;
-            }
-            .header-card {
-                flex-direction: column-reverse;
-                align-items: flex-start;
-                padding-left: 2rem;
-                gap: 1.5rem;
-            }
-            .profile-name {
-                font-size: 2.3rem;
-            }
-            .profile-avatar-container {
-                width: 90px;
-                height: 90px;
-                align-self: flex-start;
+        /* Skills Layout */
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .skills-row {
+            display: flex;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .skills-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-category {
+            font-weight: 700;
+            width: 180px;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .skills-list {
+            color: var(--secondary-color);
+        }
+
+        /* Action Buttons (Screen Only) */
+        .actions-menu {
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .btn-back:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-print {
+            background: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media print {
+            .actions-menu {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="cv-container">
+    <!-- Actions Menu (Hidden on Print) -->
+    <div class="actions-menu">
+        <a href="index.html" class="btn-back">
+            ← Back to Portfolio
+        </a>
+        <button onclick="window.print()" class="btn-print">
+            ⎙ Print CV (PDF)
+        </button>
+    </div>
+
+    <!-- CV Paper Container -->
+    <div class="cv-paper">
         
         <!-- Header -->
-        <header class="glass-card header-card">
-            <div class="profile-info">
-                <h1 class="profile-name">Jakkapon Wapakpet</h1>
-                <p class="profile-title">Full-stack Web Developer | Creative Tech Enthusiast</p>
-                <div class="profile-status">
-                    <span>learner ในโครงการ Junior Software Developer Student (JSD13) ของ Generation Thailand</span>
-                </div>
+        <header class="cv-header">
+            <h1 class="name">Jakkapon Wapakpet</h1>
+            <p class="subtitle">Full-stack Web Developer | Creative Tech Enthusiast</p>
+            <div class="contact-info">
+                <a href="tel:0933656714">093-365-6714</a>
+                <span class="separator">|</span>
+                <a href="mailto:nganeswork@gmail.com">nganeswork@gmail.com</a>
+                <span class="separator">|</span>
+                <a href="https://github.com/Jakkapon-Wapakpet" target="_blank" rel="noopener noreferrer">github.com/Jakkapon-Wapakpet</a>
             </div>
-            <div class="profile-avatar-container">
-                <img src="jakkapon.jpg" alt="Jakkapon Wapakpet" class="profile-avatar">
-            </div>
+            <p class="status-badge">
+                Status: learner ในโครงการ Junior Software Developer Student (JSD13) ของ Generation Thailand
+            </p>
         </header>
 
-        <!-- Two Column Content Grid -->
-        <div class="cv-grid">
+        <!-- About Me Section -->
+        <section class="cv-section">
+            <h2 class="section-title">About Me</h2>
+            <p class="bio-text">
+                ผู้พัฒนาเว็บที่ผสมผสานความเชี่ยวชาญด้านเทคโนโลยีและศิลปะการถ่ายภาพเข้าด้วยกันอย่างลงตัว เพื่อมุ่งเน้นการสร้างสรรค์เว็บแอปพลิเคชันที่มีคุณภาพ
+            </p>
+        </section>
+
+        <!-- Education Section -->
+        <section class="cv-section">
+            <h2 class="section-title">Education</h2>
             
-            <!-- Left Column (Sidebar) -->
-            <aside class="sidebar">
-                
-                <!-- About Me -->
-                <section class="glass-card">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        About Me
-                    </h2>
-                    <p class="bio-text">
-                        ผู้พัฒนาเว็บที่ผสมผสานความเชี่ยวชาญด้านเทคโนโลยีและศิลปะการถ่ายภาพเข้าด้วยกันอย่างลงตัว เพื่อมุ่งเน้นการสร้างสรรค์เว็บแอปพลิเคชันที่มีคุณภาพ
-                    </p>
-                    
-                    <div class="bio-pillars">
-                        <div class="bio-pillar-item">
-                            <span class="bio-pillar-emoji">💻</span>
-                            <div>
-                                <h5>IT & Web Development</h5>
-                                <p>เน้นการพัฒนา Full-stack และจัดการระบบไอที</p>
-                            </div>
-                        </div>
-                        <div class="bio-pillar-item">
-                            <span class="bio-pillar-emoji">📸</span>
-                            <div>
-                                <h5>Creative Photography</h5>
-                                <p>ช่างภาพ 4 ปี เชี่ยวชาญการจัดแสงและแต่งโทนภาพ</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <div class="timeline-item">
+                <div class="item-header">
+                    <span class="item-title">ปริญญาตรี บริหารธุรกิจบัณฑิต (สาขาเทคโนโลยีสารสนเทศ)</span>
+                    <span class="item-date">Graduated</span>
+                </div>
+                <div class="item-subheader">
+                    <span class="item-org">มหาวิทยาลัยเกริก (Krirk University)</span>
+                    <span class="item-location">กรุงเทพฯ, ประเทศไทย</span>
+                </div>
+                <div class="timeline-desc">
+                    <p class="bio-text" style="font-size: 0.9rem;">ศึกษาเกี่ยวกับการจัดการเทคโนโลยีสารสนเทศ ระบบฐานข้อมูล การพัฒนาซอฟต์แวร์ธุรกิจ และการประยุกต์ใช้ไอทีในการบริหารองค์กร</p>
+                </div>
+            </div>
+        </section>
 
-                <!-- Contact -->
-                <section class="glass-card">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        Contact
-                    </h2>
-                    <ul class="contact-list">
-                        <li class="contact-item">
-                            <a href="tel:0933656714">
-                                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                093-365-6714
-                            </a>
-                        </li>
-                        <li class="contact-item">
-                            <a href="mailto:nganeswork@gmail.com">
-                                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                nganeswork@gmail.com
-                            </a>
-                        </li>
-                        <li class="contact-item">
-                            <a href="https://github.com/Jakkapon-Wapakpet/" target="_blank" rel="noopener noreferrer">
-                                <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                                github.com/Jakkapon-Wapakpet
-                            </a>
-                        </li>
-                    </ul>
-                </section>
-
-                <!-- Skills -->
-                <section class="glass-card">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                        Skills
-                    </h2>
-                    
-                    <div class="skills-group">
-                        <h3 class="skills-group-title">Development</h3>
-                        <div class="skills-container">
-                            <span class="skill-badge">HTML5</span>
-                            <span class="skill-badge">CSS3</span>
-                            <span class="skill-badge">JavaScript</span>
-                            <span class="skill-badge">React</span>
-                            <span class="skill-badge">Node.js</span>
-                            <span class="skill-badge">Express</span>
-                            <span class="skill-badge">Git & GitHub</span>
-                            <span class="skill-badge">Responsive Design</span>
-                        </div>
-                    </div>
-
-                    <div class="skills-group" style="margin-top: 1.25rem;">
-                        <h3 class="skills-group-title">Creative & Media</h3>
-                        <div class="skills-container">
-                            <span class="skill-badge">Photography</span>
-                            <span class="skill-badge">Lighting Composition</span>
-                            <span class="skill-badge">Adobe Photoshop</span>
-                            <span class="skill-badge">Adobe Lightroom</span>
-                            <span class="skill-badge">Color Grading</span>
-                        </div>
-                    </div>
-
-                    <div class="skills-group" style="margin-top: 1.25rem;">
-                        <h3 class="skills-group-title">Professional Skills</h3>
-                        <div class="skills-container">
-                            <span class="skill-badge">Attention to Detail</span>
-                            <span class="skill-badge">Problem Solving</span>
-                        </div>
-                    </div>
-                </section>
-
-            </aside>
-
-            <!-- Right Column (Main Content) -->
-            <main class="main-content">
-                
-                <!-- Work Experience -->
-                <section class="glass-card">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                        Work Experience
-                    </h2>
-                    <div class="timeline">
-                        
-                        <!-- Experience Item 1 (Tech Experience) -->
-                        <div class="timeline-item">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-time">Current (ปัจจุบัน)</div>
-                            <h3 class="timeline-title">Junior Software Developer Student</h3>
-                            <h4 class="timeline-subtitle">Generation Thailand (Cohort 13)</h4>
-                            <div class="timeline-desc">
-                                <ul>
-                                    <li>ศึกษาและพัฒนาทักษะด้าน Full-stack Web Development (HTML, CSS, JavaScript, React, Node.js, SQL)</li>
-                                    <li>เรียนรู้กระบวนการทำงานร่วมกันแบบทีม (Agile/Scrum) และฝึกฝนการเขียนโปรแกรมเพื่อสร้างโครงงานประยุกต์จริง</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Experience Item 2 -->
-                        <div class="timeline-item">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-time">4 Years (4 ปี)</div>
-                            <h3 class="timeline-title">ช่างภาพ (Photographer)</h3>
-                            <h4 class="timeline-subtitle">ช่างภาพอิสระ / ฟรีแลนซ์</h4>
-                            <div class="timeline-desc">
-                                <ul>
-                                    <li>ให้บริการถ่ายภาพบุคคล ทิวทัศน์ และงานกิจกรรมต่าง ๆ โดยเน้นการจัดแสงและองค์ประกอบภาพที่สร้างสรรค์และมีเรื่องราว</li>
-                                    <li>มีความเชี่ยวชาญด้านงาน Post-production ทั้งการแต่งโทนสี (Color Grading) และปรับแต่งรูปภาพด้วย Adobe Lightroom และ Adobe Photoshop</li>
-                                    <li>บริหารจัดการความต้องการของลูกค้าและการส่งมอบงานที่ตรงเวลาอย่างมืออาชีพ</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-                <!-- Education -->
-                <section class="glass-card">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
-                        Education
-                    </h2>
-                    <div class="timeline">
-                        
-                        <!-- Education Item 1 -->
-                        <div class="timeline-item">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-time">Undergraduate</div>
-                            <h3 class="timeline-title">ปริญญาตรี คณะบริหารธุรกิจ สาขาเทคโนโลยีสารสนเทศ (IT)</h3>
-                            <h4 class="timeline-subtitle">มหาวิทยาลัยเกริก (Krirk University)</h4>
-                            <div class="timeline-desc">
-                                <p>ศึกษาเกี่ยวกับการจัดการเทคโนโลยีสารสนเทศ ระบบฐานข้อมูล การพัฒนาซอฟต์แวร์ธุรกิจ และการประยุกต์ใช้ไอทีในการบริหารองค์กร</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
+        <!-- Experience Section -->
+        <section class="cv-section">
+            <h2 class="section-title">Work Experience</h2>
+            
+            <!-- Experience Item 1 -->
+            <div class="timeline-item">
+                <div class="item-header">
+                    <span class="item-title">Junior Software Developer Student</span>
+                    <span class="item-date">2026 - Present</span>
+                </div>
+                <div class="item-subheader">
+                    <span class="item-org">Generation Thailand (Cohort 13)</span>
+                    <span class="item-location">กรุงเทพฯ, ประเทศไทย (Remote)</span>
+                </div>
+                <ul class="bullet-list">
+                    <li>ศึกษาและพัฒนาทักษะด้าน Full-stack Web Development (HTML, CSS, JavaScript, React, Node.js, SQL)</li>
+                    <li>เรียนรู้กระบวนการทำงานร่วมกันแบบทีม (Agile/Scrum) และฝึกฝนการเขียนโปรแกรมเพื่อสร้างโครงงานประยุกต์จริง</li>
+                </ul>
             </div>
 
-        </div>
+            <!-- Experience Item 2 -->
+            <div class="timeline-item">
+                <div class="item-header">
+                    <span class="item-title">ช่างภาพอิสระ (Photographer)</span>
+                    <span class="item-date">4 Years (4 ปี)</span>
+                </div>
+                <div class="item-subheader">
+                    <span class="item-org">ช่างภาพอิสระ / ฟรีแลนซ์</span>
+                    <span class="item-location">ประเทศไทย</span>
+                </div>
+                <ul class="bullet-list">
+                    <li>ให้บริการถ่ายภาพบุคคล ทิวทัศน์ และงานกิจกรรมต่าง ๆ โดยเน้นการจัดแสงและองค์ประกอบภาพที่สร้างสรรค์และมีเรื่องราว</li>
+                    <li>มีความเชี่ยวชาญด้านงาน Post-production ทั้งการแต่งโทนสี (Color Grading) และปรับแต่งรูปภาพด้วย Adobe Lightroom และ Adobe Photoshop</li>
+                    <li>บริหารจัดการความต้องการของลูกค้าและการส่งมอบงานที่ตรงเวลาอย่างมืออาชีพ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Technical & Professional Skills -->
+        <section class="cv-section">
+            <h2 class="section-title">Skills & Interests</h2>
+            
+            <div class="skills-table">
+                <div class="skills-row">
+                    <span class="skills-category">Web Development:</span>
+                    <span class="skills-list">HTML5, CSS3, JavaScript, React, Node.js, Express, Git & GitHub, Responsive Design</span>
+                </div>
+                <div class="skills-row">
+                    <span class="skills-category">Creative & Media:</span>
+                    <span class="skills-list">Photography, Lighting Composition, Adobe Photoshop, Adobe Lightroom, Color Grading</span>
+                </div>
+                <div class="skills-row">
+                    <span class="skills-category">Professional Skills:</span>
+                    <span class="skills-list">Attention to Detail, Problem Solving, Time Management, Collaboration</span>
+                </div>
+            </div>
+        </section>
 
     </div>
 
