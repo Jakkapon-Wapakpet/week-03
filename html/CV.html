@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Resume/CV ของ Jakkapon Wapakpet - Full-stack Web Developer และ Photographer">
-    <title>Jakkapon Wapakpet - CV (Harvard Style)</title>
-    <!-- Google Fonts: Outfit & Prompt -->
+    <meta name="description" content="Harvard Style Resume/CV of Jakkapon Wapakpet">
+    <title>Jakkapon Wapakpet - Resume (Harvard Style)</title>
+    <!-- Google Fonts: Outfit for sans-serif interface elements, Prompt & Playfair Display for serif resume text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     
     <style>
-        /* Harvard Resume Style Guidelines */
         :root {
             --primary-color: #000000;
-            --secondary-color: #374151; /* Dark Gray */
-            --bg-page: #f3f4f6; /* Off-white background for screen view */
+            --secondary-color: #2d3748; /* Slate Gray Dark */
+            --bg-page: #f4f5f7;
             --bg-cv: #ffffff;
-            --border-color: #000000;
-            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-serif: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
             --font-sans: 'Outfit', 'Prompt', sans-serif;
         }
 
@@ -31,23 +29,22 @@
         body {
             background-color: var(--bg-page);
             color: var(--primary-color);
-            font-family: var(--font-sans);
-            line-height: 1.5;
+            font-family: var(--font-serif);
+            font-size: 10.5pt;
+            line-height: 1.4;
             padding: 3rem 1rem;
         }
 
-        /* CV Paper Container */
+        /* Paper container matching standard US Letter */
         .cv-paper {
             max-width: 800px;
             margin: 0 auto;
             background: var(--bg-cv);
-            padding: 3.5rem 3rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 4rem 3.5rem;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
             border-radius: 4px;
-            position: relative;
         }
 
-        /* Printable optimization */
         @media print {
             body {
                 background: none;
@@ -64,142 +61,115 @@
         /* Header Style */
         .cv-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .name {
-            font-family: var(--font-serif);
-            font-size: 2.2rem;
+            font-size: 20pt;
             font-weight: 700;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 0.5rem;
-            color: var(--primary-color);
         }
 
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--secondary-color);
-            font-weight: 500;
+        .header-line {
+            border: 0;
+            border-top: 1px solid #000000;
             margin-bottom: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .contact-info {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 0.75rem;
-            font-size: 0.9rem;
+            gap: 0.5rem;
+            font-size: 9.5pt;
             color: var(--secondary-color);
-            margin-bottom: 0.5rem;
         }
 
         .contact-info a {
             color: var(--secondary-color);
             text-decoration: none;
-            transition: color 0.2s ease;
         }
 
         .contact-info a:hover {
-            color: var(--primary-color);
             text-decoration: underline;
         }
 
         .contact-info span.separator {
-            color: #d1d5db;
+            color: #777777;
         }
 
         .status-badge {
-            font-size: 0.85rem;
+            font-size: 8.5pt;
             font-style: italic;
-            color: var(--secondary-color);
+            color: #555555;
+            margin-top: 0.5rem;
         }
 
-        /* Section Layout */
+        /* Section layout */
         .cv-section {
-            margin-bottom: 1.75rem;
+            margin-top: 1.5rem;
         }
 
         .section-title {
-            font-family: var(--font-serif);
-            font-size: 1.15rem;
-            font-weight: 700;
+            font-size: 11pt;
+            font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.25rem;
+            text-align: center;
             margin-bottom: 1rem;
-            color: var(--primary-color);
+            position: relative;
         }
 
-        /* Biography styling */
-        .bio-text {
-            font-size: 0.95rem;
-            color: var(--secondary-color);
-            text-align: justify;
-            line-height: 1.6;
-        }
-
-        /* Timeline Items (Experience & Education) */
-        .timeline-item {
+        /* Entry structure */
+        .cv-entry {
             margin-bottom: 1.25rem;
         }
 
-        .timeline-item:last-child {
+        .cv-entry:last-child {
             margin-bottom: 0;
         }
 
-        .item-header {
+        .entry-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
         }
 
-        .item-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--primary-color);
+        .org-name {
+            font-weight: bold;
+            font-size: 10.5pt;
         }
 
-        .item-date {
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--secondary-color);
+        .location {
+            font-weight: normal;
+            font-size: 10pt;
         }
 
-        .item-subheader {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 0.5rem;
+        .role-title {
             font-style: italic;
-            color: var(--secondary-color);
-            font-size: 0.95rem;
+            font-size: 10pt;
         }
 
-        .item-org {
-            font-weight: 500;
+        .date-range {
+            font-style: italic;
+            font-size: 10pt;
         }
 
-        .item-location {
-            font-size: 0.9rem;
-        }
-
-        /* Bullet points */
+        /* Bullets */
         .bullet-list {
             list-style-type: disc;
-            padding-left: 1.25rem;
-            font-size: 0.92rem;
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+            font-size: 10pt;
             color: var(--secondary-color);
-            line-height: 1.5;
         }
 
         .bullet-list li {
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.25rem;
+            text-align: justify;
         }
 
         .bullet-list li:last-child {
@@ -207,46 +177,39 @@
         }
 
         /* Skills Layout */
-        .skills-table {
-            width: 100%;
-            border-collapse: collapse;
+        .skills-list {
+            margin-top: 0.5rem;
+            font-size: 10pt;
+            line-height: 1.5;
         }
 
-        .skills-row {
-            display: flex;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .skills-row:last-child {
-            margin-bottom: 0;
+        .skills-item {
+            margin-bottom: 0.35rem;
         }
 
         .skills-category {
-            font-weight: 700;
-            width: 180px;
-            color: var(--primary-color);
-            flex-shrink: 0;
+            font-weight: bold;
         }
 
-        .skills-list {
+        .skills-content {
             color: var(--secondary-color);
         }
 
-        /* Action Buttons (Screen Only) */
+        /* Action Menu (Screen Only) */
         .actions-menu {
             max-width: 800px;
             margin: 0 auto 1.5rem auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-family: var(--font-sans);
         }
 
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--secondary-color);
+            color: #555555;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
@@ -254,15 +217,14 @@
         }
 
         .btn-back:hover {
-            color: var(--primary-color);
+            color: #000000;
         }
 
         .btn-print {
-            background: var(--primary-color);
+            background: #000000;
             color: #ffffff;
             border: none;
             padding: 8px 16px;
-            font-family: var(--font-sans);
             font-size: 0.85rem;
             font-weight: 600;
             border-radius: 4px;
@@ -274,7 +236,7 @@
         }
 
         .btn-print:hover {
-            background-color: var(--secondary-color);
+            background-color: #333333;
         }
 
         @media print {
@@ -303,13 +265,13 @@
 </head>
 <body>
 
-    <!-- Actions Menu (Hidden on Print) -->
+    <!-- Actions Menu (Screen Only) -->
     <div class="actions-menu">
         <a href="index.html" class="btn-back">
             ← Back to Portfolio
         </a>
         <div style="display: flex; gap: 0.75rem;">
-            <button id="lang-toggle" class="btn-print" style="background-color: var(--secondary-color);">
+            <button id="lang-toggle" class="btn-print" style="background-color: #555555;">
                 🌐 Switch to TH
             </button>
             <button onclick="window.print()" class="btn-print">
@@ -324,12 +286,14 @@
         <!-- Header -->
         <header class="cv-header">
             <h1 class="name">Jakkapon Wapakpet</h1>
-            <p class="subtitle">Full-stack Web Developer | Creative Tech Enthusiast</p>
+            <hr class="header-line">
             <div class="contact-info">
+                <span>Bangkok, Thailand</span>
+                <span class="separator">•</span>
                 <a href="tel:0933656714">093-365-6714</a>
-                <span class="separator">|</span>
+                <span class="separator">•</span>
                 <a href="mailto:nganeswork@gmail.com">nganeswork@gmail.com</a>
-                <span class="separator">|</span>
+                <span class="separator">•</span>
                 <a href="https://github.com/Jakkapon-Wapakpet" target="_blank" rel="noopener noreferrer">github.com/Jakkapon-Wapakpet</a>
             </div>
             <p class="status-badge">
@@ -338,64 +302,52 @@
             </p>
         </header>
 
-        <!-- About Me Section -->
-        <section class="cv-section">
-            <h2 class="section-title">
-                <span class="lang-en">About Me</span>
-                <span class="lang-th">เกี่ยวกับฉัน</span>
-            </h2>
-            <p class="bio-text lang-en">
-                A web developer who seamlessly combines expertise in technology and the art of photography <br><strong>with a strong focus on creating high-quality web applications.</strong>
-            </p>
-            <p class="bio-text lang-th">
-                ผู้พัฒนาเว็บที่ผสมผสานความเชี่ยวชาญด้านเทคโนโลยีและศิลปะการถ่ายภาพเข้าด้วยกันอย่างลงตัว <br><strong>เพื่อมุ่งเน้นการสร้างสรรค์เว็บแอปพลิเคชันที่มีคุณภาพ</strong>
-            </p>
-        </section>
-
         <!-- Education Section -->
         <section class="cv-section">
-            <h2 class="section-title">
+            <div class="section-title">
                 <span class="lang-en">Education</span>
                 <span class="lang-th">การศึกษา</span>
-            </h2>
+            </div>
             
-            <div class="timeline-item">
-                <div class="item-header">
-                    <span class="item-title lang-en">Bachelor of Business Administration (B.B.A.) in Information Technology</span>
-                    <span class="item-title lang-th">ปริญญาตรี บริหารธุรกิจบัณฑิต (สาขาเทคโนโลยีสารสนเทศ)</span>
-                    <span class="item-date">Graduated</span>
+            <div class="cv-entry">
+                <div class="entry-row">
+                    <span class="org-name lang-en">Krirk University</span>
+                    <span class="org-name lang-th">มหาวิทยาลัยเกริก (Krirk University)</span>
+                    <span class="location lang-en">Bangkok, Thailand</span>
+                    <span class="location lang-th">กรุงเทพฯ, ประเทศไทย</span>
                 </div>
-                <div class="item-subheader">
-                    <span class="item-org lang-en">Krirk University</span>
-                    <span class="item-org lang-th">มหาวิทยาลัยเกริก (Krirk University)</span>
-                    
-                    <span class="item-location lang-en">Bangkok, Thailand</span>
-                    <span class="item-location lang-th">กรุงเทพฯ, ประเทศไทย</span>
+                <div class="entry-row">
+                    <span class="role-title lang-en">Bachelor of Business Administration (B.B.A.) in Information Technology</span>
+                    <span class="role-title lang-th">ปริญญาตรี บริหารธุรกิจบัณฑิต (สาขาเทคโนโลยีสารสนเทศ)</span>
+                    <span class="date-range">Graduated</span>
                 </div>
-                <div class="timeline-desc">
-                    <p class="bio-text lang-en" style="font-size: 0.9rem;">Studied information technology management, database systems, business software development, and the application of IT in corporate administration.</p>
-                    <p class="bio-text lang-th" style="font-size: 0.9rem;">ศึกษาเกี่ยวกับการจัดการเทคโนโลยีสารสนเทศ ระบบฐานข้อมูล การพัฒนาซอฟต์แวร์ธุรกิจ และการประยุกต์ใช้ไอทีในการบริหารองค์กร</p>
-                </div>
+                <ul class="bullet-list lang-en">
+                    <li>Studied information technology management, database systems, business software development, and the application of IT in corporate administration.</li>
+                </ul>
+                <ul class="bullet-list lang-th">
+                    <li>ศึกษาเกี่ยวกับการจัดการเทคโนโลยีสารสนเทศ ระบบฐานข้อมูล การพัฒนาซอฟต์แวร์ธุรกิจ และการประยุกต์ใช้ไอทีในการบริหารองค์กร</li>
+                </ul>
             </div>
         </section>
 
         <!-- Experience Section -->
         <section class="cv-section">
-            <h2 class="section-title">
-                <span class="lang-en">Work Experience</span>
-                <span class="lang-th">ประสบการณ์การทำงาน</span>
-            </h2>
+            <div class="section-title">
+                <span class="lang-en">Experience</span>
+                <span class="lang-th">ประสบการณ์ทำงาน</span>
+            </div>
             
             <!-- Experience Item 1 -->
-            <div class="timeline-item">
-                <div class="item-header">
-                    <span class="item-title">Junior Software Developer Student</span>
-                    <span class="item-date">2026 - Present</span>
+            <div class="cv-entry">
+                <div class="entry-row">
+                    <span class="org-name">Generation Thailand</span>
+                    <span class="location lang-en">Bangkok, Thailand (Remote)</span>
+                    <span class="location lang-th">กรุงเทพฯ, ประเทศไทย (Remote)</span>
                 </div>
-                <div class="item-subheader">
-                    <span class="item-org">Generation Thailand (Cohort 13)</span>
-                    <span class="item-location lang-en">Bangkok, Thailand (Remote)</span>
-                    <span class="item-location lang-th">กรุงเทพฯ, ประเทศไทย (Remote)</span>
+                <div class="entry-row">
+                    <span class="role-title lang-en">Junior Software Developer Student (Cohort 13)</span>
+                    <span class="role-title lang-th">นักเรียนโปรแกรมเมอร์ (Junior Software Developer Student - Cohort 13)</span>
+                    <span class="date-range">2026 - Present</span>
                 </div>
                 <ul class="bullet-list lang-en">
                     <li>Study and develop full-stack web development skills (HTML, CSS, JavaScript, React, Node.js, SQL).</li>
@@ -408,19 +360,18 @@
             </div>
 
             <!-- Experience Item 2 -->
-            <div class="timeline-item">
-                <div class="item-header">
-                    <span class="item-title lang-en">Freelance Photographer</span>
-                    <span class="item-title lang-th">ช่างภาพอิสระ (Photographer)</span>
-                    <span class="item-date lang-en">4 Years</span>
-                    <span class="item-date lang-th">4 ปี</span>
+            <div class="cv-entry">
+                <div class="entry-row">
+                    <span class="org-name lang-en">Freelance Creative Media</span>
+                    <span class="org-name lang-th">สื่อสร้างสรรค์อิสระ (Freelance Creative Media)</span>
+                    <span class="location lang-en">Thailand</span>
+                    <span class="location lang-th">ประเทศไทย</span>
                 </div>
-                <div class="item-subheader">
-                    <span class="item-org lang-en">Self-Employed / Freelance</span>
-                    <span class="item-org lang-th">ช่างภาพอิสระ / ฟรีแลนซ์</span>
-                    
-                    <span class="item-location lang-en">Thailand</span>
-                    <span class="item-location lang-th">ประเทศไทย</span>
+                <div class="entry-row">
+                    <span class="role-title lang-en">Freelance Photographer</span>
+                    <span class="role-title lang-th">ช่างภาพอิสระ (Freelance Photographer)</span>
+                    <span class="date-range lang-en">4 Years</span>
+                    <span class="date-range lang-th">4 ปี</span>
                 </div>
                 <ul class="bullet-list lang-en">
                     <li>Provided portrait, landscape, and event photography services, emphasizing creative lighting and narrative compositions.</li>
@@ -433,27 +384,59 @@
                     <li>บริหารจัดการความต้องการของลูกค้าและการส่งมอบงานที่ตรงเวลาอย่างมืออาชีพ</li>
                 </ul>
             </div>
+
+            <!-- Experience Item 3 (Law Clerk) -->
+            <div class="cv-entry">
+                <div class="entry-row">
+                    <span class="org-name lang-en">Law Firm / Law Office</span>
+                    <span class="org-name lang-th">สำนักงานกฎหมาย</span>
+                    <span class="location lang-en">Bangkok, Thailand</span>
+                    <span class="location lang-th">กรุงเทพฯ, ประเทศไทย</span>
+                </div>
+                <div class="entry-row">
+                    <span class="role-title lang-en">Law Clerk</span>
+                    <span class="role-title lang-th">เสมียนทนาย (Law Clerk)</span>
+                    <span class="date-range lang-en">4 Years</span>
+                    <span class="date-range lang-th">4 ปี</span>
+                </div>
+                <ul class="bullet-list lang-en">
+                    <li>Assisted in drafting legal documents, pleadings, contracts, and petitions with high precision.</li>
+                    <li>Coordinated the filing of lawsuits, motions, and official documents with the courts and relevant government agencies.</li>
+                    <li>Conducted legal research, analyzed precedents, and Supreme Court rulings to assist attorneys in case preparation.</li>
+                </ul>
+                <ul class="bullet-list lang-th">
+                    <li>สนับสนุนงานจัดเตรียมและจัดทำเอกสารทางกฎหมาย เช่น คำคู่ความ สัญญา และคำร้องต่าง ๆ อย่างละเอียดถูกต้อง</li>
+                    <li>ดำเนินการประสานงานยื่นคำคู่ความและเอกสารต่อศาลและหน่วยงานราชการที่เกี่ยวข้อง</li>
+                    <li>ช่วยค้นคว้าวิเคราะห์ข้อมูลข้อกฎหมาย แนวคำพิพากษาศาลฎีกา เพื่อช่วยเตรียมคดีให้กับทนายความ</li>
+                </ul>
+            </div>
         </section>
 
         <!-- Technical & Professional Skills -->
         <section class="cv-section">
-            <h2 class="section-title">
+            <div class="section-title">
                 <span class="lang-en">Skills & Interests</span>
                 <span class="lang-th">ทักษะและความสนใจ</span>
-            </h2>
+            </div>
             
-            <div class="skills-table">
-                <div class="skills-row">
-                    <span class="skills-category">Web Development:</span>
-                    <span class="skills-list">HTML5, CSS3, JavaScript, React, Node.js, Express, Git & GitHub, Responsive Design</span>
+            <div class="skills-list">
+                <div class="skills-item">
+                    <span class="skills-category">Technical:</span>
+                    <span class="skills-content">HTML5, CSS3, JavaScript, React, Node.js, Express, Git & GitHub, Responsive Design</span>
                 </div>
-                <div class="skills-row">
-                    <span class="skills-category">Creative & Media:</span>
-                    <span class="skills-list">Photography, Lighting Composition, Adobe Photoshop, Adobe Lightroom, Color Grading</span>
+                <div class="skills-item">
+                    <span class="skills-category">Language:</span>
+                    <span class="skills-content">
+                        <span class="lang-en">English (Conversational), Thai (Native)</span>
+                        <span class="lang-th">ภาษาอังกฤษ (ระดับสื่อสาร), ภาษาไทย (ภาษาแม่)</span>
+                    </span>
                 </div>
-                <div class="skills-row">
-                    <span class="skills-category">Professional Skills:</span>
-                    <span class="skills-list">Attention to Detail, Problem Solving, Time Management, Collaboration</span>
+                <div class="skills-item">
+                    <span class="skills-category">Interests:</span>
+                    <span class="skills-content">
+                        <span class="lang-en">Creative Photography, Content Creation, Technology Trends</span>
+                        <span class="lang-th">การถ่ายภาพแนวสร้างสรรค์, การทำคอนเทนต์, ติดตามเทคโนโลยีใหม่ ๆ</span>
+                    </span>
                 </div>
             </div>
         </section>
