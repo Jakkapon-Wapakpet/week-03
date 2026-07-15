@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jakka DevGear - ร้านอุปกรณ์คอมพิวเตอร์และคีย์บอร์ดกลไกสำหรับนักพัฒนา">
+    <title>Jakka DevGear - Custom Mechanical Keyboards</title>
+    <!-- Google Fonts: Prompt & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Prompt:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables & Theme matching portfolio */
+        :root {
+            --bg-color: #060913;
+            --card-bg: rgba(13, 19, 33, 0.65);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-teal: #00f5d4;
+            --accent-indigo: #4f46e5;
+            --accent-pink: #f472b6;
+            --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #00f5d4 100%);
+            --font-sans: 'Outfit', 'Prompt', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glowing Orbs background */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: 10%;
+            right: -10%;
+            background: var(--accent-teal);
+        }
+
+        body::after {
+            bottom: 20%;
+            left: -10%;
+            background: var(--accent-indigo);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4.5rem;
+            animation: pageFadeIn 0.8s ease-out;
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.25s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-teal);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease !important;
+        }
+
+        .back-btn:hover {
+            background: var(--gradient-primary);
+            color: var(--text-primary) !important;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(0, 245, 212, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 3rem;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 245, 212, 0.25);
+            box-shadow: 0 12px 45px rgba(0, 245, 212, 0.12);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+            padding: 2rem 0;
+        }
+
+        .hero-content {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-badge {
+            align-self: flex-start;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(0, 245, 212, 0.12);
+            border: 1px solid rgba(0, 245, 212, 0.3);
+            color: var(--accent-teal);
+            padding: 6px 16px;
+            border-radius: 100px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--bg-color);
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(0, 245, 212, 0.25);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 245, 212, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Image Container */
+        .hero-image-container {
+            flex: 0.9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-glow-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            border-radius: 24px;
+            padding: 6px;
+            background: linear-gradient(135deg, var(--accent-indigo), var(--accent-teal));
+            box-shadow: 0 0 35px rgba(79, 70, 229, 0.25);
+            animation: floatImage 4s ease-in-out infinite;
+        }
+
+        @keyframes floatImage {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .image-glow-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+            border: 4px solid var(--bg-color);
+        }
+
+        /* Section Headings */
+        .section-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle-small {
+            font-size: 0.85rem;
+            color: var(--accent-teal);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        /* Products & Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .service-card:hover {
+            background: rgba(79, 70, 229, 0.06);
+            border-color: rgba(79, 70, 229, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.1);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            background: rgba(79, 70, 229, 0.12);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+
+        .service-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Facilities Section */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .facility-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-start;
+            transition: all 0.25s ease;
+        }
+
+        .facility-item:hover {
+            background: rgba(0, 245, 212, 0.06);
+            border-color: rgba(0, 245, 212, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .facility-emoji {
+            font-size: 1.8rem;
+        }
+
+        .facility-item h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .facility-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        /* How to Order Steps */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .step-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.25s ease;
+        }
+
+        .step-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .step-num {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .step-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .step-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Location Card */
+        .location-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+        }
+
+        .map-mock {
+            width: 100%;
+            height: 300px;
+            border-radius: 20px;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Custom graphic mapping lines in background */
+        .map-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(rgba(0, 245, 212, 0.08) 1.5px, transparent 1.5px),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 1;
+        }
+
+        .map-pin {
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+            z-index: 5;
+            position: relative;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .map-label {
+            z-index: 5;
+            position: relative;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .map-desc {
+            z-index: 5;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: var(--font-sans);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 820px) {
+            .container {
+                gap: 3rem;
+                padding: 1.5rem 1rem;
+            }
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 2rem;
+            }
+            .hero-content {
+                align-items: center;
+            }
+            .hero-badge {
+                align-self: center;
+            }
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .hero-cta {
+                justify-content: center;
+            }
+            .image-glow-wrapper {
+                max-width: 280px;
+            }
+            .services-grid, .steps-container {
+                grid-template-columns: 1fr;
+            }
+            .glass-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Navigation Header -->
+        <header class="nav-header">
+            <a href="#" class="logo">JAKKA DEVGEAR</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#facilities">Facilities</a></li>
+                    <li><a href="#order">How to Order</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="index.html" class="back-btn">Back to Portfolio</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-badge">Mechanical Keyboard & Modding Studio</span>
+                <h1 class="hero-title">Jakka DevGear</h1>
+                <p class="hero-desc">
+                    "สะท้อนตัวตนผ่านคีย์บอร์ดที่คุณออกแบบเอง" – สตูดิโอคีย์บอร์ดกลไก (Mechanical Keyboard) ระดับพรีเมียมสำหรับนักพัฒนาโปรแกรมและผู้ที่หลงใหลในความฟินของการพิมพ์ เราคัดสรรเฉพาะอุปกรณ์ สวิตช์ และคีย์แคปเกรดพรีเมียมเพื่อให้ทุกสัมผัสของคุณสมบูรณ์แบบที่สุด
+                </p>
+                <div class="hero-cta">
+                    <a href="#services" class="btn-primary">ดูบริการของเรา</a>
+                    <a href="#location" class="btn-secondary">📍 ตำแหน่งที่ตั้งร้าน</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <div class="image-glow-wrapper">
+                    <img src="devgear_keyboard.png" alt="Jakka DevGear Custom Mechanical Keyboard">
+                </div>
+            </div>
+        </section>
+
+        <!-- Products & Services Section -->
+        <section class="glass-card" id="services">
+            <div class="section-header">
+                <p class="section-subtitle-small">Premium Services</p>
+                <h2 class="section-title">Products & Services</h2>
+            </div>
+            <div class="services-grid">
+                
+                <!-- Card 1 -->
+                <div class="service-card">
+                    <div class="service-icon">🛠️</div>
+                    <h3>Custom Tuning & Modding</h3>
+                    <p>บริการประกอบและปรับแต่งเสียงคีย์บอร์ดอย่างเชี่ยวชาญ หยอดสารหล่อลื่น (Lube Switches & Stabilizers) และจัดวางโฟมซับเสียงเพื่อสัมผัสการกดที่นุ่มฟูและเสียงที่ไพเราะ (Thocky/Clacky) ตามแบบที่คุณต้องการ</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="service-card">
+                    <div class="service-icon">💡</div>
+                    <h3>Free Custom Consulting</h3>
+                    <p>รับคำปรึกษาฟรีจากผู้เชี่ยวชาญด้านคีย์บอร์ด เพื่อช่วยเลือกเลย์เอาต์ (Layout), สวิตช์คีย์บอร์ด (Linear/Tactile/Clicky), และความสูงของคีย์แคป (Keycap Profile) ที่เหมาะสมกับสรีรศาสตร์และนิสัยการพิมพ์ของคุณ</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="service-card">
+                    <div class="service-icon">⌨️</div>
+                    <h3>Premium Desk Gear</h3>
+                    <p>คัดสรรและจัดจำหน่ายคีย์แคปคุณภาพสูง เคสคีย์บอร์ด สวิตช์หลากหลายรุ่น และอุปกรณ์ตกแต่งโต๊ะทำงานที่คัดสรรมาเพื่อตอบโจทย์ทั้งความสวยงามและประสิทธิภาพของ Developer ยุคใหม่</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Facilities Section -->
+        <section class="glass-card" id="facilities">
+            <div class="section-header">
+                <p class="section-subtitle-small">Extra Comfort</p>
+                <h2 class="section-title">Our Facilities</h2>
+            </div>
+            <div class="facilities-grid">
+                
+                <!-- Facility 1 -->
+                <div class="facility-item">
+                    <div class="facility-emoji">🚗</div>
+                    <h4>ที่จอดรถกว้างขวาง</h4>
+                    <p>มีพื้นที่จอดรถสะดวกสบายและปลอดภัยหน้าร้าน รองรับลูกค้าทุกท่านที่เดินทางมาหาเรา</p>
+                </div>
+
+                <!-- Facility 2 -->
+                <div class="facility-item">
+                    <div class="facility-emoji">📶</div>
+                    <h4>1Gbps High-Speed Wi-Fi</h4>
+                    <p>อินเทอร์เน็ตความเร็วสูงระดับกิกะบิตฟรี เหมาะสำหรับนั่งทำงานหรือคุยงานชิลๆ</p>
+                </div>
+
+                <!-- Facility 3 -->
+                <div class="facility-item">
+                    <div class="facility-emoji">☕</div>
+                    <h4>กาแฟดริฟต์ Specialty ฟรี</h4>
+                    <p>กาแฟดริฟต์สเปเชียลตี้คัดเมล็ดพรีเมียม ชงสดใหม่ฟรีสำหรับลูกค้าที่แวะเข้ามาทดลองพิมพ์</p>
+                </div>
+
+                <!-- Facility 4 -->
+                <div class="facility-item">
+                    <div class="facility-emoji">🛠️</div>
+                    <h4>โซน DIY Mod Station</h4>
+                    <p>มุมเครื่องมือช่างและบอร์ดสำหรับให้คุณทดลองประกอบหรือทำ Modding คีย์บอร์ดได้ด้วยตนเอง</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- How to Order Section -->
+        <section class="glass-card" id="order">
+            <div class="section-header">
+                <p class="section-subtitle-small">Purchase Experience</p>
+                <h2 class="section-title">How to Order (โอน-จ่าย-จบ!)</h2>
+            </div>
+            <div class="steps-container">
+                
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <span class="step-num">Step 01</span>
+                    <h3>เลือกและทดลองพิมพ์</h3>
+                    <p>แวะมาที่ร้านเพื่อสัมผัสและทดลองพิมพ์จริงกับสวิตช์และเลย์เอาต์ต่าง ๆ ในสตูดิโอของเราเพื่อค้นหาสัมผัสการพิมพ์ที่คุณหลงรักมากที่สุด</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <span class="step-num">Step 02</span>
+                    <h3>สแกนจ่ายง่าย ๆ</h3>
+                    <p>สแกนชำระเงินสะดวกรวดเร็วผ่าน QR Code / โอนชำระเงินผ่าน Mobile Banking หน้าร้านได้อย่างรวดเร็วและปลอดภัย</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <span class="step-num">Step 03</span>
+                    <h3>รับกลับบ้านพร้อมประกัน</h3>
+                    <p>รับคีย์บอร์ดตัวโปรดของคุณกลับบ้านพร้อมบริการหลังการขายและการรับประกันสินค้ายาวนานสูงสุดถึง 2 ปีเต็ม (โอน-จ่าย-จบ!)</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="glass-card location-card" id="location">
+            <div class="section-header" style="margin-bottom: 0.5rem;">
+                <p class="section-subtitle-small">Visit Our Studio</p>
+                <h2 class="section-title">Location</h2>
+            </div>
+            
+            <div class="map-mock">
+                <div class="map-grid-bg"></div>
+                <div class="map-pin">📍</div>
+                <div class="map-label">Jakka DevGear Studio</div>
+                <div class="map-desc">Bangkok, Thailand (ตั้งอยู่ใกล้แหล่งอำนวยความสะดวก ที่จอดรถกว้างขวาง เดินทางสะดวกสบาย)</div>
+            </div>
+
+            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                📍 ค้นหาตำแหน่งร้านบน Google Maps
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Jakka DevGear. Designed for Developers with Love.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
