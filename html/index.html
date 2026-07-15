@@ -302,12 +302,7 @@
             color: var(--text-primary);
         }
 
-        /* About & Affiliate Row */
-        .two-col-row {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 2rem;
-        }
+
 
         .about-text {
             color: var(--text-secondary);
@@ -385,120 +380,7 @@
             font-style: italic;
         }
 
-        /* Affiliate Card */
-        .affiliate-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.12) 0%, rgba(0, 245, 212, 0.06) 100%);
-            border: 1px solid rgba(0, 245, 212, 0.25);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(0, 245, 212, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            align-self: start;
-        }
 
-        .affiliate-card:hover {
-            border-color: var(--accent-teal);
-            box-shadow: 0 15px 40px rgba(0, 245, 212, 0.25), inset 0 0 25px rgba(0, 245, 212, 0.1);
-            transform: translateY(-4px);
-        }
-
-        .affiliate-badge {
-            position: absolute;
-            top: 15px;
-            right: -30px;
-            background: var(--accent-teal);
-            color: #000;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 30px;
-            transform: rotate(45deg);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .product-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--accent-teal);
-            animation: bounce 2s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .product-image-container {
-            width: 100%;
-            height: 195px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 1.25rem;
-            border: 1px solid rgba(0, 245, 212, 0.2);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            position: relative;
-            background: rgba(0, 0, 0, 0.2);
-            transition: all 0.4s ease;
-        }
-
-        .affiliate-card:hover .product-image-container {
-            border-color: rgba(0, 245, 212, 0.5);
-            box-shadow: 0 4px 25px rgba(0, 245, 212, 0.3);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .affiliate-card:hover .product-image {
-            transform: scale(1.08);
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .price-tag {
-            font-family: var(--font-en);
-            margin: 1rem 0;
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-        }
-
-        .price-tag del {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .price-tag ins mark {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: var(--accent-teal);
-            font-size: 2.2rem;
-            font-weight: 800;
-        }
-
-        .affiliate-condition {
-            font-size: 0.85rem;
-            color: var(--accent-pink);
-            background: rgba(244, 114, 182, 0.08);
-            border: 1px dashed rgba(244, 114, 182, 0.3);
-            padding: 8px 12px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 500;
-        }
 
         /* Work Experience Grid */
         .exp-grid {
@@ -693,138 +575,7 @@
             font-family: var(--font-en);
         }
 
-        /* Media Section */
-        .media-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
 
-        .video-container {
-            position: relative;
-            padding: 0;
-            overflow: hidden;
-            height: 320px;
-            border: 1px solid rgba(0, 245, 212, 0.15);
-            border-radius: 24px;
-        }
-
-        .showreel-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .video-container:hover .showreel-video {
-            transform: scale(1.05);
-        }
-
-        .video-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem;
-            background: linear-gradient(to top, rgba(6, 9, 19, 0.95) 0%, rgba(6, 9, 19, 0) 100%);
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .video-tag {
-            font-family: var(--font-en);
-            font-size: 0.75rem;
-            color: var(--accent-teal);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .video-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .cinemagraph-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        .animated-gradient-box {
-            position: relative;
-            height: 150px;
-            border-radius: 16px;
-            background: linear-gradient(-45deg, #4f46e5, #00f5d4, #f472b6, #4361ee);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glowing-lens {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: pulseLens 2.5s infinite ease-in-out;
-        }
-
-        @keyframes pulseLens {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2); }
-            50% { transform: scale(1.1); box-shadow: 0 0 35px var(--accent-teal), inset 0 0 25px rgba(0, 245, 212, 0.4); border-color: var(--accent-teal); }
-        }
-
-        .lens-reflection {
-            position: absolute;
-            top: 5px;
-            left: 10px;
-            width: 15px;
-            height: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            transform: rotate(-45deg);
-        }
-
-        .anim-label {
-            position: absolute;
-            bottom: 10px;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.75);
-            font-family: var(--font-en);
-            font-weight: 500;
-        }
-
-        .cinemagraph-info h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .cinemagraph-info p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
 
         /* Floating Audio Player BGM CSS */
         .audio-player {
@@ -946,14 +697,8 @@
                 width: 200px;
                 height: 200px;
             }
-            .two-col-row, .edu-goals-grid, .exp-grid {
+            .edu-goals-grid, .exp-grid {
                 grid-template-columns: 1fr;
-            }
-            .media-grid {
-                grid-template-columns: 1fr;
-            }
-            .video-container {
-                height: 240px;
             }
             .audio-player {
                 bottom: 20px;
@@ -966,151 +711,7 @@
             }
         }
 
-        /* My Dream Business Section */
-        .business-section {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(0, 245, 212, 0.04) 100%);
-            border: 1px solid rgba(0, 245, 212, 0.15);
-            margin-top: 2rem;
-        }
 
-        .business-main-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-top: 0.5rem;
-        }
-
-        .business-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 900px) {
-            .business-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .business-intro {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .business-image-wrapper {
-            width: 100%;
-            height: 280px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .business-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .business-section:hover .business-img {
-            transform: scale(1.03);
-        }
-
-        .business-tagline {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            font-style: italic;
-            border-left: 3px solid var(--accent-teal);
-            padding-left: 1.25rem;
-        }
-
-        .business-services {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1.8rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .business-services h2 {
-            font-size: 1.4rem;
-            color: var(--accent-teal);
-            margin-bottom: 0.5rem;
-        }
-
-        .business-services h3 {
-            font-size: 1.15rem;
-            color: var(--text-primary);
-        }
-
-        .business-services p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .business-info-lists {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            margin-top: 1.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        @media (max-width: 900px) {
-            .business-info-lists {
-                grid-column: span 1;
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .info-block h3 {
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .business-ul, .business-ol {
-            padding-left: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .business-ul li, .business-ol li {
-            line-height: 1.5;
-        }
-
-        .business-cta-wrapper {
-            grid-column: span 2;
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 900px) {
-            .business-cta-wrapper {
-                grid-column: span 1;
-            }
-        }
-
-        .business-btn-map {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: var(--font-th);
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -1123,7 +724,6 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
-                    <li><a href="#dream-business">Dream Business</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#education">Education</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -1154,113 +754,56 @@
             </div>
         </section>
 
-        <!-- About & Affiliate Section -->
-        <div class="two-col-row" id="about">
-            
-            <!-- About Me Card -->
-            <section class="glass-card">
-                <div class="section-header">
-                    <p class="section-subtitle-small">Who I Am</p>
-                    <h2 class="section-title">About Me</h2>
-                </div>
-                <p class="about-text">
-                    ผมเป็นคนทำเว็บสายลุยที่เป็น <span class="badge-role">Part-time developer</span> ที่รักในการสร้างสรรค์ซอฟต์แวร์และแอปพลิเคชันที่มีคุณภาพ
-                </p>
-                
-                <!-- Core Pillars Grid -->
-                <div class="about-pillars">
-                    <div class="pillar-item">
-                        <div class="pillar-icon">💻</div>
-                        <div class="pillar-content">
-                            <h4>Tech & Coding</h4>
-                            <p>รักการพัฒนาเว็บแอปพลิเคชันแบบ Full-stack และเทคโนโลยีสารสนเทศ (IT)</p>
-                        </div>
-                    </div>
-                    <div class="pillar-item">
-                        <div class="pillar-icon">📸</div>
-                        <div class="pillar-content">
-                            <h4>Photography</h4>
-                            <p>มีประสบการณ์ 4 ปี ถ่ายภาพแนวสร้างสรรค์และการแต่งโทนสีภาพ</p>
-                        </div>
-                    </div>
-                    <div class="pillar-item">
-                        <div class="pillar-icon">⚖️</div>
-                        <div class="pillar-content">
-                            <h4>Legal Practice</h4>
-                            <p>มีประสบการณ์ 4 ปี ร่างเอกสารกฎหมายและงานธุรการศาล</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skills-hobbies-list" style="margin: 1.5rem 0;">
-                    <h4 style="color: var(--accent-teal); margin-bottom: 0.75rem;">Skills & Hobbies (งานอดิเรกและความสามารถพิเศษ):</h4>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                        <li>💻 พัฒนาโปรแกรมและศึกษาเกี่ยวกับ Full-Stack Development</li>
-                        <li>📸 ถ่ายภาพแนวสร้างสรรค์ แต่งสีและโทนสีภาพในโปรแกรม Lightroom</li>
-                        <li>⚖️ ร่างสัญญาและติดต่อประสานงานเอกสารกฎหมาย</li>
-                    </ul>
-                </div>
-
-                <p class="about-text-footer">
-                    การรวมตัวกันของ 3 ศาสตร์ที่แตกต่างนี้ (เทคโนโลยี, ศิลปะภาพถ่าย, และกฎหมาย) ช่วยเสริมสร้างทักษะความรอบคอบ ความคิดนอกกรอบ และการแก้ปัญหาอย่างมีระบบในการพัฒนาซอฟต์แวร์
-                </p>
-            </section>
-
-            <!-- Affiliate Mouse Card -->
-            <section class="glass-card affiliate-card">
-                <span class="affiliate-badge">Hot Deal</span>
-                <div>
-                    <div class="product-image-container">
-                        <img src="developer_mouse.png" alt="Developer Mouse" class="product-image">
-                    </div>
-                    <h3 class="product-name">Developer mouse</h3>
-                </div>
-                <div>
-                    <div class="price-tag">
-                        normal price <del>299</del> Baht <br>
-                        discounted to <ins><mark>99</mark></ins> Baht
-                    </div>
-                    <div class="affiliate-condition">เฉพาะคนที่หน้าตาดีเท่านั้น 😉</div>
-                </div>
-            </section>
-
-        </div>
-
-        <!-- Creative Media Showcase -->
-        <section class="glass-card media-section" id="portfolio-reel">
+        <!-- About Me Section -->
+        <section class="glass-card" id="about">
             <div class="section-header">
-                <p class="section-subtitle-small">Visual Storytelling</p>
-                <h2 class="section-title">Photography Showreel & Motion</h2>
+                <p class="section-subtitle-small">Who I Am</p>
+                <h2 class="section-title">About Me</h2>
             </div>
+            <p class="about-text">
+                ผมเป็นคนทำเว็บสายลุยที่เป็น <span class="badge-role">Part-time developer</span> ที่รักในการสร้างสรรค์ซอฟต์แวร์และแอปพลิเคชันที่มีคุณภาพ
+            </p>
             
-            <div class="media-grid">
-                <!-- Video Player Card -->
-                <div class="video-container glass-card">
-                    <video autoplay loop muted playsinline class="showreel-video">
-                        <source src="mov_bbb.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="video-overlay">
-                        <span class="video-tag">Photography Reel 2026</span>
-                        <h3 class="video-title">Capturing Nature & Lighting</h3>
+            <!-- Core Pillars Grid -->
+            <div class="about-pillars">
+                <div class="pillar-item">
+                    <div class="pillar-icon">💻</div>
+                    <div class="pillar-content">
+                        <h4>Tech & Coding</h4>
+                        <p>รักการพัฒนาเว็บแอปพลิเคชันแบบ Full-stack และเทคโนโลยีสารสนเทศ (IT)</p>
                     </div>
                 </div>
-
-                <!-- Animation Showcase or Cinemagraph -->
-                <div class="cinemagraph-container glass-card">
-                    <div class="animated-gradient-box">
-                        <div class="glowing-lens">
-                            <div class="lens-reflection"></div>
-                        </div>
-                        <p class="anim-label">Lens Focus & Light Animation</p>
+                <div class="pillar-item">
+                    <div class="pillar-icon">📸</div>
+                    <div class="pillar-content">
+                        <h4>Photography</h4>
+                        <p>มีประสบการณ์ 4 ปี ถ่ายภาพแนวสร้างสรรค์และการแต่งโทนสีภาพ</p>
                     </div>
-                    <div class="cinemagraph-info">
-                        <h3>Creative Motion Design</h3>
-                        <p>การผสมผสานงานถ่ายภาพกับการเคลื่อนไหวและแสงแบบโมเดิร์น เพื่อเพิ่มมิติและความมีชีวิตชีวาให้กับชิ้นงานสร้างสรรค์ในโลกดิจิทัล</p>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon">⚖️</div>
+                    <div class="pillar-content">
+                        <h4>Legal Practice</h4>
+                        <p>มีประสบการณ์ 4 ปี ร่างเอกสารกฎหมายและงานธุรการศาล</p>
                     </div>
                 </div>
             </div>
+
+            <div class="skills-hobbies-list" style="margin: 1.5rem 0;">
+                <h4 style="color: var(--accent-teal); margin-bottom: 0.75rem;">Skills & Hobbies (งานอดิเรกและความสามารถพิเศษ):</h4>
+                <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                    <li>💻 พัฒนาโปรแกรมและศึกษาเกี่ยวกับ Full-Stack Development</li>
+                    <li>📸 ถ่ายภาพแนวสร้างสรรค์ แต่งสีและโทนสีภาพในโปรแกรม Lightroom</li>
+                    <li>⚖️ ร่างสัญญาและติดต่อประสานงานเอกสารกฎหมาย</li>
+                </ul>
+            </div>
+
+            <p class="about-text-footer">
+                การรวมตัวกันของ 3 ศาสตร์ที่แตกต่างนี้ (เทคโนโลยี, ศิลปะภาพถ่าย, และกฎหมาย) ช่วยเสริมสร้างทักษะความรอบคอบ ความคิดนอกกรอบ และการแก้ปัญหาอย่างมีระบบในการพัฒนาซอฟต์แวร์
+            </p>
         </section>
+
+
 
         <!-- Goals & Education Section -->
         <div class="edu-goals-grid" id="education">
@@ -1330,64 +873,7 @@
             </div>
         </section>
 
-        <!-- My Dream Business Section -->
-        <section class="glass-card business-section" id="dream-business">
-            <div class="section-header">
-                <p class="section-subtitle-small">My Dream Business</p>
-                <h1 class="business-main-title">Jakka DevGear</h1>
-            </div>
-            
-            <div class="business-grid">
-                <!-- Business Intro & Image -->
-                <div class="business-intro">
-                    <div class="business-image-wrapper">
-                        <img src="devgear_keyboard.png" alt="Jakka DevGear Custom Mechanical Keyboard" class="business-img">
-                    </div>
-                    <p class="business-tagline">
-                        "สะท้อนตัวตนผ่านคีย์บอร์ดที่คุณออกแบบเอง" - ยินดีต้อนรับสู่ Jakka DevGear ร้านอุปกรณ์คอมพิวเตอร์และคีย์บอร์ดกลไก (Mechanical Keyboard) สำหรับนักพัฒนาซอฟต์แวร์และผู้รักการพิมพ์ทุกคน เราคัดสรรเฉพาะของเกรดพรีเมียมเพื่อความฟินในทุกสัมผัส!
-                    </p>
-                </div>
 
-                <!-- Products & Services -->
-                <div class="business-services">
-                    <h2>Our Premium Services & Products</h2>
-                    
-                    <h3>1. Custom Tuning & Modding</h3>
-                    <p>บริการประกอบ ปรับแต่งเสียง (Modding) และหยอดสารหล่อลื่น (Lube Switch) เพื่อให้คีย์บอร์ดของคุณมีเสียงและสัมผัสที่เพอร์เฟกต์ที่สุด</p>
-                    
-                    <h3>2. Free Custom Consulting</h3>
-                    <p>ให้คำปรึกษาการเลือกสวิตช์ คีย์แคป และเลย์เอาต์ที่เหมาะกับสรีรศาสตร์และการพิมพ์งานตลอดทั้งวัน</p>
-                </div>
-
-                <!-- Details & Lists (ul, ol, a) -->
-                <div class="business-info-lists">
-                    <div class="info-block">
-                        <h3>✨ สิ่งอำนวยความสะดวกในร้าน (Our Facilities)</h3>
-                        <ul class="business-ul">
-                            <li>🚗 ที่จอดรถหน้าร้านกว้างขวาง ปลอดภัย</li>
-                            <li>📶 High-Speed Wi-Fi ความเร็ว 1Gbps สำหรับนั่งทำงาน</li>
-                            <li>☕ กาแฟดริฟต์สเปเชียลตี้ฟรีสำหรับผู้เข้ามาลองคีย์บอร์ด</li>
-                            <li>🛠️ โซน DIY พร้อมเครื่องมือ Mod คีย์บอร์ดครบครัน</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-block">
-                        <h3>🛒 3 ขั้นตอนการสั่งซื้อแสนง่าย (How to Order)</h3>
-                        <ol class="business-ol">
-                            <li>เลือกและทดลองพิมพ์สวิตช์คีย์บอร์ดที่ต้องการหน้าร้าน</li>
-                            <li>สแกนจ่ายเงิน QR Code / โอนชำระเงินผ่านโมบายแบงก์กิ้ง</li>
-                            <li>รับคีย์บอร์ดตัวโปรดของคุณกลับบ้านพร้อมรับประกัน 2 ปีเต็ม (โอน-จ่าย-จบ!)</li>
-                        </ol>
-                    </div>
-
-                    <div class="business-cta-wrapper">
-                        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-primary business-btn-map">
-                            📍 ค้นหาตำแหน่งร้านบน Google Maps
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Contact Section -->
         <section class="glass-card contact-card" id="contact">
