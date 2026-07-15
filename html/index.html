@@ -385,7 +385,7 @@
         /* Work Experience Grid */
         .exp-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
@@ -850,7 +850,17 @@
             
             <div class="exp-grid">
                 
-                <!-- Experience 1 -->
+                <!-- Experience 1 (Tech Experience) -->
+                <div class="glass-card exp-card" style="background: rgba(255,255,255,0.02); padding: 1.8rem; border-radius: 16px;">
+                    <div class="exp-years">Current (ปัจจุบัน)</div>
+                    <h3 class="exp-title">Junior Software Developer Student</h3>
+                    <span class="exp-role">Generation Thailand (Cohort 13)</span>
+                    <p class="exp-desc">
+                        ศึกษาและพัฒนาทักษะด้าน Full-stack Web Development (HTML, CSS, JavaScript, React, Node.js, SQL) พร้อมทั้งเรียนรู้กระบวนการทำงานแบบทีม (Agile/Scrum) และฝึกฝนการเขียนโปรแกรมเพื่อสร้างโครงงานประยุกต์จริง
+                    </p>
+                </div>
+
+                <!-- Experience 2 -->
                 <div class="glass-card exp-card" style="background: rgba(255,255,255,0.02); padding: 1.8rem; border-radius: 16px;">
                     <div class="exp-years">4 Years Experience (4 ปี)</div>
                     <h3 class="exp-title">ช่างภาพ (Photographer)</h3>
@@ -860,7 +870,7 @@
                     </p>
                 </div>
 
-                <!-- Experience 2 -->
+                <!-- Experience 3 -->
                 <div class="glass-card exp-card" style="background: rgba(255,255,255,0.02); padding: 1.8rem; border-radius: 16px;">
                     <div class="exp-years">4 Years Experience (4 ปี)</div>
                     <h3 class="exp-title">เสมียนทนาย (Law Clerk)</h3>
