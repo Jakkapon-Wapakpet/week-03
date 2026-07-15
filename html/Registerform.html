@@ -11,13 +11,12 @@
     
     <style>
         :root {
-            --bg-color: #090d16;
-            --card-bg: rgba(255, 255, 255, 0.04);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent-color: #00f5d4;
-            --accent-glow: rgba(0, 245, 212, 0.35);
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-primary: #2d3748; /* Dark Charcoal */
+            --text-secondary: #718096; /* Slate Gray */
+            --accent-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            --accent-color: #a6c1ee;
             --font-sans: 'Outfit', 'Prompt', sans-serif;
         }
 
@@ -28,7 +27,7 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             color: var(--text-primary);
             font-family: var(--font-sans);
             min-height: 100vh;
@@ -36,102 +35,62 @@
             justify-content: center;
             align-items: center;
             padding: 2.5rem 1rem;
-            position: relative;
-            overflow-x: hidden;
         }
 
-        /* Ambient Glowing Background Blobs */
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: -1;
-            opacity: 0.25;
-            pointer-events: none;
-            animation: floatBlob 15s infinite alternate ease-in-out;
-        }
-
-        .blob-1 {
-            width: 380px;
-            height: 380px;
-            background: var(--accent-color);
-            top: -10%;
-            left: 10%;
-            animation-duration: 12s;
-        }
-
-        .blob-2 {
-            width: 450px;
-            height: 450px;
-            background: #00bbf9;
-            bottom: -15%;
-            right: 5%;
-            animation-duration: 18s;
-        }
-
-        .blob-3 {
-            width: 320px;
-            height: 320px;
-            background: #7928ca;
-            top: 40%;
-            left: 45%;
-            animation-duration: 14s;
-        }
-
-        @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -50px) scale(1.15); }
-            100% { transform: translate(-30px, 30px) scale(0.9); }
-        }
-
-        /* Glassmorphic Signup Card */
+        /* Claymorphic 3D Card */
         .register-card {
             background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 3.5rem 2.75rem;
+            border-radius: 36px;
+            padding: 3.5rem 3rem;
             width: 100%;
             max-width: 480px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-            animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            z-index: 10;
+            box-shadow: 
+                16px 16px 32px rgba(166, 180, 200, 0.45), 
+                -16px -16px 32px rgba(255, 255, 255, 0.9), 
+                inset 3px 3px 6px rgba(255, 255, 255, 0.8), 
+                inset -3px -3px 6px rgba(166, 180, 200, 0.15);
+            animation: cardEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(40px) scale(0.96); }
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Header Layout & Glowing Text */
+        /* Header Style */
         .card-header {
             display: flex;
             align-items: center;
             gap: 1.25rem;
-            margin-bottom: 2.75rem;
+            margin-bottom: 2.5rem;
         }
 
-        .header-icon {
-            font-size: 2.8rem;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 
+                4px 4px 10px rgba(166, 180, 200, 0.35), 
+                -4px -4px 10px rgba(255, 255, 255, 0.8), 
+                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
             animation: floatIcon 3.5s ease-in-out infinite;
         }
 
         @keyframes floatIcon {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(4deg); }
+            50% { transform: translateY(-6px) rotate(3deg); }
         }
 
         .header-title {
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-color) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 245, 212, 0.15);
+            color: var(--text-primary);
         }
 
         /* Form Controls */
@@ -144,44 +103,49 @@
 
         .form-label {
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            font-family: var(--font-sans);
         }
 
+        /* Inset Clay Input */
         .form-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
+            background: #f0f4f8;
+            border: 2px solid transparent;
+            border-radius: 18px;
             padding: 14px 18px;
             font-family: var(--font-sans);
             font-size: 0.95rem;
             color: var(--text-primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                inset 4px 4px 8px rgba(166, 180, 200, 0.3), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             outline: none;
         }
 
         .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.25);
+            color: #a0aec0;
         }
 
         .form-input:focus {
             border-color: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-glow);
-            background: rgba(255, 255, 255, 0.06);
+            background: #ffffff;
+            box-shadow: 
+                0 8px 16px rgba(166, 180, 200, 0.25), 
+                inset 1px 1px 2px rgba(255, 255, 255, 0.8);
             transform: translateY(-1px);
         }
 
-        /* Modern Chip Selections */
+        /* Options layout */
         .options-group {
             margin-bottom: 2rem;
         }
 
         .options-title {
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 0.9rem;
             color: var(--text-primary);
             letter-spacing: 0.5px;
@@ -194,7 +158,7 @@
             width: 100%;
         }
 
-        /* Hiding actual checkbox/radio inputs */
+        /* Hidden inputs */
         .option-input {
             position: absolute;
             opacity: 0;
@@ -202,107 +166,94 @@
             height: 0;
         }
 
-        /* Designing custom chip wrapper labels */
+        /* Soft 3D pill badges */
         .option-label {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 12px 16px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            background: #f0f4f8;
+            border: 2px solid transparent;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             user-select: none;
             font-size: 0.92rem;
             flex: 1;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 
+                4px 4px 8px rgba(166, 180, 200, 0.25), 
+                -4px -4px 8px rgba(255, 255, 255, 0.9), 
+                inset 2px 2px 4px rgba(255, 255, 255, 0.5);
         }
 
         .option-label:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.15);
             color: var(--text-primary);
-            transform: translateY(-1px);
-        }
-
-        /* Glowing Active Chip State using :has */
-        .option-label:has(.option-input:checked) {
-            background: rgba(0, 245, 212, 0.09);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            box-shadow: 0 0 20px rgba(0, 245, 212, 0.25);
-            font-weight: 700;
             transform: translateY(-2px);
+            box-shadow: 
+                6px 6px 12px rgba(166, 180, 200, 0.3), 
+                -6px -6px 12px rgba(255, 255, 255, 0.95);
         }
 
-        /* Glowing Submit Button with Metallic Shine Effect */
+        /* Checked Popping Chip State using :has */
+        .option-label:has(.option-input:checked) {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            font-weight: 700;
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 
+                6px 10px 20px rgba(166, 180, 200, 0.4), 
+                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Popping 3D Submit Button */
         .submit-btn {
             position: relative;
-            background: linear-gradient(135deg, #00f5d4 0%, #00bbf9 100%);
-            color: #060913;
+            background: var(--accent-gradient);
+            color: #ffffff;
             border: none;
-            border-radius: 14px;
+            border-radius: 18px;
             padding: 16px 20px;
             font-family: var(--font-sans);
             font-size: 1.05rem;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 30px rgba(0, 245, 212, 0.25);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 10px 20px rgba(166, 180, 200, 0.4), 
+                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
             outline: none;
             margin-top: 1.25rem;
-            overflow: hidden;
             letter-spacing: 0.5px;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.35),
-                transparent
-            );
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .submit-btn:hover::before {
-            left: 100%;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 245, 212, 0.4);
-            filter: brightness(1.08);
+            transform: scale(1.02) translateY(-3px);
+            box-shadow: 
+                0 14px 28px rgba(166, 180, 200, 0.5), 
+                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
         }
 
         .submit-btn:active {
-            transform: translateY(-1px);
+            transform: scale(0.98) translateY(1px);
+            box-shadow: 
+                inset 3px 3px 6px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Blobs -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-
     <div class="register-card">
         
         <!-- Header -->
         <div class="card-header">
-            <span class="header-icon">📦</span>
+            <div class="icon-circle">📦</div>
             <h1 class="header-title">Register form</h1>
         </div>
 
