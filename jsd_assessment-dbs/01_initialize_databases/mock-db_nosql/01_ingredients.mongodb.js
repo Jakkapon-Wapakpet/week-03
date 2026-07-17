@@ -1,9 +1,6 @@
 // To run this script, make sure your database is selected in the VS Code extension.
-use("chrome-burger-db");
+use("chrome-burger-db-jsd13");
 
-// This command will delete all existing documents in the 'ingredients' collection.
-// Comment it out if you want to append the data instead of replacing it.
-db.getCollection("ingredients").deleteMany({});
 
 // Insert the documents into the 'ingredients' collection.
 db.getCollection("ingredients").insertMany([

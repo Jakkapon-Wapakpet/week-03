@@ -1,12 +1,15 @@
-// Task 1 Bonus: Sides Menu Board
+// Task 1 Bonus: Sides Menu Board (โบนัสรายการอาหารประเภทเคียง)
 // The owner wants to update the printed menu board that displays only the side dishes.
 // They need a list of every item in the 'Side' category along with its current price,
 // so the designer can produce an accurate board without having to check each item manually.
+// (เจ้าของร้านต้องการปรับปรุงป้ายเมนูพิมพ์ลายที่แสดงเฉพาะรายการอาหารประเภทเคียง (Side Dishes) พวกเขาต้องการรายชื่อของทุกเมนูในหมวดหมู่ 'Side' พร้อมกับราคาปัจจุบัน เพื่อให้นักออกแบบจัดทำป้ายที่ถูกต้องโดยไม่ต้องตรวจสอบแต่ละเมนูด้วยตนเอง)
 //
 // The dataset is identical in MongoDB — the same business insight can be retrieved.
+// (ชุดข้อมูลใน MongoDB มีความเหมือนกันทุกประการ — สามารถดึงข้อมูลเชิงธุรกิจแบบเดียวกันได้)
 //
 // Hint: Write a query on the menu_items collection to find the name and price
 // of all documents where the category is 'Side'.
+// (คำใบ้: เขียนคิวรีบนคอลเลกชัน menu_items เพื่อค้นหาชื่อ (name) และราคา (price) ของเอกสาร (documents) ทั้งหมดที่มีหมวดหมู่ (category) เป็น 'Side')
 
 // ---------------------------------------------------------------
 // Your thinking process (required)

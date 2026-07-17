@@ -1,12 +1,15 @@
--- Task 1 Bonus: Budget Meal Deal
+-- Task 1 Bonus: Budget Meal Deal (โบนัสโปรโมชั่นชุดอาหารประหยัด)
 -- The owner wants to introduce a budget-friendly meal deal promotion and needs to identify
 -- which menu items could be included. To qualify, an item must be priced under $10.00,
 -- so they can offer good value without cutting too deep into margins.
+-- (เจ้าของร้านต้องการจัดโปรโมชั่นชุดอาหารราคาประหยัด และจำเป็นต้องระบุว่ามีรายการอาหารใดบ้างที่สามารถเข้าร่วมได้ โดยรายการอาหารที่เข้าเกณฑ์จะต้องมีราคาต่ำกว่า $10.00 เพื่อเสนอความคุ้มค่าให้ลูกค้าโดยไม่ส่งผลกระทบต่อกำไรมากเกินไป)
 --
 -- The dataset is identical in PostgreSQL — the same business insight can be retrieved.
+-- (ชุดข้อมูลใน PostgreSQL มีความเหมือนกันทุกประการ — สามารถดึงข้อมูลเชิงธุรกิจแบบเดียวกันได้)
 --
 -- Hint: Write a query to find the name and price of all rows in the MenuItems table
 -- where the price is less than 10.
+-- (คำใบ้: เขียนคิวรีเพื่อค้นหาชื่อ (name) และราคา (price) ของแถวทั้งหมดในตาราง MenuItems ที่มีราคาต่ำกว่า 10)
 
 -- ---------------------------------------------------------------
 -- Your thinking process (required)
@@ -16,5 +19,12 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking:
+-- Your thinking: โจทก์ต้องการให้เราหาว่ามีอาหาร ที่มีราคาต่ำกว่า 10 ดอลลาห์
+-- ในคอลเลกชัน menu_items
+-- เราจะใช้คิวรี find() เพื่อหาที่ตรงกับเงื่อนไข
+-- และใช้ $lt เพื่อหาราคาต่ำกว่า 10 ดอลลาห์
 --
+
+SELECT *
+FROM menu_items
+WHERE price < 10.00;

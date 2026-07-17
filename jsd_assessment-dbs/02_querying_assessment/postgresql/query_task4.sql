@@ -1,12 +1,15 @@
--- Task 4: Supplier Dependency Check
+-- Task 4: Supplier Dependency Check (การตรวจสอบการพึ่งพาซัพพลายเออร์)
 -- The manager has just heard that 'Freshest Farm Produce' may be delayed on their next delivery.
 -- Before deciding whether to source from an alternative supplier, they need to know exactly
 -- which ingredients depend on that supplier, so they can assess the impact on the menu.
+-- (ผู้จัดการเพิ่งได้รับแจ้งว่าการจัดส่งครั้งถัดไปจาก 'Freshest Farm Produce' อาจล่าช้า ก่อนตัดสินใจว่าจะสรรหาวัตถุดิบจากซัพพลายเออร์ทางเลือกอื่นหรือไม่ พวกเขาจำเป็นต้องทราบให้แน่ชัดว่า มีวัตถุดิบใดบ้างที่ขึ้นอยู่กับซัพพลายเออร์รายดังกล่าว เพื่อนำมาประเมินผลกระทบต่อรายการเมนูอาหาร)
 --
 -- Hint: Write a query to find the names of all ingredients supplied by 'Freshest Farm Produce'.
+-- (คำใบ้: เขียนคิวรีเพื่อค้นหารายชื่อของวัตถุดิบทั้งหมดที่จัดหาโดย 'Freshest Farm Produce')
 
 -- Bonus: The dataset is identical in the MongoDB database, meaning the same business insight can be retrieved.
 -- Write the equivalent query for MongoDB. See query_task4_bonus.mongodb.js
+-- (โบนัส: ชุดข้อมูลในฐานข้อมูล MongoDB มีความเหมือนกันทุกประการ ซึ่งหมายความว่าสามารถดึงข้อมูลเชิงธุรกิจแบบเดียวกันออกมาได้ เขียนคิวรีที่เทียบเท่ากันสำหรับ MongoDB ดูที่ไฟล์ query_task4_bonus.mongodb.js)
 
 -- ---------------------------------------------------------------
 -- Your thinking process (required)

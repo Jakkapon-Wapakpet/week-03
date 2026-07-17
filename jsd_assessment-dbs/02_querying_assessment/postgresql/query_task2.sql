@@ -1,12 +1,15 @@
--- Task 2: Kitchen Staff Contact List
+-- Task 2: Kitchen Staff Contact List (รายชื่อติดต่อเจ้าหน้าที่ในครัว)
 -- The manager has a last-minute change to the kitchen prep schedule and needs to notify
 -- all cooks as soon as possible. They need the full names of every staff member
 -- whose role is 'Cook' so they can be contacted directly.
+-- (ผู้จัดการมีการเปลี่ยนแปลงตารางเตรียมงานในครัวอย่างกระทันหันและจำเป็นต้องแจ้งให้ผู้ปรุงอาหาร (Cook) ทุกคนทราบโดยเร็วที่สุด พวกเขาต้องการชื่อ-นามสกุลของเจ้าหน้าที่ทุกคนที่มีบทบาทหน้าที่เป็น 'Cook' เพื่อให้สามารถติดต่อได้โดยตรง)
 --
 -- Hint: Write a query to list the first_name and last_name of all staff members whose role is 'Cook'.
+-- (คำใบ้: เขียนคิวรีเพื่อแสดงชื่อจริง (first_name) และนามสกุล (last_name) ของเจ้าหน้าที่ทุกคนที่มีบทบาทหน้าที่เป็น 'Cook')
 
 -- Bonus: The dataset is identical in the MongoDB database, meaning the same business insight can be retrieved.
 -- Write the equivalent query for MongoDB. See query_task2_bonus.mongodb.js
+-- (โบนัส: ชุดข้อมูลในฐานข้อมูล MongoDB มีความเหมือนกันทุกประการ ซึ่งหมายความว่าสามารถดึงข้อมูลเชิงธุรกิจแบบเดียวกันออกมาได้ เขียนคิวรีที่เทียบเท่ากันสำหรับ MongoDB ดูที่ไฟล์ query_task2_bonus.mongodb.js)
 
 -- ---------------------------------------------------------------
 -- Your thinking process (required)
