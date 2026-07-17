@@ -19,12 +19,14 @@
 // are involved, and what MongoDB concepts you plan to use.
 // Write in English or Thai. Do not skip this step.
 //
-// Your thinking: หาชื่อจริง (first_name) และนามสกุล (last_name) ของเจ้าหน้าที่ทุกคนที่มีบทบาทหน้าที่เป็น 'Cook'
-// จากตาราง staff
-// เราจะใช้คำสั่ง SELECT เพื่อเลือกฟิลด์ first_name, last_name และใช้ WHERE คัดกรอง role = 'Cook'
+// Your thinking: ค้นหาชื่อจริง (first_name) และนามสกุล (last_name) ของเอกสารทั้งหมดในคอลเลกชัน staff ที่มีบทบาทหน้าที่ (role) เป็น 'Cook'
+// เราจะใช้คิวรี find() โดยระบุเงื่อนไขเป็น { role: "Cook" }
+// และระบุ projection เป็น { first_name: 1, last_name: 1, _id: 0 } เพื่อดึงมาเฉพาะฟิลด์ที่ต้องการ
+//
 
 use("chrome-burger-db-jsd13");
 
 db.staff.find(
-  { role: "Cook" }
+  { role: "Cook" },
+  { first_name: 1, last_name: 1, _id: 0 }
 );

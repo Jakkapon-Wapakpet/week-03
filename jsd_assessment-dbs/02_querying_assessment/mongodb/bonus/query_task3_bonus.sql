@@ -19,9 +19,11 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking:
+-- Your thinking: หาชื่อวัตถุดิบทั้งหมดจากตาราง Ingredients ที่มีระดับ stock_level ตั้งแต่ 100 ขึ้นไป
+-- เราจะใช้คำสั่ง SELECT เพื่อเลือกคอลัมน์ name จากตาราง Ingredients
+-- และใช้ WHERE เพื่อกรองเอาเฉพาะแถวที่ stock_level >= 100.00
 --
 
-SELECT *
+SELECT name
 FROM Ingredients
 WHERE stock_level >= 100.00;

@@ -19,12 +19,11 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking: โจทก์ต้องการให้เราหาว่ามีอาหาร ที่มีราคาต่ำกว่า 10 ดอลลาห์
--- ในคอลเลกชัน menu_items
--- เราจะใช้คิวรี find() เพื่อหาที่ตรงกับเงื่อนไข
--- และใช้ $lt เพื่อหาราคาต่ำกว่า 10 ดอลลาห์
+-- Your thinking: โจทย์ต้องการให้หาชื่อ (name) และราคา (price) ของเมนูอาหารทั้งหมดในตาราง MenuItems ที่มีราคาต่ำกว่า 10.00
+-- เราจะใช้คำสั่ง SELECT เพื่อเลือกเฉพาะฟิลด์ name และ price
+-- และใช้ WHERE ในการคัดกรองแถวข้อมูลที่มี price < 10.00
 --
 
-SELECT *
+SELECT name, price
 FROM MenuItems
 WHERE price < 10.00;

@@ -20,9 +20,10 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking: โจทก์ต้องการให้เราหา (order_date) และ (total_price) เป็น doc ในคอลเล็กชั่น ไม่ต้องแสดงอย่างอื่น
--- ในคอลเลกชัน (order_date) และ (total_price) ต้องหาแค่ "Jane Doe"
--- เราจะใช้คิวรี findOne() เพื่อหาที่ตรงกับเงื่อนไข มี 3 อย่าง
+-- Your thinking: หา order_date และ total_price จากตาราง Orders ของคำสั่งซื้อทั้งหมดที่ทำโดย Jane Doe
+-- เราจะดึงข้อมูลผ่านการ JOIN ระหว่างตาราง Orders (o) และ Staff (s) ด้วย staff_id
+-- และใช้ WHERE ในการกรองสตาฟที่ s.first_name = 'Jane' และ s.last_name = 'Doe'
+--
 
 SELECT o.order_date, o.total_price
 FROM Orders o

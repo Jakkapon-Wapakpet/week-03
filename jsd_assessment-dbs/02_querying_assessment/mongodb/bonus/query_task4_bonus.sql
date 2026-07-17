@@ -19,8 +19,9 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking:
+-- Your thinking: คำนวณรายได้ทั้งหมดจากตาราง Orders โดยการหาผลรวมของ total_price
+-- เราจะใช้ฟังก์ชัน aggregate SUM(total_price) และใช้คำว่า AS เพื่อตั้งชื่อเป็น total_revenue
 --
-
+ 
 SELECT SUM(total_price) AS total_revenue
 FROM orders;
