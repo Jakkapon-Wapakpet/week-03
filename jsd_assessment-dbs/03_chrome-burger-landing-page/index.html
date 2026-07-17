@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome & Burger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-gray-800 font-sans">
+    <header class="shadow-md">
+      <div class="container mx-auto flex justify-between items-center p-4">
+        <h1 class="text-2xl font-bold">Chrome & Burger</h1>
+        <nav class="flex items-center space-x-6">
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.949 8.949 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+          </svg>
+          <a href="index.html" class="text-gray-600 hover:text-blue-500"
+            >Home</a
+          >
+          <a href="menu.html" class="text-gray-600 hover:text-blue-500">Menu</a>
+          <a
+            href="#"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >Order Now</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+      <section id="hero" class="grid md:grid-cols-2 gap-8 items-center py-12">
+        <div class="bg-blue-100 p-8 rounded-lg">
+          <h2 class="text-4xl font-bold mb-4">Chrome & Burger</h2>
+          <p class="mb-6">
+            Feeling famished after conquering those waves? Look no further than
+            Chrome & Burger, your one-stop shop for gourmet grub that's as
+            classic as a beach sunset and as shiny as a chrome fender!
+          </p>
+          <a
+            href="assets/pdf/menu.pdf"
+            class="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600"
+            >PDF Menu</a
+          >
+        </div>
+        <div class="p-2 border-4 border-yellow-400 rounded-lg">
+          <img
+            src="assets/jpeg/BurgerTruck.jpeg"
+            alt="Chrome & Burger food truck"
+            class="rounded-lg w-full"
+          />
+        </div>
+      </section>
+
+      <section id="menu" class="py-20">
+        <h3 class="text-4xl font-bold text-center mb-12">
+          100% Organic Burgers
+        </h3>
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div
+            class="menu-item bg-yellow-400 rounded-lg shadow-md overflow-hidden text-left"
+          >
+            <img
+              src="assets/jpeg/TheAllAmerican.jpeg"
+              alt="The All-American Burger"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-4">
+              <h4 class="text-2xl font-bold mb-2">The All-American</h4>
+              <p class="text-gray-800">
+                A timeless masterpiece featuring a juicy all-beef patty, melted
+                cheddar cheese, crisp lettuce, vine-ripened tomato, red onion,
+                tangy pickles, and our signature "Wagon Sauce" on a toasted
+                brioche bun.
+              </p>
+            </div>
+          </div>
+          <div
+            class="menu-item bg-yellow-400 rounded-lg shadow-md overflow-hidden text-left"
+          >
+            <img
+              src="assets/jpeg/BaconCheeseburger.jpeg"
+              alt="Bacon Cheeseburger"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-4">
+              <h4 class="text-2xl font-bold mb-2">Bacon Cheeseburger</h4>
+              <p class="text-gray-800">
+                This beauty boasts a juicy all-beef patty, crisp bacon, melted
+                cheddar cheese, crisp lettuce, vine-ripened tomato, red onion,
+                and tangy pickles, all on a toasted brioche bun.
+              </p>
+            </div>
+          </div>
+          <div
+            class="menu-item bg-yellow-400 rounded-lg shadow-md overflow-hidden text-left"
+          >
+            <img
+              src="assets/jpeg/TheAlohaBurger.jpeg"
+              alt="The Aloha Burger"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-4">
+              <h4 class="text-2xl font-bold mb-2">The Aloha Burger</h4>
+              <p class="text-gray-800">
+                This tropical treat features a juicy all-beef patty topped with
+                grilled pineapple, melted Swiss cheese, crisp lettuce, tangy
+                teriyaki sauce, and a creamy sriracha mayo on a toasted Hawaiian
+                sweet roll.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="video" class="py-20 text-center">
+        <h3 class="text-4xl font-bold text-center mb-12">
+          The Ultimate Burger Experience
+        </h3>
+        <div class="video-container max-w-4xl mx-auto shadow-lg">
+          <iframe
+            class="w-full aspect-video"
+            src="https://www.youtube.com/embed/wUZa8ziP6Ao"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <section id="contact" class="py-20 px-4 text-center">
+        <h3 class="text-4xl font-bold mb-8">Get in Touch</h3>
+        <p class="text-lg mb-8">
+          Follow us on social media to find out where we'll be next!
+        </p>
+        <ul class="flex justify-center space-x-8">
+          <li>
+            <a href="#" class="text-blue-500 hover:text-blue-700 text-4xl"
+              >Twitter</a
+            >
+          </li>
+          <li>
+            <a href="#" class="text-pink-500 hover:text-pink-700 text-4xl"
+              >Instagram</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4">
+      <p>&copy; 2025 Chrome & Burger. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
