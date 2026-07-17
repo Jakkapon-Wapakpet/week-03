@@ -28,9 +28,9 @@
 --
 
 SELECT 
-    CONCAT(s.first_name, ' ', s.last_name) AS full_name,
-    COUNT(o.order_id) AS total_orders
-FROM staff s
-JOIN orders o ON s.staff_id = o.staff_id
-GROUP BY s.staff_id, s.first_name, s.last_name
+    CONCAT(first_name, ' ', last_name) AS full_name,
+    COUNT(order_id) AS total_orders
+FROM staff
+JOIN orders ON staff.staff_id = orders.staff_id
+GROUP BY staff.staff_id, first_name, last_name
 ORDER BY total_orders DESC;
