@@ -19,5 +19,14 @@
 // are involved, and what MongoDB concepts you plan to use.
 // Write in English or Thai. Do not skip this step.
 //
-// Your thinking:
+// Your thinking: หาชื่อ (name) และราคา (price) ของเมนูอาหารทั้งหมดที่อยู่ในหมวดหมู่ 'Side'
+// ใช้ find() โดยระบุเงื่อนไขเป็น { category: "Side" }
+// และระบุ projection เป็น { name: 1, price: 1, _id: 0 } เพื่อดึงมาเฉพาะฟิลด์ที่ต้องการ
 //
+
+use("chrome-burger-db-jsd13");
+
+db.menu_items.find(
+  { category: "Side" },
+  { name: 1, price: 1, _id: 0 }
+);

@@ -19,5 +19,11 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking:
+-- Your thinking: หาชื่อ (name) และราคา (price) ของเมนูอาหารทั้งหมดที่อยู่ในหมวดหมู่ 'Side'
+-- จากตาราง MenuItems
+-- เราจะใช้คำสั่ง SELECT เพื่อเลือกฟิลด์ name, price และใช้ WHERE คัดกรอง category = 'Side'
 --
+
+SELECT name, price
+FROM MenuItems
+WHERE category = 'Side';

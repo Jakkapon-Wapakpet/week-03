@@ -19,5 +19,11 @@
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
 --
--- Your thinking:
+-- Your thinking: หาชื่อจริง (first_name) และนามสกุล (last_name) ของเจ้าหน้าที่ทุกคนที่มีบทบาทหน้าที่เป็น 'Cook'
+-- จากตาราง staff
+-- เราจะใช้คำสั่ง SELECT เพื่อเลือกฟิลด์ first_name, last_name และใช้ WHERE คัดกรอง role = 'Cook'
 --
+
+SELECT first_name, last_name
+FROM staff
+WHERE role = 'Cook';

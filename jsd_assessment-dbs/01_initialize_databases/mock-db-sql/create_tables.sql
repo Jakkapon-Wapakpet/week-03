@@ -1,10 +1,19 @@
+-- ลบตารางที่มีอยู่แล้วทิ้งก่อน (เรียงตามลำดับความสัมพันธ์เพื่อไม่ให้ติด Error)
+DROP TABLE IF EXISTS OrderItems CASCADE;
+DROP TABLE IF EXISTS RecipeItems CASCADE;
+DROP TABLE IF EXISTS Orders CASCADE;
+DROP TABLE IF EXISTS MenuItems CASCADE;
+DROP TABLE IF EXISTS Ingredients CASCADE;
+DROP TABLE IF EXISTS Staff CASCADE;
+DROP TABLE IF EXISTS Suppliers CASCADE;
+
 -- 1. Create Suppliers Table
 CREATE TABLE Suppliers (
-     supplier_id SERIAL PRIMARY KEY,
-     name VARCHAR(255) NOT NULL,
-         contact_person VARCHAR(255),
-         phone_number VARCHAR(20)
-     );
+    supplier_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact_person VARCHAR(255),
+    phone_number VARCHAR(20)
+);
      
 -- 2. Create Staff Table
 CREATE TABLE Staff (

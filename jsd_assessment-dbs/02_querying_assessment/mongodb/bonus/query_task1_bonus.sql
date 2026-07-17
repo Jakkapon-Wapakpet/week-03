@@ -26,5 +26,5 @@
 --
 
 SELECT *
-FROM menu_items
+FROM MenuItems
 WHERE price < 10.00;
