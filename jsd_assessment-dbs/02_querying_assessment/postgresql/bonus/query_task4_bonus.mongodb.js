@@ -21,5 +21,33 @@
 // are involved, and what MongoDB concepts you plan to use.
 // Write in English or Thai. Do not skip this step.
 //
-// Your thinking:
+// Your thinking: ต้องการหาวัตถุดิบทั้งหมดที่จัดหาโดยซัพพลายเออร์ชื่อ 'Freshest Farm Produce'
+// ในคอลเลกชัน ingredients เก็บ id ซัพพลายเออร์ในฟิลด์ supplier_id
+// เราจะใช้ $lookup เพื่อ Join กับคอลเลกชัน suppliers (โดยจับคู่ localField: "supplier_id" กับ foreignField: "_id")
+// จากนั้นใช้ $match กรองเอกสารที่ "supplier_info.name" เป็น "Freshest Farm Produce"
+// สุดท้ายใช้ $project ดึงเฉพาะฟิลด์ name และซ่อน _id เพื่อความสะอาด
 //
+
+use("chrome-burger-db-jsd13");
+
+db.ingredients.aggregate([
+  {
+    $lookup: {
+      from: "suppliers",
+      localField: "supplier_id",
+      foreignField: "_id",
+      as: "supplier_info"
+    }
+  },
+  {
+    $match: {
+      "supplier_info.name": "Freshest Farm Produce"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1
+    }
+  }
+]);

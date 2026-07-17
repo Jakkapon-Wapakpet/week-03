@@ -19,14 +19,11 @@
 // are involved, and what MongoDB concepts you plan to use.
 // Write in English or Thai. Do not skip this step.
 //
-// Your thinking: ค้นหาชื่อจริง (first_name) และนามสกุล (last_name) ของเอกสารทั้งหมดในคอลเลกชัน staff ที่มีบทบาทหน้าที่ (role) เป็น 'Cook'
-// เราจะเลือกใช้คิวรี find() โดยระบุเงื่อนไขเป็น { role: "Cook" }
-// และระบุ projection เป็น { first_name: 1, last_name: 1, _id: 0 } เพื่อดึงมาเฉพาะฟิลด์ที่ต้องการ
+// Your thinking:
 //
 
 use("chrome-burger-db-jsd13");
 
 db.staff.find(
-  { role: "Cook" },
-  { first_name: 1, last_name: 1, _id: 0 }
+  { role: "Cook" }
 );

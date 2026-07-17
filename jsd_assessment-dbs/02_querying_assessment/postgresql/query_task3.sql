@@ -20,6 +20,17 @@
 -- interpreted the task, what data you need, which table(s) are
 -- involved, and what SQL concepts you plan to use.
 -- Write in English or Thai. Do not skip this step.
+
+-- Your thinking: หาจำนวนออเดอร์ทั้งหมดที่ประมวลผลโดยพนักงานแต่ละคน และรวมชื่อจริงและนามสกุลเข้าด้วยกัน เรียงจากจำนวนออเดอร์มากไปน้อย
+-- เราจะใช้การ JOIN ระหว่างตาราง staff และ orders โดยใช้ staff_id
+-- ใช้ฟังก์ชัน CONCAT เพื่อรวมชื่อ-นามสกุล และใช้ COUNT เพื่อหาจำนวนออเดอร์ทั้งหมดของแต่ละคน
+-- ใช้ GROUP BY กับข้อมูลพนักงานเพื่อจัดกลุ่มในการนับยอด และ ORDER BY DESC เพื่อเรียงจากมากไปน้อย
 --
--- Your thinking:
---
+
+SELECT 
+    CONCAT(s.first_name, ' ', s.last_name) AS full_name,
+    COUNT(o.order_id) AS total_orders
+FROM staff s
+JOIN orders o ON s.staff_id = o.staff_id
+GROUP BY s.staff_id, s.first_name, s.last_name
+ORDER BY total_orders DESC;

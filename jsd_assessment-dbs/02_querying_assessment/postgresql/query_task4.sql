@@ -20,4 +20,13 @@
 -- Write in English or Thai. Do not skip this step.
 --
 -- Your thinking:
+-- หาชื่อของวัตถุดิบทั้งหมดที่จัดหาโดยซัพพลายเออร์ชื่อ 'Freshest Farm Produce'
+-- จากตาราง Ingredients และ Suppliers
+-- เราจะใช้การ JOIN ระหว่าง Ingredients (i) และ Suppliers (s) โดยใช้ supplier_id
+-- และระบุ WHERE คัดกรองชื่อซัพพลายเออร์ s.name = 'Freshest Farm Produce' และดึงเฉพาะคอลัมน์ชื่อวัตถุดิบ i.name
 --
+
+SELECT i.name
+FROM Ingredients i
+JOIN Suppliers s ON i.supplier_id = s.supplier_id
+WHERE s.name = 'Freshest Farm Produce';

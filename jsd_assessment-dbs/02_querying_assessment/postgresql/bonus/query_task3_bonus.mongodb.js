@@ -21,5 +21,31 @@
 // are involved, and what MongoDB concepts you plan to use.
 // Write in English or Thai. Do not skip this step.
 //
-// Your thinking:
+// Your thinking: ต้องการดึงข้อมูลจำนวนออเดอร์ทั้งหมดที่จัดการโดยพนักงานแต่ละคน และแสดงชื่อเต็มของพนักงานพร้อมยอดรวมออเดอร์ เรียงตามลำดับจากมากไปน้อย
+// เราจะใช้ $lookup เพื่อ Join ระหว่างคอลเลกชัน staff (โดยใช้ฟิลด์ _id) และ orders (โดยใช้ฟิลด์ staff.staff_id)
+// จากนั้นใช้ $project เพื่อหาชื่อเต็มด้วย $concat และหาจำนวนออเดอร์โดยหาขนาดของอาเรย์ staff_orders ด้วย $size
+// สุดท้ายเรียงลำดับจากมากไปน้อยด้วย $sort ตามฟิลด์ total_orders
 //
+
+use("chrome-burger-db-jsd13");
+
+db.staff.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "staff.staff_id",
+      as: "staff_orders"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      full_name: { $concat: ["$first_name", " ", "$last_name"] },
+      total_orders: { $size: "$staff_orders" } 
+    }
+  },
+  { 
+    $sort: { total_orders: -1 }
+  }
+]);
